@@ -44,14 +44,12 @@
         <div>
           <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-2">Maison Passcode</label>
           <input 
-            type="password" 
+            type="number" 
+            pattern="[0-9]*"
+            inputmode="numeric"
             id="passcodeInput" 
-            placeholder="Enter 4-digit code" 
-            autocomplete="off" 
-            autocorrect="off" 
-            autocapitalize="none" 
-            spellcheck="false"
-            class="w-full text-center text-lg font-mono tracking-widest p-3 bg-white border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" 
+            placeholder="1221" 
+            class="w-full text-center text-xl font-mono tracking-widest p-3 bg-white border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" 
           />
         </div>
         
@@ -60,10 +58,12 @@
         <button 
           type="button" 
           id="unlockBtn"
-          onclick="handleUnlockDirect()" 
-          class="w-full py-3.5 bg-burgundy hover:bg-gold-antique active:scale-95 text-champagne-silk text-xs uppercase tracking-[0.2em] font-semibold transition duration-200 rounded shadow-lg cursor-pointer">
+          onclick="handleUnlockClick(event)" 
+          class="w-full py-3.5 bg-burgundy hover:bg-gold-antique active:scale-95 text-champagne-silk text-xs uppercase tracking-[0.2em] font-semibold transition duration-200 rounded shadow-lg">
           Unlock Portal
         </button>
+
+        <p class="text-[10px] text-gray-400">Master PIN: 1221</p>
       </div>
     </div>
   </div>
@@ -105,7 +105,7 @@
         </div>
         <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
           <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Security</p>
-          <p class="text-xs text-gold-antique font-semibold pt-2">Protected (1221)</p>
+          <p class="text-xs text-gold-antique font-semibold pt-2">Unlocked (1221)</p>
         </div>
         <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
           <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Cloud Storage</p>
@@ -216,9 +216,7 @@
 
   <!-- JAVASCRIPT -->
   <script>
-    // PASSCODE IS NOW 1221
-    const ATELIER_MASTER_KEY = "1221";
-
+    const ATELIER_KEY = "1221";
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     let supabase = null;
@@ -230,51 +228,50 @@
       return supabase;
     }
 
-    function handleUnlockDirect() {
-      const input = document.getElementById('passcodeInput');
-      const err = document.getElementById('lockError');
-      const entered = input.value.trim();
+    function unlockApp() {
+      try {
+        localStorage.setItem('kalanvii_authenticated', 'true');
+      } catch (e) {}
+      document.getElementById('lockScreen').style.display = 'none';
+      document.getElementById('dashboardApp').style.display = 'block';
+      setTimeout(loadLiveProducts, 200);
+    }
 
-      if (entered === ATELIER_MASTER_KEY) {
-        err.classList.add('hidden');
-        document.getElementById('lockScreen').style.display = 'none';
-        document.getElementById('dashboardApp').style.display = 'block';
-        try {
-          sessionStorage.setItem('kalanvii_atelier_unlocked', 'true');
-        } catch (e) {}
-        loadLiveProducts();
+    function handleUnlockClick(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const val = document.getElementById('passcodeInput').value.trim();
+      if (val === ATELIER_KEY) {
+        document.getElementById('lockError').classList.add('hidden');
+        unlockApp();
       } else {
-        err.classList.remove('hidden');
-        input.value = '';
-        input.focus();
+        document.getElementById('lockError').classList.remove('hidden');
+        document.getElementById('passcodeInput').value = '';
+      }
+      return false;
+    }
+
+    // AUTO-UNLOCK CHECK ON LOAD (Checks hash #1221, URL param ?key=1221, or previous login)
+    function autoCheck() {
+      const hash = window.location.hash.replace('#', '').trim();
+      const params = new URLSearchParams(window.location.search);
+      const isSaved = localStorage.getItem('kalanvii_authenticated') === 'true';
+
+      if (hash === ATELIER_KEY || params.get('key') === ATELIER_KEY || isSaved) {
+        unlockApp();
       }
     }
 
-    // Allow pressing Enter key on keyboard to unlock
-    document.addEventListener('DOMContentLoaded', () => {
-      const input = document.getElementById('passcodeInput');
-      if (input) {
-        input.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            handleUnlockDirect();
-          }
-        });
-      }
-    });
-
-    try {
-      if (sessionStorage.getItem('kalanvii_atelier_unlocked') === 'true') {
-        document.getElementById('lockScreen').style.display = 'none';
-        document.getElementById('dashboardApp').style.display = 'block';
-        setTimeout(loadLiveProducts, 300);
-      }
-    } catch (e) {}
+    // Run auto-check immediately
+    autoCheck();
 
     function lockDashboard() {
       try {
-        sessionStorage.removeItem('kalanvii_atelier_unlocked');
+        localStorage.removeItem('kalanvii_authenticated');
       } catch (e) {}
+      window.location.hash = '';
       window.location.reload();
     }
 
@@ -285,11 +282,11 @@
       const client = getSupabase();
 
       if (!client) {
-        alert("Connecting to database, please try again in a few seconds.");
+        alert("Supabase client connecting, please tap save again in 3 seconds.");
         return;
       }
       
-      status.innerText = "Uploading & Saving...";
+      status.innerText = "Uploading photo & saving bag...";
       status.className = "text-xs text-gold-antique font-semibold";
       btn.disabled = true;
 
@@ -335,7 +332,7 @@
         const { error: insertErr } = await client.from('products').insert([payload]);
         if (insertErr) throw insertErr;
 
-        status.innerText = "✓ Published successfully!";
+        status.innerText = "✓ Published successfully to live site!";
         status.className = "text-xs text-emerald-700 font-semibold";
         document.getElementById('productForm').reset();
         loadLiveProducts();
@@ -406,4 +403,5 @@
   </script>
 </body>
 </html>
+
 
