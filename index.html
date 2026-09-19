@@ -154,7 +154,7 @@
 
     <!-- PRODUCT GRID -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="col-span-full py-16 text-center text-sm text-burgundy/60">Loading royal collection...</div>
+      <div class="col-span-full py-16 text-center text-sm text-burgundy/60">Curating royal collection...</div>
     </div>
   </section>
 
@@ -263,7 +263,15 @@
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    // SAFE-LOAD SAFEGUARD FOR MOBILE BROWSERS
+    let supabaseClient = null;
+    function getSupabase() {
+      if (!supabaseClient && window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+      return supabaseClient;
+    }
 
     let currency = 'INR';
     let currentCategory = 'All';
@@ -271,28 +279,33 @@
     let cart = [];
     let selectedModalItem = null;
 
-    // We leave fallback array empty so it reflects reality until you add products via the admin panel.
-    const fallbackCatalog = [];
-
     async function loadCatalog() {
+      const client = getSupabase();
+      
+      // If the mobile connection is slow and the database hasn't loaded yet, try again in half a second!
+      if (!client) {
+        setTimeout(loadCatalog, 500);
+        return;
+      }
+
       try {
-        const { data, error } = await supabase
+        const { data, error } = await client
           .from('products')
           .select('*')
           .order('created_at', { ascending: false });
+
+        if (error) throw error;
 
         if (data && data.length > 0) {
           allProducts = data;
           if (data[0].image_url) {
             document.getElementById('heroShowcaseImg').src = data[0].image_url;
           }
-        } else {
-          allProducts = fallbackCatalog;
         }
       } catch (err) {
-        console.log("Using default catalog:", err);
-        allProducts = fallbackCatalog;
+        console.log("Error loading catalog:", err);
       }
+      
       renderCatalog();
     }
 
@@ -425,12 +438,6 @@
       totalEl.innerText = currency === 'INR' ? `₹${total.toLocaleString('en-IN')}` : `$${total}`;
     }
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      document.getElementById('cartCount').innerText = cart.length;
-      updateCartDrawer();
-    }
-
     function checkoutOnWhatsApp() {
       if (cart.length === 0) return;
       const bagTitles = cart.map(i => i.title).join(', ');
@@ -442,4 +449,5 @@
   </script>
 </body>
 </html>
+
 
