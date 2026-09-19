@@ -76,7 +76,7 @@
       </div>
       <form id="productForm" class="p-6 space-y-6">
         
-        <!-- MEDIA GALLERY SECTION (NEW) -->
+        <!-- MEDIA GALLERY SECTION -->
         <div class="space-y-4 border-2 border-dashed border-champagne-border p-5 rounded-xl bg-white/50">
           <h3 class="font-serif text-burgundy text-sm font-bold tracking-widest uppercase text-center border-b border-champagne-border pb-2">Media Gallery</h3>
           
@@ -182,7 +182,15 @@
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    // SAFE-LOAD SAFEGUARD FOR MOBILE BROWSERS
+    let supabaseClient = null;
+    function getSupabase() {
+      if (!supabaseClient && window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+      return supabaseClient;
+    }
 
     let editingId = null;
     let existingMainImage = null;
@@ -223,6 +231,8 @@
     });
 
     async function uploadMedia(file, prefix) {
+      const supabase = getSupabase();
+      if (!supabase) throw new Error("Database not connected.");
       const ext = file.name.split('.').pop();
       const fileName = `${prefix}-${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
       const { data, error } = await supabase.storage.from('product-images').upload(fileName, file);
@@ -233,6 +243,12 @@
 
     document.getElementById('productForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const supabase = getSupabase();
+      if (!supabase) {
+        alert("System is still connecting... please wait a second and try again.");
+        return;
+      }
+
       const status = document.getElementById('uploadStatus');
       const btn = document.getElementById('submitBtn');
       
@@ -348,10 +364,16 @@
     }
 
     async function loadProducts() {
+      const supabase = getSupabase();
+      if (!supabase) {
+        setTimeout(loadProducts, 500); // Wait for connection if slow
+        return;
+      }
+
       document.getElementById('productList').innerHTML = '<div class="text-center text-xs p-4 text-gray-500">Syncing with database...</div>';
       const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
       
-      if (error || !data.length) {
+      if (error || !data || data.length === 0) {
         document.getElementById('productList').innerHTML = '<div class="text-center text-xs p-4 text-gray-500">No handbags found in the collection yet.</div>';
         return;
       }
@@ -382,6 +404,9 @@
     }
 
     async function deleteProduct(id) {
+      const supabase = getSupabase();
+      if (!supabase) return;
+
       if (confirm('Are you certain you want to permanently remove this masterpiece?')) {
         await supabase.from('products').delete().eq('id', id);
         loadProducts();
