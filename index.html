@@ -106,6 +106,7 @@
     </div>
   </header>
 
+  <!-- HAUTE HERO SECTION -->
   <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
@@ -141,6 +142,7 @@
     </div>
   </section>
 
+  <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
     
     <!-- SECTION HEADER -->
@@ -165,6 +167,7 @@
     </div>
   </section>
 
+  <!-- SAVOIR-FAIRE SECTION -->
   <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
       <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
@@ -215,7 +218,9 @@
               <p id="modalHindi" class="font-hindi text-gold-antique text-sm mt-1"></p>
             </div>
             
-            <div id="modalPrice" class="font-serif text-2xl font-bold text-burgundy drop-shadow-sm"></div>
+            <!-- MODAL PRICE INJECTION POINT -->
+            <div id="modalPrice" class="drop-shadow-sm"></div>
+            
             <p id="modalDesc" class="text-xs sm:text-sm text-[#5c4a40] leading-relaxed font-light"></p>
             
             <div class="border-t border-champagne-border pt-4 space-y-2 text-xs text-gray-700">
@@ -353,7 +358,6 @@
         if (data && data.length > 0) {
           allProducts = data;
         } else {
-          // If the table exists but is empty, show the testable dummy product
           allProducts = fallbackCatalog;
         }
       } catch (err) {
@@ -376,7 +380,6 @@
     function renderCatalog() {
       const grid = document.getElementById('productGrid');
       
-      // Filter logic
       const filtered = currentCategory === 'All' 
         ? allProducts 
         : allProducts.filter(p => p.category && p.category.toLowerCase().includes(currentCategory.toLowerCase().slice(0, 4)));
@@ -387,7 +390,13 @@
       }
 
       grid.innerHTML = filtered.map(item => {
-        const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
+        // 50% DISCOUNT MATH LOGIC
+        const p = currency === 'INR' ? item.price_inr : item.price_usd;
+        const doubleP = p * 2;
+        
+        const priceFormatted = currency === 'INR' ? `₹${Number(p).toLocaleString('en-IN')}` : `$${p}`;
+        const doublePriceFormatted = currency === 'INR' ? `₹${Number(doubleP).toLocaleString('en-IN')}` : `$${doubleP}`;
+        
         // Ensure string IDs are safely wrapped in quotes for the onclick handlers
         const safeId = typeof item.id === 'string' ? `'${item.id}'` : item.id;
         
@@ -403,7 +412,14 @@
             <div class="space-y-1 text-center px-2">
               <h4 class="font-serif text-sm tracking-widest text-burgundy uppercase font-bold leading-snug line-clamp-2">${item.title}</h4>
               <p class="font-hindi text-xs text-gold-antique">${item.hindi_title || ''}</p>
-              <div class="pt-2 text-sm font-serif font-bold text-burgundy">${price}</div>
+              
+              <!-- 50% OFF PRICING UI -->
+              <div class="pt-2 flex items-center justify-center flex-wrap gap-1.5">
+                <span class="line-through text-gray-400 text-[11px] font-normal">${doublePriceFormatted}</span>
+                <span class="text-sm font-serif font-bold text-burgundy">${priceFormatted}</span>
+                <span class="text-[8px] bg-red-700 text-white px-1.5 py-0.5 rounded shadow-sm tracking-wide">50% OFF</span>
+              </div>
+              
               <p class="text-[11px] text-gray-500 line-clamp-1 pt-1 font-medium">${item.materials || 'Handcrafted Luxury'}</p>
             </div>
             <div class="mt-5 pt-4 border-t border-champagne-soft">
@@ -442,32 +458,24 @@
     /* =========================================
        4. UNIFIED WHATSAPP API ROUTING
        ========================================= */
-    /**
-     * Unified, bulletproof function to open WhatsApp using URL manipulation.
-     * Prevents popup blockers on iOS/Android from silencing window.open().
-     */
     function goToWhatsApp(message) {
       const baseURL = "https://api.whatsapp.com/send";
       const phone = "919773999654";
       const text = encodeURIComponent(message);
-      // Assigning to window.location.href forces the mobile OS to deep-link to the app
       window.location.href = `${baseURL}?phone=${phone}&text=${text}`;
     }
 
-    // 1. Hero Button Trigger
     function heroWhatsApp(e) {
       if(e) { e.preventDefault(); e.stopPropagation(); }
       goToWhatsApp('Hello KALANVII Concierge! I am exploring your collection and would like assistance finding the perfect handcrafted piece.');
     }
 
-    // 2. Quick View Button Trigger
     function quickViewWhatsApp(e) {
       if(e) { e.preventDefault(); e.stopPropagation(); }
       if (!selectedModalItem) return;
       goToWhatsApp(`Hello KALANVII Concierge! I am interested in the "${selectedModalItem.title}". Could you please share more details, price, and customization options?`);
     }
 
-    // 3. Cart Checkout Trigger
     function checkoutOnWhatsApp(e) {
       if(e) { e.preventDefault(); e.stopPropagation(); }
       if (cart.length === 0) return;
@@ -493,7 +501,21 @@
       document.getElementById('modalTitle').innerText = item.title;
       document.getElementById('modalHindi').innerText = item.hindi_title || '';
       document.getElementById('modalTag').innerText = item.tag || 'Bridal Heirloom';
-      document.getElementById('modalPrice').innerText = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
+      
+      // 50% OFF MODAL UI INJECTION
+      const p = currency === 'INR' ? item.price_inr : item.price_usd;
+      const doubleP = p * 2;
+      const priceFormatted = currency === 'INR' ? `₹${Number(p).toLocaleString('en-IN')}` : `$${p}`;
+      const doublePriceFormatted = currency === 'INR' ? `₹${Number(doubleP).toLocaleString('en-IN')}` : `$${doubleP}`;
+      
+      document.getElementById('modalPrice').innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="line-through text-gray-400 text-lg font-normal">${doublePriceFormatted}</span>
+          <span class="font-serif text-2xl font-bold text-burgundy">${priceFormatted}</span>
+          <span class="text-[10px] bg-red-700 text-white px-2 py-1 rounded shadow-sm tracking-wider font-sans">50% OFF</span>
+        </div>
+      `;
+      
       document.getElementById('modalDesc').innerText = item.description || 'Handcrafted with meticulous detail by master karigars for celebratory grandeur.';
       document.getElementById('modalHours').innerText = `${item.craftsmanship_hours || 40} Hours`;
       document.getElementById('modalMaterials').innerText = item.materials || 'Hand-strung pearls & silk';
@@ -517,11 +539,9 @@
       if(e) { e.preventDefault(); e.stopPropagation(); }
       const item = allProducts.find(p => p.id == id);
       if (item) {
-        // Deep copy to ensure distinct items if added multiple times
         cart.push(JSON.parse(JSON.stringify(item))); 
         document.getElementById('cartCount').innerText = cart.length;
         
-        // Add a visual burst animation to cart icon
         const countBadge = document.getElementById('cartCount');
         countBadge.classList.add('scale-150', 'bg-gold');
         setTimeout(() => countBadge.classList.remove('scale-150', 'bg-gold'), 300);
@@ -543,20 +563,14 @@
       document.body.classList.remove('modal-open');
     }
 
-    /**
-     * Remove from cart ensures event stops propagating so it doesn't open item details,
-     * specifically targets the array index, and cleanly re-renders the DOM.
-     */
     function removeFromCart(event, arrayIndex) {
       event.preventDefault();
       event.stopPropagation();
       
-      // Safely mutate array
       if (arrayIndex >= 0 && arrayIndex < cart.length) {
         cart.splice(arrayIndex, 1);
       }
       
-      // Update counter and redraw UI
       document.getElementById('cartCount').innerText = cart.length;
       updateCartDrawer();
     }
@@ -578,7 +592,6 @@
       
       let total = 0;
       
-      // Use exact index binding in the loop to guarantee the remove button targets the right item
       container.innerHTML = cart.map((item, index) => {
         const p = currency === 'INR' ? item.price_inr : item.price_usd;
         total += Number(p);
@@ -593,7 +606,6 @@
               <h5 class="text-[11px] font-sans font-bold uppercase tracking-wider text-burgundy leading-snug line-clamp-2">${item.title}</h5>
               <div class="text-sm text-gold-antique font-serif font-bold mt-1">${priceFormatted}</div>
             </div>
-            <!-- The STOP PROPAGATION is injected directly into this button call -->
             <button type="button" onclick="removeFromCart(event, ${index})" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition cursor-pointer z-10" title="Remove Item">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>
