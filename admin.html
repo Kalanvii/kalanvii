@@ -74,7 +74,7 @@
         <div>
           <div class="flex items-center justify-center space-x-2 mb-1">
             <span class="h-[1px] w-6 bg-gold/50"></span>
-            <span class="text-[9px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Haute Joaillerie</span>
+            <span class="text-[9px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Couture Management</span>
             <span class="h-[1px] w-6 bg-gold/50"></span>
           </div>
           <h2 class="font-serif text-2xl font-bold text-burgundy tracking-[0.25em]">KALANVII</h2>
@@ -117,7 +117,6 @@
           Unlock Portal
         </button>
       </div>
-
     </div>
   </div>
 
@@ -172,12 +171,18 @@
         </div>
       </div>
 
-      <!-- PRODUCT CREATION FORM -->
-      <div class="bg-white/95 border border-champagne-border rounded-2xl shadow-md p-6 sm:p-8">
-        <div class="border-b border-champagne-border pb-4 mb-6 flex items-center justify-between">
+      <!-- ================= PRODUCT CREATION / EDIT FORM ================= -->
+      <div class="bg-white/95 border border-champagne-border rounded-2xl shadow-md p-6 sm:p-8 relative overflow-hidden">
+        
+        <!-- Editing Indicator Banner (Hidden by Default) -->
+        <div id="editingBanner" class="absolute top-0 left-0 w-full bg-gold text-burgundy text-[10px] uppercase tracking-widest font-bold text-center py-1 hidden">
+          EDIT MODE ACTIVE
+        </div>
+
+        <div class="border-b border-champagne-border pb-4 mb-6 mt-2 flex items-center justify-between">
           <div>
-            <h2 class="font-serif text-lg sm:text-xl text-burgundy tracking-wider font-bold">Add Handcrafted Handbag</h2>
-            <p class="text-xs text-gray-500 mt-0.5">Upload new designs directly to your live customer storefront.</p>
+            <h2 id="formTitle" class="font-serif text-lg sm:text-xl text-burgundy tracking-wider font-bold">Add Handcrafted Handbag</h2>
+            <p id="formSubtitle" class="text-xs text-gray-500 mt-0.5">Upload new designs directly to your live customer storefront.</p>
           </div>
           <span class="text-[10px] uppercase tracking-widest font-serif text-gold-antique bg-gold-light/60 px-3 py-1 rounded-full border border-gold/30">
             Couture Masterpiece
@@ -215,15 +220,19 @@
             </div>
           </div>
 
-          <!-- PRICING -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Price in INR (₹) *</label>
-              <input type="number" id="price_inr" required placeholder="14500" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
-            </div>
-            <div>
-              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Price in USD ($) *</label>
-              <input type="number" id="price_usd" required placeholder="175" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
+          <!-- PRICING (Note: 50% discount logic is calculated automatically for UI) -->
+          <div class="bg-champagne-soft/40 p-4 rounded-xl border border-champagne-border/50">
+            <p class="text-[10px] uppercase tracking-widest text-burgundy font-semibold mb-3">Pricing (50% Off Tag Will Be Automatically Applied)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[10px] uppercase tracking-wider text-gray-600 mb-1">Final Selling Price (₹) *</label>
+                <input type="number" id="price_inr" required placeholder="14500" class="w-full text-xs p-3 bg-white border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
+                <p class="text-[9px] text-gray-400 mt-1">Crossed-out price will automatically display as double.</p>
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase tracking-wider text-gray-600 mb-1">Final Selling Price ($) *</label>
+                <input type="number" id="price_usd" required placeholder="175" class="w-full text-xs p-3 bg-white border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
+              </div>
             </div>
           </div>
 
@@ -246,9 +255,9 @@
           </div>
 
           <!-- PHOTO UPLOADER -->
-          <div class="border-2 border-dashed border-gold/50 p-6 rounded-xl bg-champagne-soft/30 text-center space-y-3">
-            <label class="block text-xs uppercase tracking-widest font-semibold text-burgundy">Product Photography *</label>
-            <p class="text-[11px] text-gray-500">Pick a photo directly from your phone’s camera roll or computer.</p>
+          <div class="border-2 border-dashed border-gold/50 p-6 rounded-xl bg-champagne-soft/30 text-center space-y-3 relative">
+            <label class="block text-xs uppercase tracking-widest font-semibold text-burgundy">Product Photography</label>
+            <p class="text-[11px] text-gray-500">Select a new photo to replace the current one, or leave blank to keep existing.</p>
             
             <input 
               type="file" 
@@ -270,9 +279,18 @@
             </div>
           </div>
 
-          <!-- SUBMISSION BUTTON -->
-          <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-4">
-            <span id="saveStatus" class="text-xs font-semibold"></span>
+          <!-- SUBMISSION BUTTONS -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-3">
+            <span id="saveStatus" class="text-xs font-semibold mr-auto"></span>
+            
+            <button 
+              type="button" 
+              id="cancelEditBtn" 
+              onclick="cancelEdit()" 
+              class="hidden w-full sm:w-auto px-6 py-3.5 border border-champagne-border hover:bg-gray-100 text-gray-600 text-xs uppercase tracking-wider font-semibold rounded-lg">
+              Cancel Edit
+            </button>
+            
             <button 
               type="submit" 
               id="submitBtn" 
@@ -284,7 +302,7 @@
         </form>
       </div>
 
-      <!-- ACTIVE LIVE CATALOG SECTION -->
+      <!-- ================= ACTIVE LIVE CATALOG ================= -->
       <div class="bg-white/95 border border-champagne-border rounded-2xl shadow-md p-6 sm:p-8">
         <div class="flex items-center justify-between border-b border-champagne-border pb-4 mb-6">
           <div>
@@ -304,7 +322,7 @@
     </main>
   </div>
 
-  <!-- LUXURY DELETION CONFIRMATION MODAL -->
+  <!-- ================= LUXURY DELETION MODAL ================= -->
   <div id="deleteModal" class="fixed inset-0 z-[120] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-champagne-silk border-2 border-gold/50 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
       <div class="w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center mx-auto text-xl font-bold">
@@ -326,15 +344,18 @@
   </div>
 
   <script>
-    /* MASTER PASSCODE CONFIGURATION */
+    /* =========================================
+       MASTER SCRIPT LOGIC
+       ========================================= */
     const PORTAL_PASSCODE = "1221";
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
     let supabaseClient = null;
     let pendingDeleteId = null;
+    let editingProductId = null; // Tracks if we are editing an existing product
+    let allAdminProducts = [];   // Caches the list for quick editing
 
-    /* INITIALIZING SUPABASE CLIENT */
     function getSupabase() {
       if (!supabaseClient && window.supabase) {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -342,90 +363,79 @@
       return supabaseClient;
     }
 
-    /* UNLOCKING PORTAL INTERFACE */
+    /* --- AUTHENTICATION --- */
     function unlockApp() {
       try {
         localStorage.setItem('kalanvii_authenticated', 'true');
         sessionStorage.setItem('kalanvii_authenticated', 'true');
       } catch (e) {}
-
       const lockEl = document.getElementById('lockScreen');
-      if (lockEl) {
-        lockEl.style.display = 'none';
-        lockEl.remove();
-      }
-
-      const appEl = document.getElementById('dashboardApp');
-      if (appEl) {
-        appEl.style.display = 'block';
-      }
-
+      if (lockEl) lockEl.remove();
+      document.getElementById('dashboardApp').style.display = 'block';
       setTimeout(loadLiveProducts, 150);
     }
 
-    /* HANDLING PASSCODE UNLOCK */
     function handleUnlockClick() {
       const input = document.getElementById('passcodeInput');
       const err = document.getElementById('lockError');
-      const entered = (input ? input.value : '').trim();
-
-      if (entered === PORTAL_PASSCODE) {
-        if (err) err.classList.add('hidden');
+      if (input.value.trim() === PORTAL_PASSCODE) {
         unlockApp();
       } else {
-        if (err) {
-          err.classList.remove('hidden');
-          err.classList.remove('shake-animation');
-          void err.offsetWidth; // Force CSS repaint for shake effect
-          err.classList.add('shake-animation');
-        }
-        if (input) {
-          input.value = '';
-          input.focus();
-        }
+        err.classList.remove('hidden', 'shake-animation');
+        void err.offsetWidth; 
+        err.classList.add('shake-animation');
+        input.value = '';
+        input.focus();
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       let isAuthed = false;
       try {
-        if (localStorage.getItem('kalanvii_authenticated') === 'true' || 
-            sessionStorage.getItem('kalanvii_authenticated') === 'true') {
+        if (localStorage.getItem('kalanvii_authenticated') === 'true' || sessionStorage.getItem('kalanvii_authenticated') === 'true') {
           isAuthed = true;
         }
       } catch (e) {}
+      if (isAuthed) unlockApp();
 
-      if (isAuthed) {
-        unlockApp();
-      }
-
-      const input = document.getElementById('passcodeInput');
-      if (input) {
-        input.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            handleUnlockClick();
-          }
-        });
-      }
+      document.getElementById('passcodeInput')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleUnlockClick();
+        }
+      });
     });
 
-    /* LOCKING PORTAL */
     function lockDashboard() {
       try {
         localStorage.removeItem('kalanvii_authenticated');
         sessionStorage.removeItem('kalanvii_authenticated');
       } catch (e) {}
-      window.location.hash = '';
       window.location.reload();
     }
 
-    /* HANDLING LOCAL IMAGE PREVIEW */
+    /* --- UI HELPERS --- */
+    function showToast(message, type = "success") {
+      const toast = document.getElementById('toastNotification');
+      const content = document.getElementById('toastContent');
+      if (type === "success") {
+        content.className = "px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 bg-emerald-800 text-white border border-emerald-500";
+      } else {
+        content.className = "px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 bg-red-900 text-white border border-red-500";
+      }
+      content.innerHTML = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
     function handlePreviewImage(event) {
       const file = event.target.files[0];
       const previewWrapper = document.getElementById('imagePreviewWrapper');
       const previewImg = document.getElementById('imagePreview');
-      
       if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -433,11 +443,63 @@
           previewWrapper.classList.remove('hidden');
         }
         reader.readAsDataURL(file);
-      } else {
+      } else if (!editingProductId) {
         previewWrapper.classList.add('hidden');
       }
     }
 
+    /* --- EDITING ENGINE --- */
+    function triggerEdit(id) {
+      const item = allAdminProducts.find(p => p.id == id);
+      if (!item) return;
+
+      editingProductId = item.id;
+      
+      // Populate fields
+      document.getElementById('title').value = item.title || '';
+      document.getElementById('hindi_title').value = item.hindi_title || '';
+      document.getElementById('category').value = item.category || 'Potlis';
+      document.getElementById('tag').value = item.tag || '';
+      document.getElementById('price_inr').value = item.price_inr || '';
+      document.getElementById('price_usd').value = item.price_usd || '';
+      document.getElementById('craftsmanship_hours').value = item.craftsmanship_hours || '';
+      document.getElementById('materials').value = item.materials || '';
+      document.getElementById('description').value = item.description || '';
+      
+      // Handle Image Preview
+      document.getElementById('imageUrl').value = item.image_url || '';
+      if (item.image_url) {
+        document.getElementById('imagePreview').src = item.image_url;
+        document.getElementById('imagePreviewWrapper').classList.remove('hidden');
+      }
+
+      // Update UI for Edit Mode
+      document.getElementById('formTitle').innerText = "Edit Handbag Details";
+      document.getElementById('formSubtitle').innerText = "Make changes to the selected live product.";
+      document.getElementById('submitBtn').innerText = "Update Handbag in Live Store";
+      document.getElementById('cancelEditBtn').classList.remove('hidden');
+      document.getElementById('editingBanner').classList.remove('hidden');
+
+      // Scroll to form smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast("Edit mode activated. Form populated.", "success");
+    }
+
+    function cancelEdit() {
+      editingProductId = null;
+      document.getElementById('productForm').reset();
+      document.getElementById('imagePreviewWrapper').classList.add('hidden');
+      
+      // Reset UI to Create Mode
+      document.getElementById('formTitle').innerText = "Add Handcrafted Handbag";
+      document.getElementById('formSubtitle').innerText = "Upload new designs directly to your live customer storefront.";
+      document.getElementById('submitBtn').innerText = "Publish Handbag to Live Store";
+      document.getElementById('cancelEditBtn').classList.add('hidden');
+      document.getElementById('editingBanner').classList.add('hidden');
+      document.getElementById('saveStatus').innerText = "";
+    }
+
+    /* --- SAVE / UPDATE ENGINE --- */
     async function handleSaveProduct(e) {
       e.preventDefault();
       const status = document.getElementById('saveStatus');
@@ -445,11 +507,11 @@
       const client = getSupabase();
 
       if (!client) {
-        showToast("Connecting to database. Please tap publish again.", "error");
+        showToast("Database connecting...", "error");
         return;
       }
       
-      status.innerText = "Uploading photo & saving piece...";
+      status.innerText = editingProductId ? "Updating piece..." : "Uploading photo & saving piece...";
       status.className = "text-xs text-gold-antique font-semibold";
       btn.disabled = true;
 
@@ -457,6 +519,7 @@
         let finalImageUrl = document.getElementById('imageUrl').value.trim();
         const fileInput = document.getElementById('imageFile');
 
+        // Only process file upload if a NEW file was selected
         if (fileInput.files && fileInput.files[0]) {
           const file = fileInput.files[0];
           const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
@@ -464,59 +527,60 @@
           
           const { error: uploadErr } = await client.storage
             .from('product-images')
-            .upload(fileName, file, {
-              cacheControl: '3600',
-              upsert: true
-            });
+            .upload(fileName, file, { cacheControl: '3600', upsert: true });
 
           if (uploadErr) throw uploadErr;
 
           const { data: publicUrlData } = client.storage
-            .from('product-images')
-            .getPublicUrl(fileName);
+            .from('product-images').getPublicUrl(fileName);
 
           finalImageUrl = publicUrlData.publicUrl;
         }
 
-        if (!finalImageUrl) {
-          throw new Error("Please select a photo from your library or enter an image URL.");
+        if (!finalImageUrl && !editingProductId) {
+          throw new Error("Please select a photo or enter an image URL.");
         }
 
         const payload = {
           title: document.getElementById('title').value.trim(),
           hindi_title: document.getElementById('hindi_title').value.trim(),
           category: document.getElementById('category').value,
-          tag: document.getElementById('tag').value.trim() || 'Bridal Heirloom',
+          tag: document.getElementById('tag').value.trim(),
           price_inr: Number(document.getElementById('price_inr').value),
           price_usd: Number(document.getElementById('price_usd').value),
           craftsmanship_hours: Number(document.getElementById('craftsmanship_hours').value) || 40,
-          materials: document.getElementById('materials').value.trim() || 'Hand-strung micro pearls & silk',
+          materials: document.getElementById('materials').value.trim(),
           description: document.getElementById('description').value.trim(),
-          image_url: finalImageUrl,
+          image_url: finalImageUrl, // Will overwrite with new URL or keep old if input was untouched
           in_stock: true
         };
 
-        const { error: insertErr } = await client.from('products').insert([payload]);
-        if (insertErr) throw insertErr;
+        if (editingProductId) {
+          // UPDATE EXISTING PRODUCT
+          const { error: updateErr } = await client.from('products').update(payload).eq('id', editingProductId);
+          if (updateErr) throw updateErr;
+          showToast("✓ Handbag successfully updated!", "success");
+        } else {
+          // INSERT NEW PRODUCT
+          const { error: insertErr } = await client.from('products').insert([payload]);
+          if (insertErr) throw insertErr;
+          showToast("✓ New handbag successfully added!", "success");
+        }
 
-        status.innerText = "✓ Published successfully!";
-        status.className = "text-xs text-emerald-700 font-semibold";
-        document.getElementById('productForm').reset();
-        document.getElementById('imagePreviewWrapper').classList.add('hidden');
-        
-        showToast("✓ New handbag successfully added to catalog!", "success");
+        cancelEdit(); // Resets everything
         loadLiveProducts();
 
       } catch (err) {
         console.error(err);
         status.innerText = `Error: ${err.message}`;
         status.className = "text-xs text-red-600 font-semibold";
-        showToast(`Upload failed: ${err.message}`, "error");
+        showToast(`Operation failed: ${err.message}`, "error");
       } finally {
         btn.disabled = false;
       }
     }
 
+    /* --- CATALOG LISTING & DELETE --- */
     async function loadLiveProducts() {
       const grid = document.getElementById('liveCatalogGrid');
       const countEl = document.getElementById('statCount');
@@ -530,34 +594,52 @@
           .order('created_at', { ascending: false });
 
         if (error) throw error;
+        allAdminProducts = data || []; // Cache for editing
+        countEl.innerText = allAdminProducts.length;
 
-        countEl.innerText = data ? data.length : 0;
-
-        if (!data || data.length === 0) {
+        if (allAdminProducts.length === 0) {
           grid.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-gray-500">No products in database yet. Add your first bag above!</div>';
           return;
         }
 
-        grid.innerHTML = data.map(item => `
-          <div class="border border-champagne-border rounded-xl overflow-hidden bg-champagne-silk/40 p-3 flex flex-col justify-between shadow-sm hover:shadow-md transition">
-            <div class="relative aspect-[4/5] bg-champagne-soft mb-3 rounded-lg overflow-hidden border border-gold/20">
-              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover">
-              <span class="absolute top-2 left-2 bg-burgundy text-champagne-silk text-[9px] px-2.5 py-0.5 uppercase tracking-wider font-semibold rounded">${item.category}</span>
+        grid.innerHTML = allAdminProducts.map(item => {
+          // 50% OFF LOGIC (Calculate double the price for the strike-through)
+          const doubleInr = Number(item.price_inr) * 2;
+          const doubleUsd = Number(item.price_usd) * 2;
+          const safeId = typeof item.id === 'string' ? `'${item.id}'` : item.id;
+          const safeTitle = item.title.replace(/'/g, "\\'");
+
+          return `
+            <div class="border border-champagne-border rounded-xl overflow-hidden bg-champagne-silk/40 p-3 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+              <div class="relative aspect-[4/5] bg-champagne-soft mb-3 rounded-lg overflow-hidden border border-gold/20">
+                <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover">
+                <span class="absolute top-2 left-2 bg-burgundy text-champagne-silk text-[9px] px-2.5 py-0.5 uppercase tracking-wider font-semibold rounded shadow">${item.category}</span>
+              </div>
+              
+              <div class="space-y-1">
+                <h4 class="font-serif text-xs font-bold text-burgundy line-clamp-1">${item.title}</h4>
+                <p class="text-[11px] font-hindi text-gold-antique">${item.hindi_title || ''}</p>
+                
+                <!-- 50% DISCOUNT UI DISPLAY -->
+                <div class="text-xs font-bold text-burgundy pt-1 flex items-center flex-wrap gap-1">
+                  <span class="line-through text-gray-400 font-normal text-[10px]">₹${doubleInr.toLocaleString('en-IN')}</span>
+                  <span>₹${Number(item.price_inr).toLocaleString('en-IN')}</span>
+                  <span class="text-[8px] bg-red-700 text-white px-1.5 py-0.5 rounded shadow-sm ml-1">50% OFF</span>
+                </div>
+                <div class="text-[10px] text-gray-500 line-clamp-1 pt-0.5">${item.materials || ''}</div>
+              </div>
+              
+              <div class="mt-3 pt-3 border-t border-champagne-border grid grid-cols-2 gap-2">
+                <button type="button" onclick="triggerEdit(${safeId})" class="py-2 border border-gold text-gold-antique hover:bg-gold-light/40 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition shadow-sm">
+                  Edit Handbag
+                </button>
+                <button type="button" onclick="promptDelete(${safeId}, '${safeTitle}')" class="py-2 border border-red-300 text-red-700 hover:bg-red-50 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition shadow-sm">
+                  Delete
+                </button>
+              </div>
             </div>
-            <div class="space-y-1">
-              <h4 class="font-serif text-xs font-bold text-burgundy line-clamp-1">${item.title}</h4>
-              <p class="text-[11px] font-hindi text-gold-antique">${item.hindi_title || ''}</p>
-              <div class="text-xs font-semibold text-burgundy pt-1">₹${Number(item.price_inr).toLocaleString('en-IN')} <span class="text-gray-400">/ $${item.price_usd}</span></div>
-              <p class="text-[10px] text-gray-500 line-clamp-1">${item.materials || ''}</p>
-            </div>
-            <button 
-              type="button" 
-              onclick="promptDelete('${item.id}', '${item.title.replace(/'/g, "\\'")}')" 
-              class="mt-3 w-full py-2 border border-red-300 text-red-700 hover:bg-red-50 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition">
-              Delete Handbag
-            </button>
-          </div>
-        `).join('');
+          `;
+        }).join('');
 
       } catch (err) {
         grid.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-red-500">Could not load catalog: ${err.message}</div>`;
@@ -598,28 +680,10 @@
         showToast(`Delete failed: ${error.message}`, "error");
       } else {
         showToast("Handbag removed from live catalog.", "success");
+        // If we deleted the item we were currently editing, reset the form.
+        if (pendingDeleteId === editingProductId) cancelEdit(); 
         loadLiveProducts();
       }
-    }
-
-    function showToast(message, type = "success") {
-      const toast = document.getElementById('toastNotification');
-      const content = document.getElementById('toastContent');
-      
-      if (type === "success") {
-        content.className = "px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 bg-burgundy text-champagne-silk border border-gold/40";
-      } else {
-        content.className = "px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 bg-red-900 text-white border border-red-500";
-      }
-      
-      content.innerHTML = message;
-      toast.classList.remove('translate-y-24', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
-
-      setTimeout(() => {
-        toast.classList.add('translate-y-24', 'opacity-0');
-        toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 3500);
     }
   </script>
 </body>
