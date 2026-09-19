@@ -3,35 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KALANVII कलान्वी | Haute Joaillerie & Couture Clutches</title>
+  <title>KALANVII | Your Celebration, Our Signature</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Rozha+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Rozha+One&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             burgundy: {
-              DEFAULT: '#5b1424',
-              deep: '#3d0a16',
-              light: '#7e1d33',
-              accent: '#99213e'
+              DEFAULT: '#430917',
+              deep: '#28050e',
+              light: '#611024',
+              accent: '#821630'
             },
             champagne: {
               DEFAULT: '#eedfc8',
-              silk: '#fcf9f4',
-              soft: '#f7f1e6',
-              border: '#dfceb3',
+              silk: '#faf6f0',
+              soft: '#f3ece1',
+              border: '#decbb4',
               dark: '#bfa780'
             },
             gold: {
-              DEFAULT: '#cfa24b',
-              foil: '#e7c674',
-              antique: '#9d7529',
-              light: '#fdf3d8'
+              DEFAULT: '#c5a059',
+              foil: '#e4c982',
+              antique: '#99732b',
+              light: '#fcf7ec'
             }
           },
           fontFamily: {
@@ -46,242 +46,286 @@
   </script>
   <style>
     .silk-pattern {
-      background-color: #fcf9f4;
-      background-image: radial-gradient(#eedfc8 0.75px, transparent 0.75px), radial-gradient(#eedfc8 0.75px, #fcf9f4 0.75px);
-      background-size: 30px 30px;
-      background-position: 0 0, 15px 15px;
+      background-color: #faf6f0;
+      background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+    .gold-shimmer-border {
+      border: 1px solid rgba(197, 160, 89, 0.45);
+      box-shadow: 0 0 20px rgba(197, 160, 89, 0.08);
     }
   </style>
 </head>
-<body class="silk-pattern text-[#2b2420] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk">
+<body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk">
 
-  <!-- TOP MARQUEE -->
-  <div class="bg-burgundy-deep text-champagne py-2 px-4 text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30">
-    <span>Worldwide Express Shipping • Handcrafted In India • Complimentary Bridal Concierge</span>
+  <!-- TOP PRESTIGE TICKER -->
+  <div class="bg-burgundy-deep text-champagne-silk py-2 px-4 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30">
+    <span>Worldwide Express Shipping • Handcrafted in India • Complimentary Bridal Concierge</span>
   </div>
 
-  <!-- NAVIGATION -->
-  <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border/80 transition-all">
+  <!-- ROYAL MAISON HEADER -->
+  <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
-      <div class="flex items-center space-x-6">
-        <a href="#collection" class="text-xs uppercase tracking-widest font-medium text-burgundy hover:text-gold transition">Catalog</a>
-        <a href="#craft" class="hidden sm:inline text-xs uppercase tracking-widest font-medium text-burgundy hover:text-gold transition">Savoir-Faire</a>
-      </div>
+      
+      <!-- NAVIGATION LEFT -->
+      <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
+        <a href="#collection" class="hover:text-gold transition">The Collection</a>
+        <a href="#karigari" class="hover:text-gold transition">Savoir-Faire</a>
+      </nav>
 
       <!-- BRAND LOGO -->
-      <div class="text-center">
+      <div class="text-center md:absolute md:left-1/2 md:-translate-x-1/2">
         <a href="#" class="inline-block group">
           <h1 class="font-serif text-2xl sm:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition">KALANVII</h1>
           <p class="font-hindi text-burgundy-light text-xs tracking-widest -mt-1">कलान्वी</p>
         </a>
       </div>
 
-      <!-- ACTIONS -->
+      <!-- ACTIONS RIGHT -->
       <div class="flex items-center space-x-4 sm:space-x-6">
-        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-2.5 py-1 rounded hover:border-gold text-burgundy transition">
+        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded hover:border-gold text-burgundy transition">
           INR (₹)
         </button>
         <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
-          <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+          <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
+  <!-- HAUTE HERO SECTION -->
   <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- HERO TEXT -->
       <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
-        <span class="inline-block px-4 py-1.5 border border-gold/40 text-[11px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-gold-light/40 rounded-full">
-          Haute Couture Handbags & Clutches
-        </span>
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 border border-gold/40 text-[10px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-gold-light/60 rounded-full">
+          <span>Artisanal Bridal & Evening Heirlooms</span>
+        </div>
         <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-burgundy leading-tight">
           Your Celebration, <br>
           <span class="italic font-editorial font-normal text-gold-antique">Our Signature</span>
         </h2>
-        <p class="text-sm sm:text-base text-[#5c4e46] max-w-lg leading-relaxed mx-auto lg:mx-0">
-          Meticulously hand-embroidered with Japanese micro-seed pearls, genuine semiprecious stones, and rich velvets for royal celebrations.
+        <p class="text-sm sm:text-base text-[#5c4a40] max-w-lg leading-relaxed mx-auto lg:mx-0 font-light">
+          Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries.
         </p>
         <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
           <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md">
-            Explore Handcrafted Bags
+            Explore Collection
           </a>
-          <a href="https://wa.me/?text=Hi%20Kalanvii,%20I%20am%20looking%20for%20a%20couture%20clutch%20for%20an%20upcoming%20celebration." target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition">
-            Bridal Concierge
+          <a href="https://instagram.com/kalanvii_in" target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition">
+            Follow on Instagram
           </a>
         </div>
       </div>
 
+      <!-- HERO IMAGE SHOWCASE -->
       <div class="lg:col-span-6 flex justify-center">
-        <div class="relative w-full max-w-md aspect-[4/5] rounded-t-full border border-gold/50 p-3 bg-champagne-silk shadow-2xl overflow-hidden">
-          <img id="heroImg" src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80" alt="Kalanvii Masterpiece" class="w-full h-full object-cover rounded-t-full transition duration-700">
+        <div class="relative w-full max-w-md aspect-[4/5] rounded-t-full border-2 border-gold/50 p-3 bg-champagne-silk shadow-2xl overflow-hidden gold-shimmer-border">
+          <img id="heroShowcaseImg" src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80" alt="Kalanvii Masterpiece" class="w-full h-full object-cover rounded-t-full transition duration-700">
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
-    <div class="text-center max-w-2xl mx-auto mb-12">
-      <h3 class="font-serif text-2xl sm:text-3xl text-burgundy tracking-wider uppercase">Artisanal Catalog</h3>
+    
+    <!-- SECTION HEADER -->
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <h3 class="font-serif text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
       <p class="font-hindi text-gold-antique text-sm mt-1">दस्तकारी पोटली एवं क्लच</p>
       <div class="w-16 h-0.5 bg-gold mx-auto mt-4"></div>
     </div>
 
+    <!-- CATEGORY FILTER TABS -->
+    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 text-xs uppercase tracking-widest">
+      <button onclick="filterCategory('All')" class="filter-btn active-tab px-4 py-2 border border-burgundy bg-burgundy text-champagne-silk transition">All</button>
+      <button onclick="filterCategory('Potlis')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition">Potlis</button>
+      <button onclick="filterCategory('Crescents')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition">Crescent Clutches</button>
+      <button onclick="filterCategory('Minaudieres')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition">Minaudières</button>
+      <button onclick="filterCategory('Cocktail')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition">Cocktail Bags</button>
+    </div>
+
     <!-- PRODUCT GRID -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Products render here automatically -->
-      <div class="col-span-full py-16 text-center text-sm text-burgundy/70">Loading handcrafted bags...</div>
+      <div class="col-span-full py-16 text-center text-sm text-burgundy/60">Loading royal collection...</div>
     </div>
   </section>
 
-  <!-- SAVOIR-FAIRE / CRAFT -->
-  <section id="craft" class="bg-burgundy text-champagne py-16 border-t border-gold/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-      <div class="space-y-3 p-6 border border-gold/20 rounded-lg">
-        <div class="font-serif text-2xl text-gold">40+ Hours</div>
-        <h4 class="text-xs uppercase tracking-widest font-semibold">Artisanal Karigari</h4>
-        <p class="text-xs text-champagne/70 leading-relaxed">Each clutch is hand-strung by master Indian artisans with thousands of hand-stitched beads.</p>
+  <!-- SAVOIR-FAIRE SECTION -->
+  <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Artisanal Pedigree</span>
+        <h3 class="font-serif text-3xl text-gold-light">The Art of Indian Karigari</h3>
+        <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every piece.</p>
       </div>
-      <div class="space-y-3 p-6 border border-gold/20 rounded-lg">
-        <div class="font-serif text-2xl text-gold">Couture Silks</div>
-        <h4 class="text-xs uppercase tracking-widest font-semibold">Rich Fabrics</h4>
-        <p class="text-xs text-champagne/70 leading-relaxed">Crafted with pure velvets, Banarasi silks, and gold-polished framework built to endure.</p>
-      </div>
-      <div class="space-y-3 p-6 border border-gold/20 rounded-lg">
-        <div class="font-serif text-2xl text-gold">Bespoke</div>
-        <h4 class="text-xs uppercase tracking-widest font-semibold">Bridal Matching</h4>
-        <p class="text-xs text-champagne/70 leading-relaxed">Send your bridal lehenga photo to our stylists for a personalized color and embroidery match.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="p-8 border border-gold/20 rounded-xl bg-burgundy-deep/60 space-y-4">
+          <div class="font-serif text-3xl text-gold-foil">48+ Hours</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Hand-Embroidered</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Thousands of micro seed pearls strung individually with high-tensile silk thread to prevent unraveling.</p>
+        </div>
+        <div class="p-8 border border-gold/20 rounded-xl bg-burgundy-deep/60 space-y-4">
+          <div class="font-serif text-3xl text-gold-foil">Gilded Finish</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Gold Electroplate</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Frames and handles are coated in an anti-tarnish protective luster for enduring elegance across generations.</p>
+        </div>
+        <div class="p-8 border border-gold/20 rounded-xl bg-burgundy-deep/60 space-y-4">
+          <div class="font-serif text-3xl text-gold-foil">Bespoke</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Bridal Customization</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Custom tint matching for your bridal lehenga, sangeet gown, or reception ensemble.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="bg-burgundy-deep text-champagne-silk py-12 border-t border-gold/30 text-center text-xs tracking-wider">
-    <div class="max-w-7xl mx-auto px-4 space-y-4">
-      <h5 class="font-serif text-xl tracking-[0.2em]">KALANVII • कलान्वी</h5>
-      <p class="text-champagne/60 text-[11px] uppercase tracking-widest">YOUR CELEBRATION OUR SIGNATURE</p>
-      <p class="text-[11px] text-champagne/40 pt-4">© 2026 KALANVII Luxury Atelier. All Rights Reserved.</p>
+  <!-- QUICK VIEW DETAIL MODAL -->
+  <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center">
+      <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
+      <div class="inline-block w-full max-w-3xl p-6 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-2xl relative z-10 text-left">
+        <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-2xl">✕</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div class="aspect-[4/5] bg-champagne-soft rounded-lg overflow-hidden border border-gold/30">
+            <img id="modalImg" src="" class="w-full h-full object-cover">
+          </div>
+          <div class="space-y-4">
+            <span id="modalTag" class="text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold rounded"></span>
+            <h3 id="modalTitle" class="font-serif text-2xl text-burgundy font-bold"></h3>
+            <p id="modalHindi" class="font-hindi text-gold-antique text-sm -mt-2"></p>
+            <div id="modalPrice" class="font-serif text-xl font-bold text-burgundy"></div>
+            <p id="modalDesc" class="text-xs text-[#5c4a40] leading-relaxed"></p>
+            <div class="border-t border-champagne-border pt-4 space-y-2 text-xs text-gray-600">
+              <p><strong>Artisan Hours:</strong> <span id="modalHours"></span></p>
+              <p><strong>Materials:</strong> <span id="modalMaterials"></span></p>
+            </div>
+            <div class="pt-4 flex gap-3">
+              <button id="modalAddBtn" class="flex-grow py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold transition">Add to Bag</button>
+              <button onclick="orderViaWhatsAppModal()" class="px-4 py-3 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded transition">WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
 
   <!-- SHOPPING CART DRAWER -->
   <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeCart()"></div>
     <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
       <div class="w-screen max-w-md bg-champagne-silk shadow-2xl flex flex-col border-l border-gold/40">
-        <div class="p-6 bg-burgundy text-champagne flex items-center justify-between border-b border-gold/30">
-          <h3 class="font-serif text-sm tracking-widest uppercase">Your Shopping Bag</h3>
-          <button onclick="closeCart()" class="text-champagne/80 hover:text-champagne text-xl">✕</button>
+        <div class="p-6 bg-burgundy text-champagne-silk flex items-center justify-between border-b border-gold/30">
+          <div>
+            <h3 class="font-serif text-sm tracking-widest uppercase font-bold">Your Shopping Bag</h3>
+            <p class="text-[10px] text-champagne/70 tracking-wider">COMPLIMENTARY LUXURY GIFT BOXING</p>
+          </div>
+          <button onclick="closeCart()" class="text-champagne-silk/80 hover:text-champagne-silk text-2xl">✕</button>
         </div>
-        <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-4">
-          <!-- Cart items render here -->
-          <div class="text-center py-12 text-sm text-gray-500">Your bag is empty.</div>
-        </div>
+        <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
         <div class="p-6 bg-champagne-soft border-t border-champagne-border space-y-4">
           <div class="flex justify-between items-center text-sm font-serif text-burgundy">
-            <span>Subtotal:</span>
+            <span>Estimated Total:</span>
             <span id="cartTotal" class="font-bold text-base">₹0</span>
           </div>
-          <button onclick="checkoutOnWhatsApp()" class="w-full py-3.5 bg-burgundy hover:bg-burgundy-light text-champagne text-xs uppercase tracking-widest font-semibold transition">
-            Proceed to Order via Concierge
+          <button onclick="checkoutOnWhatsApp()" class="w-full py-3.5 bg-burgundy hover:bg-burgundy-light text-champagne-silk text-xs uppercase tracking-widest font-semibold transition shadow-md">
+            Order via WhatsApp Concierge
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT & SUPABASE SYNC -->
+  <!-- ROYAL FOOTER -->
+  <footer class="bg-burgundy-deep text-champagne-silk py-16 border-t border-gold/40 text-center text-xs tracking-wider">
+    <div class="max-w-7xl mx-auto px-4 space-y-6">
+      <h5 class="font-serif text-2xl tracking-[0.25em] text-gold-foil">KALANVII • कलान्वी</h5>
+      <p class="text-champagne/60 text-[11px] uppercase tracking-[0.2em]">YOUR CELEBRATION, OUR SIGNATURE</p>
+      <div class="w-12 h-0.5 bg-gold/40 mx-auto"></div>
+      <p class="text-[11px] text-champagne/40 max-w-md mx-auto leading-relaxed">
+        Crafting modern bridal and evening heirlooms with timeless Indian craftsmanship.
+      </p>
+      <div class="pt-6 border-t border-gold/20 flex flex-col sm:flex-row justify-between items-center text-[11px] text-champagne/50 gap-4">
+        <span>© 2026 KALANVII Luxury Atelier. All Rights Reserved.</span>
+        <a href="./admin.html" class="text-gold-foil hover:underline">Portal Login (Admin) →</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT & DYNAMIC DATABASE LOGIC -->
   <script>
-    // SUPABASE CREDENTIALS
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let currency = 'INR';
+    let currentCategory = 'All';
+    let allProducts = [];
     let cart = [];
-    let products = [];
+    let selectedModalItem = null;
 
-    // Fallback curated products in case database is just being set up
-    const fallbackProducts = [
-      {
-        id: '1',
-        title: 'The Noor Ivory Potli',
-        hindi_title: 'नूर पोटली',
-        tag: 'Bridal Heirloom',
-        price_inr: 14500,
-        price_usd: 175,
-        craftsmanship_hours: 48,
-        materials: 'Japanese micro-pearls, jade teardrop tassels',
-        image_url: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80'
-      },
-      {
-        id: '2',
-        title: 'The Imperial Ruby Velvet',
-        hindi_title: 'शाही लाल मखमल',
-        tag: 'Royal Wedding',
-        price_inr: 16500,
-        price_usd: 198,
-        craftsmanship_hours: 52,
-        materials: 'Pure velvet, hand-strung crystal fringe, gold bullion cord',
-        image_url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1000&q=80'
-      },
-      {
-        id: '3',
-        title: 'The Celestial Crescent',
-        hindi_title: 'चंद्रमा क्लच',
-        tag: 'Cocktail Gala',
-        price_inr: 15200,
-        price_usd: 185,
-        craftsmanship_hours: 40,
-        materials: 'Iridescent diamond-cut crystal beads, pearl handle',
-        image_url: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1000&q=80'
-      }
-    ];
+    // We leave fallback array empty so it reflects reality until you add products via the admin panel.
+    const fallbackCatalog = [];
 
-    async function loadProducts() {
+    async function loadCatalog() {
       try {
-        const { data, error } = await supabaseClient
+        const { data, error } = await supabase
           .from('products')
           .select('*')
           .order('created_at', { ascending: false });
 
         if (data && data.length > 0) {
-          products = data;
-          if (products[0].image_url) {
-            document.getElementById('heroImg').src = products[0].image_url;
+          allProducts = data;
+          if (data[0].image_url) {
+            document.getElementById('heroShowcaseImg').src = data[0].image_url;
           }
         } else {
-          products = fallbackProducts;
+          allProducts = fallbackCatalog;
         }
       } catch (err) {
-        console.log("Using fallback catalog:", err);
-        products = fallbackProducts;
+        console.log("Using default catalog:", err);
+        allProducts = fallbackCatalog;
       }
-      renderProducts();
+      renderCatalog();
     }
 
-    function renderProducts() {
+    function renderCatalog() {
       const grid = document.getElementById('productGrid');
-      grid.innerHTML = products.map(item => {
-        const priceDisplay = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
+      const filtered = currentCategory === 'All' 
+        ? allProducts 
+        : allProducts.filter(p => p.category && p.category.toLowerCase().includes(currentCategory.toLowerCase().slice(0, 4)));
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-xs text-gray-500">The collection is currently being curated. Please check back shortly.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div class="group bg-champagne-silk border border-champagne-border/80 hover:border-gold/60 p-4 transition-all duration-300 hover:shadow-xl flex flex-col justify-between">
-            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4">
-              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne font-semibold">${item.tag || 'Couture'}</span>
-              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          <div class="group bg-champagne-silk border border-champagne-border/80 hover:border-gold/60 p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-lg">
+            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded cursor-pointer" onclick="openQuickView('${item.id}')">
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold">${item.tag || 'Couture'}</span>
+              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+              <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                <span class="bg-champagne-silk/90 text-burgundy text-[10px] uppercase tracking-widest px-3 py-1.5 font-semibold rounded shadow">Quick View</span>
+              </div>
             </div>
             <div class="space-y-1 text-center">
               <h4 class="font-serif text-sm tracking-widest text-burgundy uppercase font-semibold">${item.title}</h4>
               <p class="font-hindi text-xs text-gold-antique">${item.hindi_title || ''}</p>
-              <div class="pt-2 text-sm font-serif font-bold text-burgundy">${priceDisplay}</div>
-              <p class="text-[11px] text-gray-500 pt-1">${item.materials || 'Handcrafted Luxury'}</p>
+              <div class="pt-2 text-sm font-serif font-bold text-burgundy">${price}</div>
+              <p class="text-[11px] text-gray-500 line-clamp-1 pt-1 font-light">${item.materials || 'Handcrafted Luxury'}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-champagne-border flex gap-2">
-              <button onclick="addToCart('${item.id}')" class="w-full py-2.5 bg-burgundy hover:bg-gold-antique text-champagne text-[11px] uppercase tracking-widest transition">
+              <button onclick="addToCart('${item.id}')" class="w-full py-2.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest transition">
                 Add to Bag
               </button>
             </div>
@@ -290,15 +334,54 @@
       }).join('');
     }
 
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-burgundy', 'text-champagne-silk');
+        btn.classList.add('text-burgundy');
+        if (btn.innerText.trim().toLowerCase() === cat.toLowerCase() || (cat === 'All' && btn.innerText.trim() === 'All')) {
+          btn.classList.add('bg-burgundy', 'text-champagne-silk');
+          btn.classList.remove('text-burgundy');
+        }
+      });
+      renderCatalog();
+    }
+
     function toggleCurrency() {
       currency = currency === 'INR' ? 'USD' : 'INR';
       document.getElementById('currencyBtn').innerText = currency === 'INR' ? 'INR (₹)' : 'USD ($)';
-      renderProducts();
+      renderCatalog();
       updateCartDrawer();
     }
 
+    function openQuickView(id) {
+      const item = allProducts.find(p => p.id == id);
+      if (!item) return;
+      selectedModalItem = item;
+      document.getElementById('modalImg').src = item.image_url;
+      document.getElementById('modalTitle').innerText = item.title;
+      document.getElementById('modalHindi').innerText = item.hindi_title || '';
+      document.getElementById('modalTag').innerText = item.tag || 'Bridal Heirloom';
+      document.getElementById('modalPrice').innerText = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
+      document.getElementById('modalDesc').innerText = item.description || 'Handcrafted with meticulous detail by master karigars for celebratory grandeur.';
+      document.getElementById('modalHours').innerText = `${item.craftsmanship_hours || 40} Hours`;
+      document.getElementById('modalMaterials').innerText = item.materials || 'Hand-strung micro pearls & silk';
+      document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
+      document.getElementById('quickModal').classList.remove('hidden');
+    }
+
+    function closeQuickView() {
+      document.getElementById('quickModal').classList.add('hidden');
+    }
+
+    function orderViaWhatsAppModal() {
+      if (!selectedModalItem) return;
+      const msg = encodeURIComponent(`Hello KALANVII Concierge! I am inquiring about "${selectedModalItem.title}". Could you please share availability and customization options?`);
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }
+
     function addToCart(id) {
-      const item = products.find(p => p.id == id);
+      const item = allProducts.find(p => p.id == id);
       if (item) {
         cart.push(item);
         document.getElementById('cartCount').innerText = cart.length;
@@ -319,7 +402,7 @@
       const container = document.getElementById('cartItems');
       const totalEl = document.getElementById('cartTotal');
       if (cart.length === 0) {
-        container.innerHTML = '<div class="text-center py-12 text-sm text-gray-500">Your bag is empty.</div>';
+        container.innerHTML = '<div class="text-center py-12 text-sm text-gray-500">Your shopping bag is currently empty.</div>';
         totalEl.innerText = currency === 'INR' ? '₹0' : '$0';
         return;
       }
@@ -330,7 +413,7 @@
         const priceFormatted = currency === 'INR' ? `₹${Number(p).toLocaleString('en-IN')}` : `$${p}`;
         return `
           <div class="flex items-center space-x-4 border-b border-champagne-border pb-3">
-            <img src="${item.image_url}" class="w-14 h-14 object-cover border border-gold/30">
+            <img src="${item.image_url}" class="w-14 h-14 object-cover border border-gold/30 rounded">
             <div class="flex-grow">
               <h5 class="text-xs font-serif text-burgundy font-bold">${item.title}</h5>
               <div class="text-xs text-gold-antique">${priceFormatted}</div>
@@ -351,11 +434,12 @@
     function checkoutOnWhatsApp() {
       if (cart.length === 0) return;
       const bagTitles = cart.map(i => i.title).join(', ');
-      const msg = encodeURIComponent(`Hello KALANVII Concierge! I would like to order: ${bagTitles}. Please assist with payment and dispatch.`);
+      const msg = encodeURIComponent(`Hello KALANVII Concierge! I wish to order: ${bagTitles}. Total: ${document.getElementById('cartTotal').innerText}. Please provide payment instructions.`);
       window.open(`https://wa.me/?text=${msg}`, '_blank');
     }
 
-    document.addEventListener('DOMContentLoaded', loadProducts);
+    document.addEventListener('DOMContentLoaded', loadCatalog);
   </script>
 </body>
 </html>
+
