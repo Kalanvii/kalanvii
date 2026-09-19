@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>KALANVII Atelier | Maison Management Portal</title>
+  <title>KALANVII कलान्वी | Management Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -50,8 +50,13 @@
       background-size: 28px 28px;
       background-position: 0 0, 14px 14px;
     }
-    .gold-glow {
-      box-shadow: 0 4px 20px rgba(197, 160, 89, 0.25);
+    @keyframes luxuryShake {
+      0%, 100% { transform: translateX(0); }
+      15%, 45%, 75% { transform: translateX(-6px); }
+      30%, 60%, 90% { transform: translateX(6px); }
+    }
+    .shake-animation {
+      animation: luxuryShake 0.45s ease-in-out;
     }
   </style>
 </head>
@@ -61,60 +66,75 @@
   <div id="lockScreen" class="fixed inset-0 z-[100] bg-burgundy-deep flex items-center justify-center p-4">
     <div class="w-full max-w-sm bg-champagne-silk p-8 rounded-2xl border-2 border-gold/50 shadow-2xl text-center space-y-6">
       
-      <div class="w-14 h-14 mx-auto rounded-full border border-gold/60 bg-gold-light/60 flex items-center justify-center font-serif text-burgundy text-xl font-bold">
-        K
-      </div>
-
-      <div>
-        <h2 class="font-serif text-xl font-bold text-burgundy tracking-widest">KALANVII ATELIER</h2>
-        <p class="font-hindi text-gold-antique text-xs tracking-wider mt-0.5">कलान्वी प्रबंधक प्रकोष्ठ</p>
-        <p class="text-[10px] uppercase tracking-[0.25em] text-gray-500 mt-2 font-semibold">Authorized Access Only</p>
+      <!-- BRAND CREST & TAGLINE -->
+      <div class="space-y-3">
+        <div class="w-14 h-14 mx-auto rounded-full border border-gold/60 bg-gold-light/60 flex items-center justify-center font-serif text-burgundy text-xl font-bold shadow-inner">
+          K
+        </div>
+        <div>
+          <div class="flex items-center justify-center space-x-2 mb-1">
+            <span class="h-[1px] w-6 bg-gold/50"></span>
+            <span class="text-[9px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Haute Joaillerie</span>
+            <span class="h-[1px] w-6 bg-gold/50"></span>
+          </div>
+          <h2 class="font-serif text-2xl font-bold text-burgundy tracking-[0.25em]">KALANVII</h2>
+          <p class="font-hindi text-burgundy-light text-xs tracking-widest mt-0.5">कलान्वी</p>
+          <p class="text-[8.5px] uppercase tracking-[0.22em] text-gold-antique font-semibold pt-1.5">YOUR CELEBRATION, OUR SIGNATURE</p>
+        </div>
       </div>
       
-      <div class="space-y-4 pt-2">
+      <!-- LOCK INPUT FORM -->
+      <div class="space-y-4 pt-1">
         <div>
           <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-2">Maison Passcode</label>
           <input 
-            type="text" 
+            type="password" 
+            inputmode="numeric"
             id="passcodeInput" 
-            value="1221" 
+            value="" 
+            placeholder="••••" 
             autocomplete="off" 
             autocorrect="off" 
             autocapitalize="none" 
             spellcheck="false"
-            class="w-full text-center text-2xl font-mono font-bold tracking-widest py-3 px-4 bg-white text-burgundy border-2 border-gold/50 rounded-xl focus:border-burgundy focus:outline-none shadow-inner" 
+            class="w-full text-center text-2xl font-mono tracking-[0.3em] py-3.5 px-4 bg-white text-burgundy border-2 border-gold/50 rounded-xl focus:border-burgundy focus:outline-none shadow-inner transition" 
           />
         </div>
         
-        <p id="lockError" class="text-xs text-red-600 font-semibold hidden">Incorrect passcode. Try again.</p>
+        <!-- ACCESS DENIED ERROR MESSAGE -->
+        <div id="lockError" class="hidden p-3 rounded-xl bg-red-950 border border-red-500/60 text-red-200 text-xs font-medium tracking-wide flex items-center justify-center gap-2 shadow-lg">
+          <svg class="w-4 h-4 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span>Access Denied: You are not an admin.</span>
+        </div>
         
         <button 
           type="button" 
           id="unlockBtn"
           onclick="handleUnlockClick()" 
-          ontouchend="handleUnlockClick()"
           class="w-full py-4 bg-burgundy hover:bg-gold-antique active:scale-95 text-champagne-silk text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-150 rounded-xl shadow-xl cursor-pointer">
-          Unlock Atelier Portal
+          Unlock Portal
         </button>
-
-        <div class="pt-1">
-          <p class="text-[11px] text-gray-500">Master Passcode is set to: <strong class="text-burgundy font-mono font-bold">1221</strong></p>
-        </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ================= ATELIER APPLICATION SHELL ================= -->
+  <!-- ================= PORTAL INTERFACE ================= -->
   <div id="dashboardApp" style="display: none;">
     
     <!-- TOP NAVIGATION -->
     <header class="sticky top-0 z-40 bg-burgundy text-champagne-silk border-b border-gold/40 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-lg">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-full border border-gold/60 bg-gold-light/20 flex items-center justify-center font-serif text-gold text-xs font-bold">K</div>
+      <div class="flex items-center space-x-3.5">
+        <div class="w-9 h-9 rounded-full border border-gold/60 bg-gold-light/20 flex items-center justify-center font-serif text-gold text-sm font-bold shadow-sm">K</div>
         <div>
-          <h1 class="font-serif tracking-[0.25em] text-sm sm:text-base font-bold text-gold-foil">KALANVII ATELIER</h1>
-          <p class="text-[9px] tracking-widest text-champagne/70 -mt-0.5 uppercase">Maison Inventory Suite</p>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-serif tracking-[0.25em] text-sm sm:text-base font-bold text-gold-foil">KALANVII</h1>
+            <span class="text-gold-antique/60 text-xs">•</span>
+            <span class="font-hindi text-gold-light text-xs tracking-wider">कलान्वी</span>
+          </div>
+          <p class="text-[8px] sm:text-[9px] tracking-[0.2em] text-champagne/80 -mt-0.5 uppercase font-medium">YOUR CELEBRATION, OUR SIGNATURE</p>
         </div>
       </div>
       
@@ -123,7 +143,7 @@
           Live Storefront ↗
         </a>
         <button type="button" onclick="lockDashboard()" class="text-[11px] uppercase tracking-widest px-3 py-1.5 bg-burgundy-deep text-champagne/80 hover:text-white rounded-lg border border-white/10 transition">
-          Lock 🔒
+          Lock Portal 🔒
         </button>
       </div>
     </header>
@@ -144,7 +164,7 @@
         </div>
         <div class="bg-white/90 p-4 border border-champagne-border rounded-xl shadow-sm">
           <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Security</p>
-          <p class="text-xs text-gold-antique font-semibold pt-2">Master Key 1221</p>
+          <p class="text-xs text-gold-antique font-semibold pt-2">Authenticated Session</p>
         </div>
         <div class="bg-white/90 p-4 border border-champagne-border rounded-xl shadow-sm">
           <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Cloud Bucket</p>
@@ -207,7 +227,7 @@
             </div>
           </div>
 
-          <!-- SAVOIR-FAIRE SPECIFICATIONS -->
+          <!-- CRAFTSMANSHIP & MATERIALS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Karigari Craftsmanship Hours</label>
@@ -219,13 +239,13 @@
             </div>
           </div>
 
-          <!-- EDITORIAL STORY -->
+          <!-- DESCRIPTION -->
           <div>
             <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Editorial Description</label>
             <textarea id="description" rows="2" placeholder="Write a poetic description for the piece..." class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none"></textarea>
           </div>
 
-          <!-- PHOTOGRAPHY UPLOAD -->
+          <!-- PHOTO UPLOADER -->
           <div class="border-2 border-dashed border-gold/50 p-6 rounded-xl bg-champagne-soft/30 text-center space-y-3">
             <label class="block text-xs uppercase tracking-widest font-semibold text-burgundy">Product Photography *</label>
             <p class="text-[11px] text-gray-500">Pick a photo directly from your phone’s camera roll or computer.</p>
@@ -240,7 +260,7 @@
 
             <div id="imagePreviewWrapper" class="hidden pt-3 flex justify-center">
               <div class="relative w-24 h-28 border-2 border-gold rounded-lg overflow-hidden shadow-md">
-                <img id="imagePreview" src="" class="w-full h-full object-cover" />
+                <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-cover" />
               </div>
             </div>
 
@@ -250,7 +270,7 @@
             </div>
           </div>
 
-          <!-- SUBMISSION ACTION -->
+          <!-- SUBMISSION BUTTON -->
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-4">
             <span id="saveStatus" class="text-xs font-semibold"></span>
             <button 
@@ -306,13 +326,15 @@
   </div>
 
   <script>
-    const ATELIER_KEY = "1221";
+    /* MASTER PASSCODE CONFIGURATION */
+    const PORTAL_PASSCODE = "1221";
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
     let supabaseClient = null;
     let pendingDeleteId = null;
 
+    /* INITIALIZING SUPABASE CLIENT */
     function getSupabase() {
       if (!supabaseClient && window.supabase) {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -320,6 +342,7 @@
       return supabaseClient;
     }
 
+    /* UNLOCKING PORTAL INTERFACE */
     function unlockApp() {
       try {
         localStorage.setItem('kalanvii_authenticated', 'true');
@@ -329,7 +352,7 @@
       const lockEl = document.getElementById('lockScreen');
       if (lockEl) {
         lockEl.style.display = 'none';
-        lockEl.remove(); // Physically detach lock overlay from DOM
+        lockEl.remove();
       }
 
       const appEl = document.getElementById('dashboardApp');
@@ -340,17 +363,22 @@
       setTimeout(loadLiveProducts, 150);
     }
 
+    /* HANDLING PASSCODE UNLOCK */
     function handleUnlockClick() {
       const input = document.getElementById('passcodeInput');
       const err = document.getElementById('lockError');
       const entered = (input ? input.value : '').trim();
 
-      // Unlocks if passcode is 1221, or if submitted with prefilled value
-      if (entered === ATELIER_KEY || entered === '' || entered === '1221') {
+      if (entered === PORTAL_PASSCODE) {
         if (err) err.classList.add('hidden');
         unlockApp();
       } else {
-        if (err) err.classList.remove('hidden');
+        if (err) {
+          err.classList.remove('hidden');
+          err.classList.remove('shake-animation');
+          void err.offsetWidth; // Force CSS repaint for shake effect
+          err.classList.add('shake-animation');
+        }
         if (input) {
           input.value = '';
           input.focus();
@@ -358,12 +386,8 @@
       }
     }
 
-    // Auto-check authentication state on load
     document.addEventListener('DOMContentLoaded', () => {
-      const hash = window.location.hash.replace('#', '').trim();
-      const params = new URLSearchParams(window.location.search);
       let isAuthed = false;
-
       try {
         if (localStorage.getItem('kalanvii_authenticated') === 'true' || 
             sessionStorage.getItem('kalanvii_authenticated') === 'true') {
@@ -371,11 +395,10 @@
         }
       } catch (e) {}
 
-      if (isAuthed || hash === ATELIER_KEY || params.get('key') === ATELIER_KEY) {
+      if (isAuthed) {
         unlockApp();
       }
 
-      // Allow pressing Enter key on input
       const input = document.getElementById('passcodeInput');
       if (input) {
         input.addEventListener('keydown', (e) => {
@@ -387,6 +410,7 @@
       }
     });
 
+    /* LOCKING PORTAL */
     function lockDashboard() {
       try {
         localStorage.removeItem('kalanvii_authenticated');
@@ -396,6 +420,7 @@
       window.location.reload();
     }
 
+    /* HANDLING LOCAL IMAGE PREVIEW */
     function handlePreviewImage(event) {
       const file = event.target.files[0];
       const previewWrapper = document.getElementById('imagePreviewWrapper');
