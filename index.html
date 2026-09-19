@@ -69,6 +69,9 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+    /* Smooth transitions for media gallery */
+    .media-fade-enter { opacity: 0; transition: opacity 0.3s ease-in; }
+    .media-fade-enter-active { opacity: 1; }
   </style>
 </head>
 <body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk">
@@ -205,12 +208,12 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW DETAIL MODAL (ADVANCED) -->
+  <!-- QUICK VIEW DETAIL MODAL (ADVANCED MEDIA GALLERY) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <!-- Background Overlay -->
     <div class="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity cursor-pointer" onclick="closeQuickView(event)"></div>
     
-    <!-- Modal Content Wrapper (Scrollable) -->
+    <!-- Modal Content Wrapper -->
     <div id="modalContentWrapper" class="absolute inset-0 overflow-y-auto pt-10 sm:pt-20 pb-10 px-4 flex justify-center scrollbar-hide items-start">
       <div class="w-full max-w-5xl bg-champagne-silk border border-gold/50 shadow-2xl rounded-2xl relative z-10 text-left transform transition-all mb-10 overflow-hidden">
         
@@ -220,12 +223,20 @@
         </button>
         
         <div class="p-6 sm:p-10">
-          <!-- TOP SECTION: Image + Details -->
+          <!-- TOP SECTION: Image/Video Gallery + Details -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             
-            <!-- LEFT: Product Image -->
-            <div class="aspect-[4/5] bg-champagne-soft rounded-xl overflow-hidden border border-gold/30 shadow-inner sticky top-0">
-              <img id="modalImg" src="" class="w-full h-full object-cover">
+            <!-- LEFT: Media Gallery -->
+            <div class="space-y-4 sticky top-0">
+              <!-- Main Active Viewer -->
+              <div id="mainMediaViewer" class="aspect-[4/5] bg-champagne-soft rounded-xl overflow-hidden border border-gold/30 shadow-inner relative">
+                <!-- Image or Video injected via JS -->
+              </div>
+              
+              <!-- Thumbnails Carousel (Injected via JS) -->
+              <div id="mediaThumbnails" class="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+                <!-- Thumbnail items -->
+              </div>
             </div>
             
             <!-- RIGHT: Product Details & Actions -->
@@ -237,7 +248,7 @@
                 <p id="modalHindi" class="font-hindi text-gold-antique text-sm mt-1.5"></p>
               </div>
               
-              <!-- MODAL PRICE INJECTION POINT -->
+              <!-- MODAL PRICE INJECTION POINT (50% OFF LOGIC) -->
               <div id="modalPrice" class="drop-shadow-sm pt-2"></div>
               
               <p id="modalDesc" class="text-sm text-[#5c4a40] leading-relaxed font-light"></p>
@@ -394,12 +405,21 @@
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
+    // SAFE-LOAD SAFEGUARD FOR MOBILE BROWSERS
     let supabaseClient = null;
+    function getSupabase() {
+      if (!supabaseClient && window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+      return supabaseClient;
+    }
+
     let currency = 'INR';
     let currentCategory = 'All';
     let allProducts = [];
     let cart = []; 
     let selectedModalItem = null;
+    let currentMediaArray = []; // Stores image/video objects for modal gallery
 
     // Fail-safe mock data
     const fallbackCatalog = [
@@ -414,24 +434,19 @@
         craftsmanship_hours: 50,
         materials: 'Pure velvet, hand-set micro crystals, gold-plated brass frame.',
         description: 'A stunning introductory piece. Handcrafted for the modern bride seeking traditional opulence.',
-        image_url: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80'
+        image_url: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80',
+        gallery_images: [],
+        video_url: null
       }
     ];
 
     /* =========================================
        2. DATABASE INITIALIZATION & FETCHING
        ========================================= */
-    function getSupabase() {
-      if (!supabaseClient && window.supabase) {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      }
-      return supabaseClient;
-    }
-
     async function loadCatalog() {
       const client = getSupabase();
       if (!client) {
-        setTimeout(loadCatalog, 500);
+        setTimeout(loadCatalog, 500); // Safe-load retry
         return;
       }
 
@@ -596,13 +611,10 @@
 
     function generateSuggestions(currentId) {
       const otherBags = allProducts.filter(p => p.id != currentId);
-      // Fallback if catalog is tiny
       if (otherBags.length === 0) {
         document.getElementById('modalSuggestions').innerHTML = '<p class="text-xs text-gray-500 italic">No other items currently available.</p>';
         return;
       }
-      
-      // Shuffle and pick 3 max
       const shuffled = otherBags.sort(() => 0.5 - Math.random());
       const selected = shuffled.slice(0, 3);
 
@@ -625,8 +637,74 @@
     }
 
     /* =========================================
-       6. MODAL & ADVANCED CART QUANTITY LOGIC
+       6. MODAL & MULTI-MEDIA GALLERY LOGIC
        ========================================= */
+    function buildMediaGallery(item) {
+      currentMediaArray = [];
+      
+      // 1. Add Main Image
+      if(item.image_url) {
+        currentMediaArray.push({ type: 'image', url: item.image_url });
+      }
+      
+      // 2. Add Gallery Images (ensure it's an array)
+      if(item.gallery_images && Array.isArray(item.gallery_images)) {
+        item.gallery_images.forEach(url => currentMediaArray.push({ type: 'image', url: url }));
+      }
+      
+      // 3. Add Video if exists
+      if(item.video_url) {
+        currentMediaArray.push({ type: 'video', url: item.video_url });
+      }
+
+      // Render thumbnails
+      const thumbContainer = document.getElementById('mediaThumbnails');
+      if(currentMediaArray.length <= 1) {
+        thumbContainer.innerHTML = ''; // Hide if only 1 item
+      } else {
+        thumbContainer.innerHTML = currentMediaArray.map((media, index) => {
+          const isVideo = media.type === 'video';
+          return `
+            <div onclick="changeMainMedia(${index})" class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 cursor-pointer transition ${index === 0 ? 'border-gold opacity-100' : 'border-transparent opacity-60 hover:opacity-100'} relative" id="thumb-${index}">
+              <img src="${media.type === 'video' ? currentMediaArray[0].url : media.url}" class="w-full h-full object-cover">
+              ${isVideo ? '<div class="absolute inset-0 bg-black/30 flex items-center justify-center"><svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg></div>' : ''}
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render initial view (index 0)
+      changeMainMedia(0);
+    }
+
+    function changeMainMedia(index) {
+      if(!currentMediaArray[index]) return;
+      const media = currentMediaArray[index];
+      const viewer = document.getElementById('mainMediaViewer');
+      
+      viewer.innerHTML = ''; // Clear current
+      
+      // Update Thumbnail borders
+      currentMediaArray.forEach((_, i) => {
+        const thumb = document.getElementById(`thumb-${i}`);
+        if(thumb) {
+          if(i === index) {
+            thumb.classList.remove('border-transparent', 'opacity-60');
+            thumb.classList.add('border-gold', 'opacity-100');
+          } else {
+            thumb.classList.add('border-transparent', 'opacity-60');
+            thumb.classList.remove('border-gold', 'opacity-100');
+          }
+        }
+      });
+
+      if(media.type === 'video') {
+        viewer.innerHTML = `<video src="${media.url}" autoplay muted loop playsinline class="w-full h-full object-cover media-fade-enter media-fade-enter-active"></video>`;
+      } else {
+        viewer.innerHTML = `<img src="${media.url}" class="w-full h-full object-cover media-fade-enter media-fade-enter-active">`;
+      }
+    }
+
     function openQuickView(id, e) {
       if(e) { e.preventDefault(); e.stopPropagation(); }
       const item = allProducts.find(p => p.id == id);
@@ -634,16 +712,17 @@
       
       selectedModalItem = item;
       
-      // Scroll modal wrapper to top
       const wrapper = document.getElementById('modalContentWrapper');
       if (wrapper) wrapper.scrollTop = 0;
       
-      document.getElementById('modalImg').src = item.image_url;
+      // Build the multi-media gallery instead of just setting the src
+      buildMediaGallery(item);
+      
       document.getElementById('modalTitle').innerText = item.title;
       document.getElementById('modalHindi').innerText = item.hindi_title || '';
       document.getElementById('modalTag').innerText = item.tag || 'Bridal Heirloom';
       
-      // 50% OFF MODAL UI INJECTION
+      // 50% OFF MODAL UI
       const p = currency === 'INR' ? item.price_inr : item.price_usd;
       const doubleP = p * 2;
       const priceFormatted = currency === 'INR' ? `₹${Number(p).toLocaleString('en-IN')}` : `$${p}`;
@@ -665,7 +744,6 @@
       const safeId = typeof item.id === 'string' ? `'${item.id}'` : item.id;
       addBtn.setAttribute('onclick', `addToCart(${safeId}, event); closeQuickView(event);`);
       
-      // Inject Dynamic Reviews and Suggestions
       generateReviews(String(item.id));
       generateSuggestions(item.id);
 
@@ -675,10 +753,15 @@
 
     function closeQuickView(e) {
       if(e) { e.preventDefault(); e.stopPropagation(); }
+      // Stop video playing in background by clearing viewer
+      document.getElementById('mainMediaViewer').innerHTML = '';
       document.getElementById('quickModal').classList.add('hidden');
       document.body.classList.remove('modal-open');
     }
 
+    /* =========================================
+       7. QUANTITY CART LOGIC
+       ========================================= */
     function addToCart(id, e) {
       if(e) { e.preventDefault(); e.stopPropagation(); }
       const item = allProducts.find(p => p.id == id);
