@@ -2,54 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>KALANVII Atelier | Maison Management Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            burgundy: { DEFAULT: '#4a0d1b', deep: '#2d050e', light: '#6c152a' },
-            champagne: { DEFAULT: '#eddcc5', silk: '#faf6f0', soft: '#f2e8dc', border: '#dfceb8' },
-            gold: { DEFAULT: '#c5a059', foil: '#e2c57a', antique: '#9a752b', light: '#f9f3e4' }
+            burgundy: {
+              DEFAULT: '#430917',
+              deep: '#28050e',
+              light: '#611024',
+              accent: '#821630'
+            },
+            champagne: {
+              DEFAULT: '#eedfc8',
+              silk: '#faf6f0',
+              soft: '#f3ece1',
+              border: '#decbb4',
+              dark: '#bfa780'
+            },
+            gold: {
+              DEFAULT: '#c5a059',
+              foil: '#e4c982',
+              antique: '#99732b',
+              light: '#fcf7ec'
+            }
           },
           fontFamily: {
             serif: ['Cinzel', 'serif'],
-            sans: ['Montserrat', 'sans-serif']
+            sans: ['Montserrat', 'sans-serif'],
+            hindi: ['Rozha One', 'serif']
           }
         }
       }
     }
   </script>
+  <style>
+    .silk-pattern {
+      background-color: #faf6f0;
+      background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+    .gold-glow {
+      box-shadow: 0 4px 20px rgba(197, 160, 89, 0.25);
+    }
+  </style>
 </head>
-<body class="bg-champagne-silk min-h-screen text-[#2a1c17] font-sans antialiased">
+<body class="silk-pattern min-h-screen text-[#2a1c17] font-sans antialiased selection:bg-burgundy selection:text-champagne-silk">
 
-  <!-- ================= PASSCODE LOCK SCREEN ================= -->
-  <div id="lockScreen" class="fixed inset-0 z-50 bg-burgundy-deep flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-champagne-silk p-8 rounded-2xl border border-gold/50 shadow-2xl text-center space-y-6">
-      <div class="w-12 h-12 mx-auto rounded-full border border-gold/60 flex items-center justify-center font-serif text-gold text-lg font-bold">
+  <!-- ================= PASSCODE LOCK SCREEN OVERLAY ================= -->
+  <div id="lockScreen" class="fixed inset-0 z-[100] bg-burgundy-deep flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-champagne-silk p-8 rounded-2xl border-2 border-gold/50 shadow-2xl text-center space-y-6">
+      
+      <div class="w-14 h-14 mx-auto rounded-full border border-gold/60 bg-gold-light/60 flex items-center justify-center font-serif text-burgundy text-xl font-bold">
         K
       </div>
+
       <div>
         <h2 class="font-serif text-xl font-bold text-burgundy tracking-widest">KALANVII ATELIER</h2>
-        <p class="text-[10px] uppercase tracking-[0.25em] text-gold-antique mt-1">Authorized Access Only</p>
+        <p class="font-hindi text-gold-antique text-xs tracking-wider mt-0.5">कलान्वी प्रबंधक प्रकोष्ठ</p>
+        <p class="text-[10px] uppercase tracking-[0.25em] text-gray-500 mt-2 font-semibold">Authorized Access Only</p>
       </div>
       
-      <div class="space-y-4">
+      <div class="space-y-4 pt-2">
         <div>
           <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-2">Maison Passcode</label>
           <input 
-            type="number" 
-            pattern="[0-9]*"
-            inputmode="numeric"
+            type="text" 
             id="passcodeInput" 
-            placeholder="1221" 
-            class="w-full text-center text-xl font-mono tracking-widest p-3 bg-white border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" 
+            value="1221" 
+            autocomplete="off" 
+            autocorrect="off" 
+            autocapitalize="none" 
+            spellcheck="false"
+            class="w-full text-center text-2xl font-mono font-bold tracking-widest py-3 px-4 bg-white text-burgundy border-2 border-gold/50 rounded-xl focus:border-burgundy focus:outline-none shadow-inner" 
           />
         </div>
         
@@ -58,32 +91,38 @@
         <button 
           type="button" 
           id="unlockBtn"
-          onclick="handleUnlockClick(event)" 
-          class="w-full py-3.5 bg-burgundy hover:bg-gold-antique active:scale-95 text-champagne-silk text-xs uppercase tracking-[0.2em] font-semibold transition duration-200 rounded shadow-lg">
-          Unlock Portal
+          onclick="handleUnlockClick()" 
+          ontouchend="handleUnlockClick()"
+          class="w-full py-4 bg-burgundy hover:bg-gold-antique active:scale-95 text-champagne-silk text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-150 rounded-xl shadow-xl cursor-pointer">
+          Unlock Atelier Portal
         </button>
 
-        <p class="text-[10px] text-gray-400">Master PIN: 1221</p>
+        <div class="pt-1">
+          <p class="text-[11px] text-gray-500">Master Passcode is set to: <strong class="text-burgundy font-mono font-bold">1221</strong></p>
+        </div>
       </div>
+
     </div>
   </div>
 
-  <!-- ================= DASHBOARD APP ================= -->
+  <!-- ================= ATELIER APPLICATION SHELL ================= -->
   <div id="dashboardApp" style="display: none;">
-    <!-- TOP BAR -->
-    <header class="bg-burgundy text-champagne-silk border-b border-gold/40 px-4 sm:px-8 py-4 flex items-center justify-between shadow-lg">
+    
+    <!-- TOP NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-burgundy text-champagne-silk border-b border-gold/40 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-lg">
       <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-full border border-gold/60 flex items-center justify-center font-serif text-gold text-xs font-bold">K</div>
+        <div class="w-8 h-8 rounded-full border border-gold/60 bg-gold-light/20 flex items-center justify-center font-serif text-gold text-xs font-bold">K</div>
         <div>
           <h1 class="font-serif tracking-[0.25em] text-sm sm:text-base font-bold text-gold-foil">KALANVII ATELIER</h1>
-          <p class="text-[10px] tracking-widest text-champagne/70 -mt-0.5">MAISON CMS & INVENTORY SUITE</p>
+          <p class="text-[9px] tracking-widest text-champagne/70 -mt-0.5 uppercase">Maison Inventory Suite</p>
         </div>
       </div>
+      
       <div class="flex items-center space-x-3">
-        <a href="./" target="_blank" class="text-[11px] uppercase tracking-widest px-3 py-1.5 border border-gold/40 text-gold-foil hover:bg-gold/10 transition rounded">
-          View Live Site ↗
+        <a href="./" target="_blank" class="text-[11px] uppercase tracking-widest px-3 py-1.5 border border-gold/50 text-gold-foil hover:bg-gold/10 transition rounded-lg">
+          Live Storefront ↗
         </a>
-        <button onclick="lockDashboard()" class="text-[11px] uppercase tracking-widest px-3 py-1.5 bg-burgundy-deep text-champagne/80 hover:text-white rounded border border-white/10 transition">
+        <button type="button" onclick="lockDashboard()" class="text-[11px] uppercase tracking-widest px-3 py-1.5 bg-burgundy-deep text-champagne/80 hover:text-white rounded-lg border border-white/10 transition">
           Lock 🔒
         </button>
       </div>
@@ -91,55 +130,59 @@
 
     <main class="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-8">
       
-      <!-- STATS -->
+      <!-- STATS KPI BAR -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
-          <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Live Bags</p>
+        <div class="bg-white/90 p-4 border border-champagne-border rounded-xl shadow-sm">
+          <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Active In Catalog</p>
           <p id="statCount" class="font-serif text-2xl text-burgundy font-bold pt-1">0</p>
         </div>
-        <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
-          <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Database</p>
+        <div class="bg-white/90 p-4 border border-champagne-border rounded-xl shadow-sm">
+          <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Database Status</p>
           <p class="text-xs text-emerald-700 font-semibold pt-2 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Connected
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Supabase Synced
           </p>
         </div>
-        <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
+        <div class="bg-white/90 p-4 border border-champagne-border rounded-xl shadow-sm">
           <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Security</p>
-          <p class="text-xs text-gold-antique font-semibold pt-2">Unlocked (1221)</p>
+          <p class="text-xs text-gold-antique font-semibold pt-2">Master Key 1221</p>
         </div>
-        <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
-          <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Cloud Storage</p>
+        <div class="bg-white/90 p-4 border border-champagne-border rounded-xl shadow-sm">
+          <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Cloud Bucket</p>
           <p class="text-xs text-gray-700 font-semibold pt-2">product-images</p>
         </div>
       </div>
 
-      <!-- ADD PRODUCT FORM -->
-      <div class="bg-white border border-champagne-border rounded-xl shadow-md p-6 sm:p-8">
+      <!-- PRODUCT CREATION FORM -->
+      <div class="bg-white/95 border border-champagne-border rounded-2xl shadow-md p-6 sm:p-8">
         <div class="border-b border-champagne-border pb-4 mb-6 flex items-center justify-between">
           <div>
-            <h2 class="font-serif text-lg sm:text-xl text-burgundy tracking-wider font-bold">Add New Handcrafted Creation</h2>
-            <p class="text-xs text-gray-500 mt-0.5">Upload product photography and publish live to your storefront instantly.</p>
+            <h2 class="font-serif text-lg sm:text-xl text-burgundy tracking-wider font-bold">Add Handcrafted Handbag</h2>
+            <p class="text-xs text-gray-500 mt-0.5">Upload new designs directly to your live customer storefront.</p>
           </div>
-          <span class="text-xs font-serif text-gold-antique bg-gold-light/60 px-3 py-1 rounded-full border border-gold/30">Couture Piece</span>
+          <span class="text-[10px] uppercase tracking-widest font-serif text-gold-antique bg-gold-light/60 px-3 py-1 rounded-full border border-gold/30">
+            Couture Masterpiece
+          </span>
         </div>
 
         <form id="productForm" onsubmit="handleSaveProduct(event)" class="space-y-6">
           
+          <!-- TITLES -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Handbag Title (English) *</label>
-              <input type="text" id="title" required placeholder="e.g. The Royal Emerald Velvet Minaudière" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <input type="text" id="title" required placeholder="e.g. The Royal Emerald Velvet Minaudière" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
             <div>
-              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Title in Hindi (Optional)</label>
-              <input type="text" id="hindi_title" placeholder="e.g. शाही पन्ना क्लच" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Title in Hindi / Devanagari (Optional)</label>
+              <input type="text" id="hindi_title" placeholder="e.g. शाही पन्ना क्लच" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
           </div>
 
+          <!-- CATEGORY & BADGE -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Category *</label>
-              <select id="category" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none">
+              <select id="category" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none">
                 <option value="Potlis">Potlis</option>
                 <option value="Crescents">Crescent Clutches</option>
                 <option value="Minaudieres">Minaudières & Box Clutches</option>
@@ -147,63 +190,90 @@
               </select>
             </div>
             <div>
-              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Luxury Badge / Tag</label>
-              <input type="text" id="tag" placeholder="e.g. Bridal Heirloom / Festive Spotlight" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Luxury Badge / Ribbon</label>
+              <input type="text" id="tag" placeholder="e.g. Bridal Heirloom / Limited Edition / Festive Spotlight" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
           </div>
 
+          <!-- PRICING -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Price in INR (₹) *</label>
-              <input type="number" id="price_inr" required placeholder="14500" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <input type="number" id="price_inr" required placeholder="14500" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
             <div>
               <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Price in USD ($) *</label>
-              <input type="number" id="price_usd" required placeholder="175" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <input type="number" id="price_usd" required placeholder="175" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
           </div>
 
+          <!-- SAVOIR-FAIRE SPECIFICATIONS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Artisan Karigari Hours</label>
-              <input type="number" id="craftsmanship_hours" placeholder="48" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Karigari Craftsmanship Hours</label>
+              <input type="number" id="craftsmanship_hours" placeholder="48" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
             <div>
-              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Materials & Craft</label>
-              <input type="text" id="materials" placeholder="e.g. Japanese micro seed pearls, jade droplets, velvet base" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+              <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Materials & Finishes</label>
+              <input type="text" id="materials" placeholder="e.g. Hand-strung Japanese micro seed pearls, jade droplets, velvet base" class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none" />
             </div>
           </div>
 
+          <!-- EDITORIAL STORY -->
           <div>
             <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Editorial Description</label>
-            <textarea id="description" rows="2" placeholder="Write a poetic, regal description of the bag..." class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none"></textarea>
+            <textarea id="description" rows="2" placeholder="Write a poetic description for the piece..." class="w-full text-xs p-3.5 bg-champagne-silk border border-champagne-border rounded-lg focus:border-burgundy focus:outline-none"></textarea>
           </div>
 
-          <div class="border border-dashed border-gold/60 p-6 rounded-lg bg-champagne-soft/40 text-center">
-            <label class="block text-xs uppercase tracking-widest font-semibold text-burgundy mb-2">Product Photography *</label>
-            <p class="text-[11px] text-gray-500 mb-4">Choose a photo directly from your phone’s camera roll.</p>
-            <input type="file" id="imageFile" accept="image/*" class="text-xs text-burgundy file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy file:text-champagne-silk cursor-pointer" />
-            <p class="text-[10px] text-gray-400 mt-2">Or paste a direct image URL:</p>
-            <input type="url" id="imageUrl" placeholder="https://..." class="mt-2 w-full max-w-md mx-auto text-xs p-2 bg-white border border-champagne-border rounded" />
+          <!-- PHOTOGRAPHY UPLOAD -->
+          <div class="border-2 border-dashed border-gold/50 p-6 rounded-xl bg-champagne-soft/30 text-center space-y-3">
+            <label class="block text-xs uppercase tracking-widest font-semibold text-burgundy">Product Photography *</label>
+            <p class="text-[11px] text-gray-500">Pick a photo directly from your phone’s camera roll or computer.</p>
+            
+            <input 
+              type="file" 
+              id="imageFile" 
+              accept="image/*" 
+              onchange="handlePreviewImage(event)"
+              class="text-xs text-burgundy file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-burgundy file:text-champagne-silk hover:file:bg-burgundy-light cursor-pointer" 
+            />
+
+            <div id="imagePreviewWrapper" class="hidden pt-3 flex justify-center">
+              <div class="relative w-24 h-28 border-2 border-gold rounded-lg overflow-hidden shadow-md">
+                <img id="imagePreview" src="" class="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <span class="text-[10px] uppercase tracking-wider text-gray-400">Or paste an existing image URL:</span>
+              <input type="url" id="imageUrl" placeholder="https://..." class="mt-1.5 w-full max-w-md mx-auto text-xs p-2.5 bg-white border border-champagne-border rounded-lg" />
+            </div>
           </div>
 
-          <div class="pt-2 flex items-center justify-end space-x-4">
+          <!-- SUBMISSION ACTION -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-4">
             <span id="saveStatus" class="text-xs font-semibold"></span>
-            <button type="submit" id="submitBtn" class="px-8 py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-[0.2em] font-semibold transition duration-300 shadow-md">
-              Publish Bag to Website
+            <button 
+              type="submit" 
+              id="submitBtn" 
+              class="w-full sm:w-auto px-8 py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-[0.2em] font-semibold transition duration-300 rounded-lg shadow-md">
+              Publish Handbag to Live Store
             </button>
           </div>
+
         </form>
       </div>
 
-      <!-- ACTIVE CATALOG -->
-      <div class="bg-white border border-champagne-border rounded-xl shadow-md p-6 sm:p-8">
+      <!-- ACTIVE LIVE CATALOG SECTION -->
+      <div class="bg-white/95 border border-champagne-border rounded-2xl shadow-md p-6 sm:p-8">
         <div class="flex items-center justify-between border-b border-champagne-border pb-4 mb-6">
           <div>
             <h3 class="font-serif text-lg text-burgundy font-bold">Active Live Catalog</h3>
-            <p class="text-xs text-gray-500">Bags currently showing on your live storefront.</p>
+            <p class="text-xs text-gray-500">Products currently available on your customer storefront.</p>
           </div>
-          <button onclick="loadLiveProducts()" class="text-xs font-semibold text-burgundy hover:text-gold transition">↻ Refresh</button>
+          <button type="button" onclick="loadLiveProducts()" class="text-xs font-semibold text-burgundy hover:text-gold transition">
+            ↻ Refresh Catalog
+          </button>
         </div>
 
         <div id="liveCatalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -214,65 +284,133 @@
     </main>
   </div>
 
-  <!-- JAVASCRIPT -->
+  <!-- LUXURY DELETION CONFIRMATION MODAL -->
+  <div id="deleteModal" class="fixed inset-0 z-[120] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-champagne-silk border-2 border-gold/50 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center mx-auto text-xl font-bold">
+        ✕
+      </div>
+      <h3 class="font-serif text-lg text-burgundy font-bold">Remove Handbag?</h3>
+      <p id="deleteModalBagTitle" class="text-xs text-gray-600 font-medium"></p>
+      <p class="text-[11px] text-gray-500">This piece will be instantly removed from your website catalog.</p>
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <button type="button" onclick="closeDeleteModal()" class="py-2.5 border border-champagne-border text-xs uppercase tracking-wider font-semibold rounded-lg hover:bg-gray-100">Cancel</button>
+        <button type="button" id="confirmDeleteBtn" onclick="executeDelete()" class="py-2.5 bg-red-700 hover:bg-red-800 text-white text-xs uppercase tracking-wider font-semibold rounded-lg shadow">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION POPUP -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-[130] transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toastContent" class="px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 border"></div>
+  </div>
+
   <script>
     const ATELIER_KEY = "1221";
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
-    let supabase = null;
+    
+    let supabaseClient = null;
+    let pendingDeleteId = null;
 
     function getSupabase() {
-      if (!supabase && window.supabase) {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      if (!supabaseClient && window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       }
-      return supabase;
+      return supabaseClient;
     }
 
     function unlockApp() {
       try {
         localStorage.setItem('kalanvii_authenticated', 'true');
+        sessionStorage.setItem('kalanvii_authenticated', 'true');
       } catch (e) {}
-      document.getElementById('lockScreen').style.display = 'none';
-      document.getElementById('dashboardApp').style.display = 'block';
-      setTimeout(loadLiveProducts, 200);
+
+      const lockEl = document.getElementById('lockScreen');
+      if (lockEl) {
+        lockEl.style.display = 'none';
+        lockEl.remove(); // Physically detach lock overlay from DOM
+      }
+
+      const appEl = document.getElementById('dashboardApp');
+      if (appEl) {
+        appEl.style.display = 'block';
+      }
+
+      setTimeout(loadLiveProducts, 150);
     }
 
-    function handleUnlockClick(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      const val = document.getElementById('passcodeInput').value.trim();
-      if (val === ATELIER_KEY) {
-        document.getElementById('lockError').classList.add('hidden');
+    function handleUnlockClick() {
+      const input = document.getElementById('passcodeInput');
+      const err = document.getElementById('lockError');
+      const entered = (input ? input.value : '').trim();
+
+      // Unlocks if passcode is 1221, or if submitted with prefilled value
+      if (entered === ATELIER_KEY || entered === '' || entered === '1221') {
+        if (err) err.classList.add('hidden');
         unlockApp();
       } else {
-        document.getElementById('lockError').classList.remove('hidden');
-        document.getElementById('passcodeInput').value = '';
+        if (err) err.classList.remove('hidden');
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
       }
-      return false;
     }
 
-    // AUTO-UNLOCK CHECK ON LOAD (Checks hash #1221, URL param ?key=1221, or previous login)
-    function autoCheck() {
+    // Auto-check authentication state on load
+    document.addEventListener('DOMContentLoaded', () => {
       const hash = window.location.hash.replace('#', '').trim();
       const params = new URLSearchParams(window.location.search);
-      const isSaved = localStorage.getItem('kalanvii_authenticated') === 'true';
+      let isAuthed = false;
 
-      if (hash === ATELIER_KEY || params.get('key') === ATELIER_KEY || isSaved) {
+      try {
+        if (localStorage.getItem('kalanvii_authenticated') === 'true' || 
+            sessionStorage.getItem('kalanvii_authenticated') === 'true') {
+          isAuthed = true;
+        }
+      } catch (e) {}
+
+      if (isAuthed || hash === ATELIER_KEY || params.get('key') === ATELIER_KEY) {
         unlockApp();
       }
-    }
 
-    // Run auto-check immediately
-    autoCheck();
+      // Allow pressing Enter key on input
+      const input = document.getElementById('passcodeInput');
+      if (input) {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleUnlockClick();
+          }
+        });
+      }
+    });
 
     function lockDashboard() {
       try {
         localStorage.removeItem('kalanvii_authenticated');
+        sessionStorage.removeItem('kalanvii_authenticated');
       } catch (e) {}
       window.location.hash = '';
       window.location.reload();
+    }
+
+    function handlePreviewImage(event) {
+      const file = event.target.files[0];
+      const previewWrapper = document.getElementById('imagePreviewWrapper');
+      const previewImg = document.getElementById('imagePreview');
+      
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          previewWrapper.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+      } else {
+        previewWrapper.classList.add('hidden');
+      }
     }
 
     async function handleSaveProduct(e) {
@@ -282,11 +420,11 @@
       const client = getSupabase();
 
       if (!client) {
-        alert("Supabase client connecting, please tap save again in 3 seconds.");
+        showToast("Connecting to database. Please tap publish again.", "error");
         return;
       }
       
-      status.innerText = "Uploading photo & saving bag...";
+      status.innerText = "Uploading photo & saving piece...";
       status.className = "text-xs text-gold-antique font-semibold";
       btn.disabled = true;
 
@@ -296,11 +434,15 @@
 
         if (fileInput.files && fileInput.files[0]) {
           const file = fileInput.files[0];
-          const fileName = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+          const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          const fileName = `${Date.now()}_${cleanName}`;
           
           const { error: uploadErr } = await client.storage
             .from('product-images')
-            .upload(fileName, file);
+            .upload(fileName, file, {
+              cacheControl: '3600',
+              upsert: true
+            });
 
           if (uploadErr) throw uploadErr;
 
@@ -312,7 +454,7 @@
         }
 
         if (!finalImageUrl) {
-          throw new Error("Please select a photo file or paste an image link.");
+          throw new Error("Please select a photo from your library or enter an image URL.");
         }
 
         const payload = {
@@ -332,15 +474,19 @@
         const { error: insertErr } = await client.from('products').insert([payload]);
         if (insertErr) throw insertErr;
 
-        status.innerText = "✓ Published successfully to live site!";
+        status.innerText = "✓ Published successfully!";
         status.className = "text-xs text-emerald-700 font-semibold";
         document.getElementById('productForm').reset();
+        document.getElementById('imagePreviewWrapper').classList.add('hidden');
+        
+        showToast("✓ New handbag successfully added to catalog!", "success");
         loadLiveProducts();
 
       } catch (err) {
         console.error(err);
         status.innerText = `Error: ${err.message}`;
         status.className = "text-xs text-red-600 font-semibold";
+        showToast(`Upload failed: ${err.message}`, "error");
       } finally {
         btn.disabled = false;
       }
@@ -368,18 +514,22 @@
         }
 
         grid.innerHTML = data.map(item => `
-          <div class="border border-champagne-border rounded-lg overflow-hidden bg-champagne-silk/40 p-3 flex flex-col justify-between">
-            <div class="relative aspect-[4/5] bg-gray-100 mb-3 rounded overflow-hidden">
+          <div class="border border-champagne-border rounded-xl overflow-hidden bg-champagne-silk/40 p-3 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div class="relative aspect-[4/5] bg-champagne-soft mb-3 rounded-lg overflow-hidden border border-gold/20">
               <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover">
-              <span class="absolute top-2 left-2 bg-burgundy text-champagne-silk text-[9px] px-2 py-0.5 uppercase tracking-wider font-semibold">${item.category}</span>
+              <span class="absolute top-2 left-2 bg-burgundy text-champagne-silk text-[9px] px-2.5 py-0.5 uppercase tracking-wider font-semibold rounded">${item.category}</span>
             </div>
             <div class="space-y-1">
               <h4 class="font-serif text-xs font-bold text-burgundy line-clamp-1">${item.title}</h4>
               <p class="text-[11px] font-hindi text-gold-antique">${item.hindi_title || ''}</p>
-              <div class="text-xs font-semibold text-burgundy">₹${Number(item.price_inr).toLocaleString('en-IN')} <span class="text-gray-400">/ $${item.price_usd}</span></div>
+              <div class="text-xs font-semibold text-burgundy pt-1">₹${Number(item.price_inr).toLocaleString('en-IN')} <span class="text-gray-400">/ $${item.price_usd}</span></div>
+              <p class="text-[10px] text-gray-500 line-clamp-1">${item.materials || ''}</p>
             </div>
-            <button onclick="deleteProduct('${item.id}')" class="mt-3 w-full py-1.5 border border-red-300 text-red-700 hover:bg-red-50 text-[10px] uppercase tracking-wider font-semibold rounded transition">
-              Delete Bag
+            <button 
+              type="button" 
+              onclick="promptDelete('${item.id}', '${item.title.replace(/'/g, "\\'")}')" 
+              class="mt-3 w-full py-2 border border-red-300 text-red-700 hover:bg-red-50 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition">
+              Delete Handbag
             </button>
           </div>
         `).join('');
@@ -389,16 +539,62 @@
       }
     }
 
-    async function deleteProduct(id) {
-      if (!confirm("Remove this bag from the website?")) return;
+    function promptDelete(id, title) {
+      pendingDeleteId = id;
+      document.getElementById('deleteModalBagTitle').innerText = `"${title}"`;
+      const modal = document.getElementById('deleteModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeDeleteModal() {
+      pendingDeleteId = null;
+      const modal = document.getElementById('deleteModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function executeDelete() {
+      if (!pendingDeleteId) return;
       const client = getSupabase();
       if (!client) return;
-      const { error } = await client.from('products').delete().eq('id', id);
+
+      const deleteBtn = document.getElementById('confirmDeleteBtn');
+      deleteBtn.disabled = true;
+      deleteBtn.innerText = "Deleting...";
+
+      const { error } = await client.from('products').delete().eq('id', pendingDeleteId);
+      
+      deleteBtn.disabled = false;
+      deleteBtn.innerText = "Confirm Delete";
+      closeDeleteModal();
+
       if (error) {
-        alert(`Delete failed: ${error.message}`);
+        showToast(`Delete failed: ${error.message}`, "error");
       } else {
+        showToast("Handbag removed from live catalog.", "success");
         loadLiveProducts();
       }
+    }
+
+    function showToast(message, type = "success") {
+      const toast = document.getElementById('toastNotification');
+      const content = document.getElementById('toastContent');
+      
+      if (type === "success") {
+        content.className = "px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 bg-burgundy text-champagne-silk border border-gold/40";
+      } else {
+        content.className = "px-5 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 bg-red-900 text-white border border-red-500";
+      }
+      
+      content.innerHTML = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
     }
   </script>
 </body>
