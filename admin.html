@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KALANVII Atelier | Maison Management Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Rozha+One&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            burgundy: { DEFAULT: '#4a0d1b', deep: '#2d050e', light: '#6c152a' },
+            champagne: { DEFAULT: '#eddcc5', silk: '#faf6f0', soft: '#f2e8dc', border: '#dfceb8' },
+            gold: { DEFAULT: '#c5a059', foil: '#e2c57a', antique: '#9a752b', light: '#f9f3e4' }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+            hindi: ['Rozha One', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-champagne-silk min-h-screen text-[#2a1c17] font-sans">
+
+  <!-- TOP BAR -->
+  <header class="bg-burgundy text-champagne-silk border-b border-gold/40 px-4 sm:px-8 py-4 flex items-center justify-between shadow-lg">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-full border border-gold/60 flex items-center justify-center font-serif text-gold text-xs font-bold">K</div>
+      <div>
+        <h1 class="font-serif tracking-[0.25em] text-sm sm:text-base font-bold text-gold-foil">KALANVII ATELIER</h1>
+        <p class="text-[10px] tracking-widest text-champagne/70 -mt-0.5">MAISON CMS & INVENTORY SUITE</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-3">
+      <a href="./" target="_blank" class="text-[11px] uppercase tracking-widest px-3 py-1.5 border border-gold/40 text-gold-foil hover:bg-gold/10 transition rounded">
+        View Live Site ↗
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+    
+    <!-- BANNER STATS -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
+        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Catalog Items</p>
+        <p id="statCount" class="font-serif text-2xl text-burgundy font-bold pt-1">0</p>
+      </div>
+      <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
+        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Status</p>
+        <p class="text-xs text-emerald-700 font-semibold pt-2 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Supabase Connected
+        </p>
+      </div>
+      <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
+        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Currency Support</p>
+        <p class="font-serif text-sm text-burgundy font-semibold pt-2">Dual (₹ INR & $ USD)</p>
+      </div>
+      <div class="bg-white/80 p-4 border border-champagne-border rounded shadow-sm">
+        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Image Storage</p>
+        <p class="text-xs text-gold-antique font-semibold pt-2">product-images bucket</p>
+      </div>
+    </div>
+
+    <!-- MAIN FORM: ADD NEW HANDBAG -->
+    <div class="bg-white border border-champagne-border rounded-xl shadow-md p-6 sm:p-8">
+      <div class="border-b border-champagne-border pb-4 mb-6 flex items-center justify-between">
+        <div>
+          <h2 class="font-serif text-lg sm:text-xl text-burgundy tracking-wider font-bold">Add New Handcrafted Creation</h2>
+          <p class="text-xs text-gray-500 mt-0.5">Upload product photography and publish live to your storefront instantly.</p>
+        </div>
+        <span class="text-xs font-serif text-gold-antique bg-gold-light/60 px-3 py-1 rounded-full border border-gold/30">Couture Piece</span>
+      </div>
+
+      <form id="productForm" onsubmit="handleSaveProduct(event)" class="space-y-6">
+        
+        <!-- ROW 1: TITLES -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Handbag Title (English) *</label>
+            <input type="text" id="title" required placeholder="e.g. The Royal Emerald Velvet Minaudière" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Title in Hindi / Devanagari (Optional)</label>
+            <input type="text" id="hindi_title" placeholder="e.g. शाही पन्ना क्लच" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- ROW 2: CATEGORY & TAG -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Category *</label>
+            <select id="category" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none">
+              <option value="Potlis">Potlis</option>
+              <option value="Crescents">Crescent Clutches</option>
+              <option value="Minaudieres">Minaudières & Box Clutches</option>
+              <option value="Cocktail">Cocktail & Barrel Bags</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Luxury Badge / Tag</label>
+            <input type="text" id="tag" placeholder="e.g. Bridal Heirloom / Limited Edition / Festive Spotlight" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- ROW 3: PRICING -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Price in INR (₹) *</label>
+            <input type="number" id="price_inr" required placeholder="14500" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Price in USD ($) *</label>
+            <input type="number" id="price_usd" required placeholder="175" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- ROW 4: ARTISANAL DETAILS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Artisan Karigari Hours</label>
+            <input type="number" id="craftsmanship_hours" placeholder="48" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Materials & Craft</label>
+            <input type="text" id="materials" placeholder="e.g. Hand-strung micro seed pearls, jade droplets, velvet base" class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- ROW 5: DESCRIPTION -->
+        <div>
+          <label class="block text-[11px] uppercase tracking-wider font-semibold text-burgundy mb-1.5">Editorial Description</label>
+          <textarea id="description" rows="2" placeholder="Write a poetic, regal description of the bag..." class="w-full text-xs p-3 bg-champagne-silk border border-champagne-border rounded focus:border-burgundy focus:outline-none"></textarea>
+        </div>
+
+        <!-- ROW 6: PHOTO UPLOAD -->
+        <div class="border border-dashed border-gold/60 p-6 rounded-lg bg-champagne-soft/40 text-center">
+          <label class="block text-xs uppercase tracking-widest font-semibold text-burgundy mb-2">Product Photography *</label>
+          <p class="text-[11px] text-gray-500 mb-4">Choose a photo directly from your phone’s camera roll or computer.</p>
+          <input type="file" id="imageFile" accept="image/*" class="text-xs text-burgundy file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy file:text-champagne-silk hover:file:bg-burgundy-light cursor-pointer" />
+          <p class="text-[10px] text-gray-400 mt-2">Or paste a direct image web link below if already hosted:</p>
+          <input type="url" id="imageUrl" placeholder="https://..." class="mt-2 w-full max-w-md mx-auto text-xs p-2 bg-white border border-champagne-border rounded" />
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="pt-2 flex items-center justify-end space-x-4">
+          <span id="saveStatus" class="text-xs font-semibold"></span>
+          <button type="submit" id="submitBtn" class="px-8 py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-[0.2em] font-semibold transition duration-300 shadow-md">
+            Publish Bag to Website
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- LIVE CATALOG PREVIEW & DELETE SECTION -->
+    <div class="bg-white border border-champagne-border rounded-xl shadow-md p-6 sm:p-8">
+      <div class="flex items-center justify-between border-b border-champagne-border pb-4 mb-6">
+        <div>
+          <h3 class="font-serif text-lg text-burgundy font-bold">Active Live Catalog</h3>
+          <p class="text-xs text-gray-500">Bags currently showing on your live storefront.</p>
+        </div>
+        <button onclick="loadLiveProducts()" class="text-xs font-semibold text-burgundy hover:text-gold transition">↻ Refresh</button>
+      </div>
+
+      <div id="liveCatalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="col-span-full py-8 text-center text-xs text-gray-400">Loading catalog...</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // SUPABASE SETUP
+    const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      const status = document.getElementById('saveStatus');
+      const btn = document.getElementById('submitBtn');
+      
+      status.innerText = "Uploading & Saving...";
+      status.className = "text-xs text-gold-antique font-semibold";
+      btn.disabled = true;
+
+      try {
+        let finalImageUrl = document.getElementById('imageUrl').value.trim();
+        const fileInput = document.getElementById('imageFile');
+
+        // If file selected from phone, upload to Supabase storage bucket
+        if (fileInput.files && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const fileName = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+          
+          const { data: uploadData, error: uploadErr } = await supabase.storage
+            .from('product-images')
+            .upload(fileName, file);
+
+          if (uploadErr) throw uploadErr;
+
+          const { data: publicUrlData } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(fileName);
+
+          finalImageUrl = publicUrlData.publicUrl;
+        }
+
+        if (!finalImageUrl) {
+          throw new Error("Please choose a photo file or provide an image link.");
+        }
+
+        // Insert into database
+        const payload = {
+          title: document.getElementById('title').value.trim(),
+          hindi_title: document.getElementById('hindi_title').value.trim(),
+          category: document.getElementById('category').value,
+          tag: document.getElementById('tag').value.trim() || 'Bridal Heirloom',
+          price_inr: Number(document.getElementById('price_inr').value),
+          price_usd: Number(document.getElementById('price_usd').value),
+          craftsmanship_hours: Number(document.getElementById('craftsmanship_hours').value) || 40,
+          materials: document.getElementById('materials').value.trim() || 'Hand-strung micro pearls & silk',
+          description: document.getElementById('description').value.trim(),
+          image_url: finalImageUrl,
+          in_stock: true
+        };
+
+        const { error: insertErr } = await supabase.from('products').insert([payload]);
+        if (insertErr) throw insertErr;
+
+        status.innerText = "✓ Published successfully to live site!";
+        status.className = "text-xs text-emerald-700 font-semibold";
+        document.getElementById('productForm').reset();
+        loadLiveProducts();
+
+      } catch (err) {
+        console.error(err);
+        status.innerText = `Error: ${err.message}`;
+        status.className = "text-xs text-red-600 font-semibold";
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function loadLiveProducts() {
+      const grid = document.getElementById('liveCatalogGrid');
+      const countEl = document.getElementById('statCount');
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        countEl.innerText = data ? data.length : 0;
+
+        if (!data || data.length === 0) {
+          grid.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-gray-500">No products found in database yet. Add your first bag above!</div>';
+          return;
+        }
+
+        grid.innerHTML = data.map(item => `
+          <div class="border border-champagne-border rounded-lg overflow-hidden bg-champagne-silk/40 p-3 flex flex-col justify-between">
+            <div class="relative aspect-[4/5] bg-gray-100 mb-3 rounded overflow-hidden">
+              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover">
+              <span class="absolute top-2 left-2 bg-burgundy text-champagne-silk text-[9px] px-2 py-0.5 uppercase tracking-wider font-semibold">${item.category}</span>
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-serif text-xs font-bold text-burgundy line-clamp-1">${item.title}</h4>
+              <p class="text-[11px] font-hindi text-gold-antique">${item.hindi_title || ''}</p>
+              <div class="text-xs font-semibold text-burgundy">₹${Number(item.price_inr).toLocaleString('en-IN')} <span class="text-gray-400">/ $${item.price_usd}</span></div>
+            </div>
+            <button onclick="deleteProduct('${item.id}')" class="mt-3 w-full py-1.5 border border-red-300 text-red-700 hover:bg-red-50 text-[10px] uppercase tracking-wider font-semibold rounded transition">
+              Delete Bag
+            </button>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-red-500">Could not fetch catalog: ${err.message}</div>`;
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm("Are you sure you want to remove this bag from your website?")) return;
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) {
+        alert(`Delete failed: ${error.message}`);
+      } else {
+        loadLiveProducts();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadLiveProducts);
+  </script>
+</body>
+</html>
