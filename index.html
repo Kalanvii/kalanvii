@@ -117,7 +117,8 @@
           <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md">
             Explore Collection
           </a>
-          <a href="https://instagram.com/kalanvii_in" target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition">
+          <!-- UPDATED HERO WHATSAPP LINK -->
+          <a href="https://wa.me/919773999654?text=Hi%20Kalanvii,%20I%20am%20looking%20for%20a%20couture%20clutch%20for%20my%20wedding%20outfit." target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition">
             Follow on Instagram
           </a>
         </div>
@@ -264,7 +265,6 @@
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
-    // SAFE-LOAD SAFEGUARD FOR MOBILE BROWSERS
     let supabaseClient = null;
     function getSupabase() {
       if (!supabaseClient && window.supabase) {
@@ -279,10 +279,10 @@
     let cart = [];
     let selectedModalItem = null;
 
+    const fallbackCatalog = [];
+
     async function loadCatalog() {
       const client = getSupabase();
-      
-      // If the mobile connection is slow and the database hasn't loaded yet, try again in half a second!
       if (!client) {
         setTimeout(loadCatalog, 500);
         return;
@@ -387,10 +387,11 @@
       document.getElementById('quickModal').classList.add('hidden');
     }
 
+    // UPDATED QUICK VIEW WHATSAPP LINK
     function orderViaWhatsAppModal() {
       if (!selectedModalItem) return;
       const msg = encodeURIComponent(`Hello KALANVII Concierge! I am inquiring about "${selectedModalItem.title}". Could you please share availability and customization options?`);
-      window.open(`https://wa.me/?text=${msg}`, '_blank');
+      window.open(`https://wa.me/919773999654?text=${msg}`, '_blank');
     }
 
     function addToCart(id) {
@@ -438,16 +439,15 @@
       totalEl.innerText = currency === 'INR' ? `₹${total.toLocaleString('en-IN')}` : `$${total}`;
     }
 
+    // UPDATED CHECKOUT WHATSAPP LINK
     function checkoutOnWhatsApp() {
       if (cart.length === 0) return;
       const bagTitles = cart.map(i => i.title).join(', ');
       const msg = encodeURIComponent(`Hello KALANVII Concierge! I wish to order: ${bagTitles}. Total: ${document.getElementById('cartTotal').innerText}. Please provide payment instructions.`);
-      window.open(`https://wa.me/?text=${msg}`, '_blank');
+      window.open(`https://wa.me/919773999654?text=${msg}`, '_blank');
     }
 
     document.addEventListener('DOMContentLoaded', loadCatalog);
   </script>
 </body>
 </html>
-
-
