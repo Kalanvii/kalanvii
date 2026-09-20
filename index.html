@@ -61,41 +61,48 @@
 
   <div id="cursorGlow" class="hidden md:block"></div>
 
-  <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-3">
-    <span>✨ Free Shipping Across India on Orders Over ₹3,999</span>
-    <span class="hidden md:inline">•</span>
-    <span>Direct Artisanal Manufacturer Pricing</span>
-    <span class="hidden md:inline">•</span>
-    <span>Strict Unboxing Video Policy</span>
+  <!-- TOP PRESTIGE TICKER -->
+  <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-2">
+    <span>✨ Free Shipping Over ₹3,999</span>
+    <span class="hidden sm:inline">•</span>
+    <span>Direct Artisanal Pricing</span>
+    <span class="hidden sm:inline">•</span>
+    <span>Unboxing Video Policy</span>
   </div>
 
+  <!-- FULLY RESPONSIVE HEADER (NO OVERLAPPING ON MOBILE OR DESKTOP) -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 grid grid-cols-3 items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex md:grid md:grid-cols-3 items-center justify-between">
+      
+      <!-- LEFT DESKTOP NAVIGATION -->
       <nav class="hidden md:flex items-center space-x-6 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
         <a href="#collection" class="hover:text-gold transition duration-300">Collection</a>
         <a href="#reels" class="hover:text-gold transition duration-300">Reels</a>
         <a href="#testimonials" class="hover:text-gold transition duration-300">Testimonials</a>
         <a href="#story" class="hover:text-gold transition duration-300">Story</a>
       </nav>
-      <div class="md:hidden"></div>
 
-      <div class="text-center">
+      <!-- BRAND LOGO (Centered on desktop, left-aligned on mobile) -->
+      <div class="text-left md:text-center">
         <a href="#" class="inline-block group">
           <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
           <p class="font-hindi text-burgundy-light text-[10px] sm:text-xs tracking-widest -mt-1">कलान्वी</p>
         </a>
       </div>
 
-      <div class="flex items-center justify-end space-x-3 sm:space-x-6">
-        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
+      <!-- RIGHT ACTIONS -->
+      <div class="flex items-center justify-end space-x-3 sm:space-x-5">
+        <button onclick="toggleCurrency()" id="currencyBtn" class="text-[11px] tracking-wider font-semibold border border-burgundy/30 px-2.5 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
         <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
         </button>
       </div>
+
     </div>
   </header>
 
+  <!-- HAUTE HERO SECTION -->
   <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border overflow-hidden">
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold/20 rounded-full blur-3xl aura-glow pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-burgundy/10 rounded-full blur-3xl aura-glow pointer-events-none" style="animation-delay: 3s;"></div>
@@ -125,6 +132,7 @@
     </div>
   </section>
 
+  <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
     <div class="text-center max-w-2xl mx-auto mb-10">
       <h3 class="font-serif text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
@@ -252,14 +260,12 @@
 
             <div class="pt-2 flex gap-3" id="modalActionContainer"></div>
 
-            <!-- VERIFIED REVIEWS & WRITE A REVIEW FORM -->
             <div class="border-t border-champagne-border pt-4 space-y-4">
               <div class="flex justify-between items-center">
                 <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
                 <button onclick="toggleReviewForm()" class="text-[10px] text-gold-antique font-bold uppercase underline">Write a Review</button>
               </div>
 
-              <!-- REVIEW SUBMISSION FORM (Hidden by default) -->
               <form id="reviewForm" onsubmit="submitClientReview(event)" class="hidden bg-champagne-soft p-4 rounded-xl border border-gold/30 space-y-3">
                 <h5 class="text-xs font-bold text-burgundy uppercase">Share Your Experience</h5>
                 <input type="text" id="reviewAuthor" placeholder="Your Full Name *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
@@ -524,7 +530,6 @@
         document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       }
 
-      // Load Reviews (Default + Approved Supabase reviews)
       await loadProductReviews(item.id);
 
       const otherProducts = allProducts.filter(p => p.id != id).slice(0, 3);
@@ -740,5 +745,6 @@
   </script>
 </body>
 </html>
+
 
 
