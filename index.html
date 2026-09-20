@@ -98,7 +98,7 @@
     </div>
   </header>
 
-  <!-- HERO SECTION WITH SATIN CLOTH & PEARLS BACKGROUND BEHIND CONTENT BOX -->
+  <!-- HERO SECTION -->
   <section class="relative bg-champagne-soft py-12 sm:py-20 border-b border-gold/40 text-center px-4 overflow-hidden">
     <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative">
       <span class="inline-block px-4 py-1.5 border border-gold/40 text-[9px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-champagne-silk/90 rounded-full shadow-sm">
@@ -143,7 +143,7 @@
     </div>
   </section>
 
-  <!-- EXPANDED HERITAGE & STORY SECTION (PLACED ABOVE THE COLLECTION) -->
+  <!-- EXPANDED HERITAGE & STORY SECTION -->
   <section id="story" class="bg-champagne-silk py-24 px-4 border-b border-champagne-border">
     <div class="max-w-5xl mx-auto space-y-12">
       <div class="text-center space-y-3">
@@ -281,28 +281,32 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL -->
+  <!-- QUICK VIEW MODAL (100% SINGLE VERTICAL SCROLL FLOW) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
-    <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
+    <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
-      <div class="inline-block w-full max-w-4xl p-6 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left">
-        <button onclick="closeQuickView()" class="absolute top-5 right-5 text-gray-500 hover:text-burgundy text-2xl z-20 bg-champagne-soft w-10 h-10 rounded-full flex items-center justify-center border border-gold/30">✕</button>
+      <div class="inline-block w-full max-w-2xl p-5 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left max-h-[90vh] overflow-y-auto">
+        <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30">✕</button>
         
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          <div class="md:col-span-7 space-y-4">
+        <!-- SINGLE UNIFIED VERTICAL FLOW CONTAINER -->
+        <div class="space-y-6 pt-2">
+          
+          <!-- IMAGE SLIDER & THUMBNAILS -->
+          <div class="space-y-3">
             <div id="mediaSwipeContainer" class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group touch-pan-y">
               <img id="modalImg" src="" class="w-full h-full object-cover transition duration-300 pointer-events-none">
               <video id="modalVideo" src="" controls class="w-full h-full object-cover hidden"></video>
 
-              <button onclick="slideMedia(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10">❮</button>
-              <button onclick="slideMedia(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10">❯</button>
+              <button onclick="slideMedia(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10">❮</button>
+              <button onclick="slideMedia(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10">❯</button>
               
               <div id="slideCounter" class="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] px-3 py-1 rounded-full font-bold z-10">1 / 1</div>
             </div>
-            <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-2"></div>
+            <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
           </div>
 
-          <div class="md:col-span-5 space-y-6 max-h-[75vh] overflow-y-auto pr-1 overscroll-contain">
+          <!-- PRODUCT DETAILS & ACTIONS -->
+          <div class="space-y-5">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
               <h3 id="modalTitle" class="font-serif text-2xl text-burgundy font-bold"></h3>
@@ -317,7 +321,7 @@
 
             <p id="modalDesc" class="text-xs text-[#5c4a40] leading-relaxed font-light"></p>
             
-            <div class="border-t border-champagne-border pt-4 space-y-2 text-xs text-gray-600">
+            <div class="border-t border-champagne-border pt-3 space-y-2 text-xs text-gray-600">
               <p><strong>Artisan Hours:</strong> <span>48 Hours</span></p>
               <p><strong>Materials:</strong> <span id="modalMaterials"></span></p>
             </div>
@@ -327,30 +331,33 @@
               <p>We kindly request you to check the product thoroughly before breaking the seal. Once the seal is broken, no exchange or return will be entertained. Replacements require an unedited unboxing video.</p>
             </div>
 
-            <div class="pt-2 flex gap-3" id="modalActionContainer"></div>
-
-            <div class="border-t border-champagne-border pt-4 space-y-4">
-              <div class="flex justify-between items-center">
-                <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
-                <button onclick="toggleReviewForm()" class="text-[10px] text-gold-antique font-bold uppercase underline">Write a Review</button>
-              </div>
-
-              <form id="reviewForm" onsubmit="submitClientReview(event)" class="hidden bg-champagne-soft p-4 rounded-xl border border-gold/30 space-y-3">
-                <h5 class="text-xs font-bold text-burgundy uppercase">Share Your Experience</h5>
-                <input type="text" id="reviewAuthor" placeholder="Your Full Name *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
-                <input type="text" id="reviewLocation" placeholder="City / Country (e.g., Delhi) *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
-                <textarea id="reviewComment" rows="2" placeholder="Write your review here... *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none"></textarea>
-                <button type="submit" class="w-full py-2.5 bg-burgundy text-champagne-silk text-[10px] uppercase font-bold rounded-lg hover:bg-burgundy-light transition">Submit for Review</button>
-              </form>
-
-              <div id="modalReviewsList" class="space-y-3"></div>
-            </div>
-
-            <div class="border-t border-champagne-border pt-4 space-y-3">
-              <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">You May Also Adore</h4>
-              <div id="modalCrossSell" class="grid grid-cols-3 gap-3"></div>
-            </div>
+            <div class="pt-1 flex gap-3" id="modalActionContainer"></div>
           </div>
+
+          <!-- CLIENT REVIEWS SECTION -->
+          <div class="border-t border-champagne-border pt-5 space-y-4">
+            <div class="flex justify-between items-center">
+              <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
+              <button onclick="toggleReviewForm()" class="text-[10px] text-gold-antique font-bold uppercase underline">Write a Review</button>
+            </div>
+
+            <form id="reviewForm" onsubmit="submitClientReview(event)" class="hidden bg-champagne-soft p-4 rounded-xl border border-gold/30 space-y-3">
+              <h5 class="text-xs font-bold text-burgundy uppercase">Share Your Experience</h5>
+              <input type="text" id="reviewAuthor" placeholder="Your Full Name *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
+              <input type="text" id="reviewLocation" placeholder="City / Country (e.g., Delhi) *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
+              <textarea id="reviewComment" rows="2" placeholder="Write your review here... *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none"></textarea>
+              <button type="submit" class="w-full py-2.5 bg-burgundy text-champagne-silk text-[10px] uppercase font-bold rounded-lg hover:bg-burgundy-light transition">Submit for Review</button>
+            </form>
+
+            <div id="modalReviewsList" class="space-y-3"></div>
+          </div>
+
+          <!-- YOU MAY ALSO ADORE -->
+          <div class="border-t border-champagne-border pt-5 space-y-3">
+            <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">You May Also Adore</h4>
+            <div id="modalCrossSell" class="grid grid-cols-3 gap-3"></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -639,8 +646,8 @@
       thumbsContainer.innerHTML = currentMediaList.map((url, idx) => {
         const isVid = url.endsWith('.mp4') || url.includes('video');
         return `
-          <div onclick="setMediaIndex(${idx})" class="w-16 h-16 rounded-xl overflow-hidden border-2 ${idx === 0 ? 'border-gold' : 'border-gold/30'} cursor-pointer flex-shrink-0 bg-burgundy/10 flex items-center justify-center">
-            ${isVid ? '<span class="text-[10px] font-bold text-burgundy">▶ Video</span>' : `<img src="${url}" class="w-full h-full object-cover">`}
+          <div onclick="setMediaIndex(${idx})" class="w-14 h-14 rounded-xl overflow-hidden border-2 ${idx === 0 ? 'border-gold' : 'border-gold/30'} cursor-pointer flex-shrink-0 bg-burgundy/10 flex items-center justify-center">
+            ${isVid ? '<span class="text-[9px] font-bold text-burgundy">▶ Video</span>' : `<img src="${url}" class="w-full h-full object-cover">`}
           </div>
         `;
       }).join('');
@@ -877,6 +884,7 @@
   </script>
 </body>
 </html>
+
 
 
 
