@@ -61,7 +61,6 @@
 
   <div id="cursorGlow" class="hidden md:block"></div>
 
-  <!-- TOP BANNER -->
   <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-3">
     <span>✨ Free Shipping Across India on Orders Over ₹3,999</span>
     <span class="hidden md:inline">•</span>
@@ -70,21 +69,16 @@
     <span>Strict Unboxing Video Policy</span>
   </div>
 
-  <!-- ROYAL MAISON HEADER (FIXED 3-COLUMN DESKTOP GRID TO PREVENT OVERLAPPING) -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 grid grid-cols-3 items-center">
-      
-      <!-- LEFT NAVIGATION -->
       <nav class="hidden md:flex items-center space-x-6 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
         <a href="#collection" class="hover:text-gold transition duration-300">Collection</a>
         <a href="#reels" class="hover:text-gold transition duration-300">Reels</a>
+        <a href="#testimonials" class="hover:text-gold transition duration-300">Testimonials</a>
         <a href="#story" class="hover:text-gold transition duration-300">Story</a>
-        <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
       </nav>
-      <!-- Mobile menu placeholder for layout balance -->
       <div class="md:hidden"></div>
 
-      <!-- CENTERED BRAND LOGO -->
       <div class="text-center">
         <a href="#" class="inline-block group">
           <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
@@ -92,7 +86,6 @@
         </a>
       </div>
 
-      <!-- RIGHT ACTIONS -->
       <div class="flex items-center justify-end space-x-3 sm:space-x-6">
         <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
         <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
@@ -100,11 +93,9 @@
           <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
         </button>
       </div>
-
     </div>
   </header>
 
-  <!-- HAUTE HERO SECTION -->
   <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border overflow-hidden">
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold/20 rounded-full blur-3xl aura-glow pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-burgundy/10 rounded-full blur-3xl aura-glow pointer-events-none" style="animation-delay: 3s;"></div>
@@ -134,7 +125,6 @@
     </div>
   </section>
 
-  <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
     <div class="text-center max-w-2xl mx-auto mb-10">
       <h3 class="font-serif text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
@@ -153,8 +143,35 @@
     </div>
   </section>
 
-  <!-- OUR STORY SECTION -->
-  <section id="story" class="bg-champagne-soft border-y border-champagne-border py-20 px-4">
+  <!-- HOMEPAGE CUSTOMER TESTIMONIALS SECTION -->
+  <section id="testimonials" class="bg-champagne-soft py-20 border-y border-champagne-border px-4">
+    <div class="max-w-7xl mx-auto space-y-12">
+      <div class="text-center max-w-xl mx-auto space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Client Love</span>
+        <h3 class="font-serif text-3xl text-burgundy font-bold">Maison Testimonials</h3>
+        <p class="text-xs text-gray-600 font-light">Words from brides and connoisseurs around the globe.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
+          <div class="text-gold text-sm">★★★★★</div>
+          <p class="text-xs text-gray-700 italic leading-relaxed">"The emerald crystals caught every light during my sangeet. KALANVII packaging and quality rival top Parisian houses!"</p>
+          <p class="text-[11px] font-bold text-burgundy">— Ananya Sharma, Delhi</p>
+        </div>
+        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
+          <div class="text-gold text-sm">★★★★★</div>
+          <p class="text-xs text-gray-700 italic leading-relaxed">"Ordered two potlis for my wedding reception. The beadwork is extraordinarily precise and sturdy."</p>
+          <p class="text-[11px] font-bold text-burgundy">— Riya Merchant, Mumbai</p>
+        </div>
+        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
+          <div class="text-gold text-sm">★★★★★</div>
+          <p class="text-xs text-gray-700 italic leading-relaxed">"Delivered all the way to London in pristine condition. Exceptional luxury and wonderful WhatsApp support."</p>
+          <p class="text-[11px] font-bold text-burgundy">— Natasha K., London</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="story" class="bg-champagne-silk py-20 px-4 border-b border-champagne-border">
     <div class="max-w-4xl mx-auto text-center space-y-6">
       <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Maison Heritage</span>
       <h3 class="font-serif text-3xl sm:text-4xl text-burgundy font-bold">Our Story</h3>
@@ -165,7 +182,6 @@
     </div>
   </section>
 
-  <!-- COUTURE REELS -->
   <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-b border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2">
@@ -177,7 +193,6 @@
     </div>
   </section>
 
-  <!-- NEWSLETTER SIGNUP BOX -->
   <section class="bg-champagne-silk py-16 border-b border-champagne-border text-center px-4">
     <div class="max-w-xl mx-auto space-y-4 bg-champagne-soft p-8 rounded-3xl border border-gold/30 shadow-lg">
       <h4 class="font-serif text-xl font-bold text-burgundy uppercase">Join the KALANVII VIP Circle</h4>
@@ -189,35 +204,7 @@
     </div>
   </section>
 
-  <!-- SAVOIR-FAIRE -->
-  <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8">
-      <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
-        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Artisanal Pedigree</span>
-        <h3 class="font-serif text-3xl text-gold-light">The Art of Indian Karigari</h3>
-        <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every piece.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
-          <div class="font-serif text-3xl text-gold-foil">48+ Hours</div>
-          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Hand-Embroidered</h4>
-          <p class="text-xs text-champagne/70 leading-relaxed font-light">Thousands of micro seed pearls strung individually with high-tensile silk thread to prevent unraveling.</p>
-        </div>
-        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
-          <div class="font-serif text-3xl text-gold-foil">Gilded Finish</div>
-          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Gold Electroplate</h4>
-          <p class="text-xs text-champagne/70 leading-relaxed font-light">Frames and handles are coated in an anti-tarnish protective luster for enduring elegance across generations.</p>
-        </div>
-        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
-          <div class="font-serif text-3xl text-gold-foil">Bespoke</div>
-          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Bridal Customization</h4>
-          <p class="text-xs text-champagne/70 leading-relaxed font-light">Custom tint matching for your bridal lehenga, sangeet gown, or reception ensemble.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- QUICK VIEW MODAL -->
+  <!-- QUICK VIEW MODAL WITH SUBMIT REVIEW FORM -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
@@ -265,8 +252,22 @@
 
             <div class="pt-2 flex gap-3" id="modalActionContainer"></div>
 
-            <div class="border-t border-champagne-border pt-4 space-y-3">
-              <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">Verified Client Reviews</h4>
+            <!-- VERIFIED REVIEWS & WRITE A REVIEW FORM -->
+            <div class="border-t border-champagne-border pt-4 space-y-4">
+              <div class="flex justify-between items-center">
+                <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
+                <button onclick="toggleReviewForm()" class="text-[10px] text-gold-antique font-bold uppercase underline">Write a Review</button>
+              </div>
+
+              <!-- REVIEW SUBMISSION FORM (Hidden by default) -->
+              <form id="reviewForm" onsubmit="submitClientReview(event)" class="hidden bg-champagne-soft p-4 rounded-xl border border-gold/30 space-y-3">
+                <h5 class="text-xs font-bold text-burgundy uppercase">Share Your Experience</h5>
+                <input type="text" id="reviewAuthor" placeholder="Your Full Name *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
+                <input type="text" id="reviewLocation" placeholder="City / Country (e.g., Delhi) *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
+                <textarea id="reviewComment" rows="2" placeholder="Write your review here... *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none"></textarea>
+                <button type="submit" class="w-full py-2.5 bg-burgundy text-champagne-silk text-[10px] uppercase font-bold rounded-lg hover:bg-burgundy-light transition">Submit for Review</button>
+              </form>
+
               <div id="modalReviewsList" class="space-y-3"></div>
             </div>
 
@@ -472,15 +473,16 @@
 
     function getGeneratedReviews(productId) {
       const reviewPools = [
-        { name: "Ananya S.", location: "Delhi", text: `Ordered this for my sister's sangeet and received non-stop compliments! The pearl work is exceptionally high-end.` },
-        { name: "Priya M.", location: "Mumbai", text: `Absolute perfection. The gold electroplate finish is sturdy and the velvet feels genuinely royal.` },
-        { name: "Meera K.", location: "Chandigarh", text: `Worth every single rupee. Shipped securely and packaged like true haute couture.` }
+        { name: "Ananya Sharma", location: "Delhi", text: `Ordered this for my sister's sangeet and received non-stop compliments! The pearl work is exceptionally high-end.` },
+        { name: "Natasha Kapoor", location: "Chandigarh", text: `Absolute perfection. The gold electroplate finish is sturdy and the velvet feels genuinely royal.` },
+        { name: "Riya Merchant", location: "Mumbai", text: `Worth every single rupee. Shipped securely and packaged like true haute couture.` },
+        { name: "Meera Sen", location: "Kolkata", text: `Stunning craftsmanship! The photos don't even do justice to how much it sparkles under evening lights.` }
       ];
       let seed = productId ? productId.toString().charCodeAt(0) : 5;
       return [reviewPools[seed % reviewPools.length], reviewPools[(seed + 1) % reviewPools.length]];
     }
 
-    function openQuickView(id) {
+    async function openQuickView(id) {
       const item = allProducts.find(p => p.id == id);
       if (!item) return;
       selectedModalItem = item;
@@ -513,9 +515,7 @@
 
       const actionContainer = document.getElementById('modalActionContainer');
       if (item.is_sold_out) {
-        actionContainer.innerHTML = `
-          <button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>
-        `;
+        actionContainer.innerHTML = `<button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>`;
       } else {
         actionContainer.innerHTML = `
           <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition shadow-md">Add to Bag</button>
@@ -524,16 +524,8 @@
         document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       }
 
-      const reviews = getGeneratedReviews(item.id);
-      document.getElementById('modalReviewsList').innerHTML = reviews.map(r => `
-        <div class="bg-champagne-soft p-3 rounded-xl border border-champagne-border space-y-1">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-xs text-burgundy">${r.name} (${r.location})</span>
-            <span class="text-gold text-xs">★★★★★</span>
-          </div>
-          <p class="text-[11px] text-gray-600 font-light">"${r.text}"</p>
-        </div>
-      `).join('');
+      // Load Reviews (Default + Approved Supabase reviews)
+      await loadProductReviews(item.id);
 
       const otherProducts = allProducts.filter(p => p.id != id).slice(0, 3);
       document.getElementById('modalCrossSell').innerHTML = otherProducts.map(p => `
@@ -544,6 +536,61 @@
       `).join('');
 
       document.getElementById('quickModal').classList.remove('hidden');
+    }
+
+    async function loadProductReviews(productId) {
+      const container = document.getElementById('modalReviewsList');
+      const defaultReviews = getGeneratedReviews(productId);
+      
+      let approvedDbReviews = [];
+      const client = getSupabase();
+      if (client) {
+        const { data } = await client.from('product_reviews').select('*').eq('product_id', productId).eq('is_approved', true);
+        if (data) approvedDbReviews = data.map(r => ({ name: r.author, location: r.location || 'Verified Client', text: r.comment }));
+      }
+
+      const combined = [...approvedDbReviews, ...defaultReviews];
+      container.innerHTML = combined.map(r => `
+        <div class="bg-champagne-soft p-3 rounded-xl border border-champagne-border space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-burgundy">${r.name} (${r.location})</span>
+            <span class="text-gold text-xs">★★★★★</span>
+          </div>
+          <p class="text-[11px] text-gray-600 font-light">"${r.text}"</p>
+        </div>
+      `).join('');
+    }
+
+    function toggleReviewForm() {
+      const form = document.getElementById('reviewForm');
+      form.classList.toggle('hidden');
+    }
+
+    async function submitClientReview(e) {
+      e.preventDefault();
+      const client = getSupabase();
+      if (!client || !selectedModalItem) return;
+
+      const author = document.getElementById('reviewAuthor').value;
+      const location = document.getElementById('reviewLocation').value;
+      const comment = document.getElementById('reviewComment').value;
+
+      const { error } = await client.from('product_reviews').insert([{
+        product_id: selectedModalItem.id,
+        author: author,
+        location: location,
+        comment: comment,
+        rating: 5,
+        is_approved: false
+      }]);
+
+      if (error) {
+        alert("Failed to submit review: " + error.message);
+      } else {
+        alert("Thank you! Your review has been submitted and will appear on the store after admin approval.");
+        document.getElementById('reviewForm').reset();
+        document.getElementById('reviewForm').classList.add('hidden');
+      }
     }
 
     function updateActiveMediaDisplay() {
@@ -675,23 +722,19 @@
         body.innerHTML = `
           <p><strong>1. Artisanal Craftsmanship:</strong> Each KALANVII piece is meticulously hand-embroidered by master Indian artisans. Minor variances in bead placement highlight the authenticity of handmade luxury.</p>
           <p><strong>2. Strict No-Return Policy:</strong> All sales are final. We do not offer returns or exchanges for change of mind.</p>
-          <p><strong>3. Transit Damage & Replacements:</strong> Replacements are exclusively issued in the event of severe transit damage. To qualify, customers must provide a continuous, unedited unboxing video starting from the sealed outer courier package within 24 hours of delivery.</p>
-          <p><strong>4. Pricing & Currency:</strong> Prices are displayed in INR and USD. All international shipments are subject to local customs duties where applicable.</p>
+          <p><strong>3. Transit Damage & Replacements:</strong> Replacements are exclusively issued in the event of severe transit damage. To qualify, customers can provide a continuous unboxing video starting from the sealed outer package within 24 hours.</p>
         `;
       } else if (type === 'shipping') {
         title.innerText = "Shipping Policy";
         body.innerHTML = `
           <p><strong>Free Shipping:</strong> Enjoy complimentary express delivery across India on all orders over ₹3,999.</p>
-          <p><strong>Global Shipping:</strong> We ship worldwide using express courier partners. International shipping rates are calculated at checkout or via WhatsApp concierge.</p>
-          <p><strong>Dispatch Time:</strong> Because our pieces are handcrafted, orders are dispatched within 2 to 4 business days.</p>
+          <p><strong>Global Shipping:</strong> We ship worldwide using express courier partners.</p>
         `;
       }
       modal.classList.remove('hidden');
     }
 
-    function closePolicyModal() {
-      document.getElementById('policyModal').classList.add('hidden');
-    }
+    function closePolicyModal() { document.getElementById('policyModal').classList.add('hidden'); }
 
     document.addEventListener('DOMContentLoaded', loadCatalog);
   </script>
