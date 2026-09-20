@@ -37,20 +37,39 @@
     }
     .gold-shimmer-border {
       border: 1px solid rgba(197, 160, 89, 0.45);
-      box-shadow: 0 0 30px rgba(197, 160, 89, 0.12);
+      box-shadow: 0 0 35px rgba(197, 160, 89, 0.15);
     }
     @keyframes floatAura {
       0%, 100% { transform: translateY(0px) scale(1); opacity: 0.4; }
-      50% { transform: translateY(-10px) scale(1.03); opacity: 0.7; }
+      50% { transform: translateY(-15px) scale(1.05); opacity: 0.75; }
     }
-    .aura-glow { animation: floatAura 6s ease-in-out infinite; }
+    .aura-glow { animation: floatAura 7s ease-in-out infinite; }
+    
+    /* Custom Luxury Spotlight Cursor Glow */
+    #cursorGlow {
+      pointer-events: none;
+      position: fixed;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(197,160,89,0.12) 0%, rgba(67,9,23,0.03) 60%, transparent 100%);
+      transition: transform 0.1s ease-out;
+      z-index: 99;
+      transform: translate(-50%, -50%);
+    }
   </style>
 </head>
-<body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk">
+<body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk relative">
+
+  <!-- LUXURY SPOTLIGHT CURSOR GLOW -->
+  <div id="cursorGlow" class="hidden md:block"></div>
 
   <!-- TOP PRESTIGE TICKER -->
-  <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30">
-    <span>Worldwide Express Shipping • Handcrafted in India • Strict Unboxing Video Policy for Claims</span>
+  <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30 flex items-center justify-center gap-4 overflow-hidden">
+    <span>✨ Worldwide Express Shipping</span>
+    <span class="hidden sm:inline">•</span>
+    <span class="hidden sm:inline">Handcrafted in India</span>
+    <span>•</span>
+    <span>Strict Unboxing Video Policy for Claims</span>
   </div>
 
   <!-- ROYAL MAISON HEADER -->
@@ -58,6 +77,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
         <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
+        <a href="#reels" class="hover:text-gold transition duration-300">Couture Reels</a>
         <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
       </nav>
       <div class="text-center md:absolute md:left-1/2 md:-translate-x-1/2">
@@ -67,7 +87,7 @@
         </a>
       </div>
       <div class="flex items-center space-x-4 sm:space-x-6">
-        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition">INR (₹)</button>
+        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
         <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
@@ -94,8 +114,8 @@
           Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries.
         </p>
         <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md">Explore Collection</a>
-          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300">Speak to Concierge</a>
+          <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md rounded-xl">Explore Collection</a>
+          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!%20I%20am%20exploring%20your%20collection." target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl">Speak to Concierge</a>
         </div>
       </div>
       <div class="lg:col-span-6 flex justify-center">
@@ -114,18 +134,61 @@
       <div class="w-16 h-0.5 bg-gold mx-auto mt-4"></div>
     </div>
     <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 text-xs uppercase tracking-widest">
-      <button onclick="filterCategory('All')" class="filter-btn active-tab px-4 py-2 border border-burgundy bg-burgundy text-champagne-silk transition rounded-full">All</button>
-      <button onclick="filterCategory('Potlis')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Potlis</button>
-      <button onclick="filterCategory('Crescents')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Crescent Clutches</button>
-      <button onclick="filterCategory('Minaudieres')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Minaudières</button>
-      <button onclick="filterCategory('Cocktail')" class="filter-btn px-4 py-2 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Cocktail Bags</button>
+      <button onclick="filterCategory('All')" class="filter-btn active-tab px-5 py-2.5 border border-burgundy bg-burgundy text-champagne-silk transition rounded-full shadow-sm">All</button>
+      <button onclick="filterCategory('Potlis')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Potlis</button>
+      <button onclick="filterCategory('Crescents')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Crescent Clutches</button>
+      <button onclick="filterCategory('Minaudieres')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Minaudières</button>
+      <button onclick="filterCategory('Cocktail')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Cocktail Bags</button>
     </div>
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <div class="col-span-full py-16 text-center text-sm text-burgundy/60 animate-pulse">Curating royal collection...</div>
     </div>
   </section>
 
-  <!-- QUICK VIEW DETAIL MODAL WITH SLIDER ARROWS -->
+  <!-- IMMERSIVE COUTURE REELS SECTION -->
+  <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-y border-gold/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
+      <div class="text-center max-w-xl mx-auto space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Cinematic Showcase</span>
+        <h3 class="font-serif text-3xl text-gold-light">The Couture Reel</h3>
+        <p class="text-xs text-champagne/70 font-light">Witness the tactile shimmer and exquisite movement of our handcrafted beadwork.</p>
+      </div>
+      <div id="reelsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Dynamic video showcase cards injected here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVOIR-FAIRE SECTION -->
+  <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Artisanal Pedigree</span>
+        <h3 class="font-serif text-3xl text-gold-light">The Art of Indian Karigari</h3>
+        <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every piece.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+          <div class="font-serif text-3xl text-gold-foil">48+ Hours</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Hand-Embroidered</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Thousands of micro seed pearls strung individually with high-tensile silk thread to prevent unraveling.</p>
+        </div>
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+          <div class="font-serif text-3xl text-gold-foil">Gilded Finish</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Gold Electroplate</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Frames and handles are coated in an anti-tarnish protective luster for enduring elegance across generations.</p>
+        </div>
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+          <div class="font-serif text-3xl text-gold-foil">Bespoke</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Bridal Customization</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Custom tint matching for your bridal lehenga, sangeet gown, or reception ensemble.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK VIEW DETAIL MODAL WITH SLIDER ARROWS & BESPOKE SELECTOR -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
@@ -134,26 +197,22 @@
         
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           
-          <!-- MEDIA SLIDER COLUMN (7 cols) -->
+          <!-- MEDIA SLIDER COLUMN -->
           <div class="md:col-span-7 space-y-4">
             <div class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group">
-              <!-- MAIN IMAGE -->
               <img id="modalImg" src="" class="w-full h-full object-cover transition duration-500">
               <video id="modalVideo" src="" controls class="w-full h-full object-cover hidden"></video>
 
-              <!-- LEFT/RIGHT SLIDER ARROWS -->
               <button onclick="slideMedia(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100">❮</button>
               <button onclick="slideMedia(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100">❯</button>
               
-              <!-- IMAGE COUNTER BADGE -->
               <div id="slideCounter" class="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] px-3 py-1 rounded-full font-bold">1 / 1</div>
             </div>
 
-            <!-- THUMBNAIL STRIP -->
             <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-2"></div>
           </div>
 
-          <!-- DETAILS & REVIEWS COLUMN (5 cols) -->
+          <!-- DETAILS, BESPOKE SELECTOR & REVIEWS -->
           <div class="md:col-span-5 space-y-6 max-h-[75vh] overflow-y-auto pr-1">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
@@ -169,6 +228,17 @@
 
             <p id="modalDesc" class="text-xs text-[#5c4a40] leading-relaxed font-light"></p>
             
+            <!-- BESPOKE COLOR SELECTOR -->
+            <div class="space-y-2 bg-champagne-soft p-3.5 rounded-xl border border-gold/30">
+              <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold">Select Bridal Tint / Customization</label>
+              <select id="bespokeTint" class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg text-burgundy font-semibold outline-none focus:border-gold">
+                <option value="Standard Atelier Tint (As Pictured)">Standard Atelier Tint (As Pictured)</option>
+                <option value="Custom Bridal Gold Leaf Accent">Custom Bridal Gold Leaf Accent</option>
+                <option value="Royal Ivory & Pearl Tint">Royal Ivory & Pearl Tint</option>
+                <option value="Deep Midnight / Custom Outfit Match">Deep Midnight / Custom Outfit Match</option>
+              </select>
+            </div>
+
             <div class="border-t border-champagne-border pt-4 space-y-2 text-xs text-gray-600">
               <p><strong>Artisan Hours:</strong> <span>48 Hours</span></p>
               <p><strong>Materials:</strong> <span id="modalMaterials"></span></p>
@@ -262,6 +332,15 @@
     let currentMediaList = [];
     let currentMediaIndex = 0;
 
+    // SPOTLIGHT CURSOR FOLLOWER
+    document.addEventListener('mousemove', (e) => {
+      const glow = document.getElementById('cursorGlow');
+      if (glow) {
+        glow.style.left = `${e.clientX}px`;
+        glow.style.top = `${e.clientY}px`;
+      }
+    });
+
     async function loadCatalog() {
       const client = getSupabase();
       if (!client) {
@@ -274,11 +353,39 @@
         if (data && data.length > 0) {
           allProducts = data;
           if (data[0].image_url) document.getElementById('heroShowcaseImg').src = data[0].image_url;
+          renderReels(data);
         }
       } catch (err) {
         console.log("Error loading catalog:", err);
       }
       renderCatalog();
+    }
+
+    function renderReels(products) {
+      const reelsContainer = document.getElementById('reelsContainer');
+      const videoItems = products.filter(p => p.video_url);
+      
+      if (videoItems.length === 0) {
+        reelsContainer.innerHTML = `
+          <div class="col-span-full text-center text-xs text-champagne/60 py-8">
+            Upload showcase videos via your admin portal to feature them in the Couture Reel.
+          </div>
+        `;
+        return;
+      }
+
+      reelsContainer.innerHTML = videoItems.map(item => `
+        <div class="group relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl">
+          <video src="${item.video_url}" autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
+          <div class="absolute inset-0 bg-gradient-to-t from-burgundy-deep via-transparent to-transparent flex flex-col justify-end p-6 space-y-2">
+            <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold">Couture Highlight</span>
+            <h4 class="font-serif text-sm font-bold text-champagne-silk">${item.title}</h4>
+            <button onclick="openQuickView('${item.id}')" class="mt-2 py-2.5 px-4 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gold transition shadow">
+              Shop This Look ↗
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
     function renderCatalog() {
@@ -296,10 +403,10 @@
         const mediaCount = (item.gallery_images?.length || 0) + (item.video_url ? 1 : 0);
 
         return `
-          <div class="group bg-champagne-silk border border-champagne-border/80 hover:border-gold/60 p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl">
+          <div class="group bg-champagne-silk border border-champagne-border/80 hover:border-gold/60 p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-1">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer" onclick="openQuickView('${item.id}')">
-              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full">50% OFF</span>
-              ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold">📷 +${mediaCount}</span>` : ''}
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">50% OFF</span>
+              ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
               <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
               <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                 <span class="bg-champagne-silk/95 text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-semibold rounded-full shadow-lg">Quick View</span>
@@ -325,10 +432,10 @@
     function filterCategory(cat) {
       currentCategory = cat;
       document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('bg-burgundy', 'text-champagne-silk');
+        btn.classList.remove('bg-burgundy', 'text-champagne-silk', 'shadow-sm');
         btn.classList.add('text-burgundy');
         if (btn.innerText.trim().toLowerCase() === cat.toLowerCase() || (cat === 'All' && btn.innerText.trim() === 'All')) {
-          btn.classList.add('bg-burgundy', 'text-champagne-silk');
+          btn.classList.add('bg-burgundy', 'text-champagne-silk', 'shadow-sm');
           btn.classList.remove('text-burgundy');
         }
       });
@@ -368,24 +475,21 @@
       document.getElementById('modalDesc').innerText = item.description || 'Handcrafted with meticulous detail by master karigars for celebratory grandeur.';
       document.getElementById('modalMaterials').innerText = item.materials || 'Hand-strung micro pearls & silk';
 
-      // PREPARE MEDIA SLIDER LIST
       currentMediaList = [item.image_url, ...(item.gallery_images || [])];
       if (item.video_url) currentMediaList.push(item.video_url);
       currentMediaIndex = 0;
       updateActiveMediaDisplay();
 
-      // SETUP THUMBNAILS
       const thumbsContainer = document.getElementById('modalThumbnails');
       thumbsContainer.innerHTML = currentMediaList.map((url, idx) => {
         const isVid = url.endsWith('.mp4') || url.includes('video');
         return `
-          <div onclick="setMediaIndex(${idx})" class="w-16 h-16 rounded-lg overflow-hidden border-2 ${idx === 0 ? 'border-gold' : 'border-gold/30'} cursor-pointer flex-shrink-0 bg-burgundy/10 flex items-center justify-center">
+          <div onclick="setMediaIndex(${idx})" class="w-16 h-16 rounded-xl overflow-hidden border-2 ${idx === 0 ? 'border-gold' : 'border-gold/30'} cursor-pointer flex-shrink-0 bg-burgundy/10 flex items-center justify-center">
             ${isVid ? '<span class="text-[10px] font-bold text-burgundy">▶ Video</span>' : `<img src="${url}" class="w-full h-full object-cover">`}
           </div>
         `;
       }).join('');
 
-      // REVIEWS
       const reviews = getGeneratedReviews(item.id);
       document.getElementById('modalReviewsList').innerHTML = reviews.map(r => `
         <div class="bg-champagne-soft p-3 rounded-xl border border-champagne-border space-y-1">
@@ -397,11 +501,10 @@
         </div>
       `).join('');
 
-      // CROSS SELL
       const otherProducts = allProducts.filter(p => p.id != id).slice(0, 3);
       document.getElementById('modalCrossSell').innerHTML = otherProducts.map(p => `
-        <div onclick="openQuickView('${p.id}')" class="cursor-pointer group bg-white p-2 rounded-lg border border-champagne-border hover:border-gold transition">
-          <img src="${p.image_url}" class="w-full aspect-square object-cover rounded mb-1">
+        <div onclick="openQuickView('${p.id}')" class="cursor-pointer group bg-white p-2 rounded-xl border border-champagne-border hover:border-gold transition">
+          <img src="${p.image_url}" class="w-full aspect-square object-cover rounded-lg mb-1">
           <p class="text-[9px] font-serif font-bold text-burgundy truncate">${p.title}</p>
         </div>
       `).join('');
@@ -451,7 +554,8 @@
 
     function orderViaWhatsAppModal() {
       if (!selectedModalItem) return;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge! I am interested in the "${selectedModalItem.title}". Could you please share more details and availability?`);
+      const tint = document.getElementById('bespokeTint').value;
+      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in the "${selectedModalItem.title}".\nSelected Bespoke Tint: ${tint}\n\nCould you please share availability and confirmation?`);
       window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
@@ -525,5 +629,3 @@
   </script>
 </body>
 </html>
-
-
