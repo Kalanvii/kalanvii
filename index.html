@@ -29,10 +29,7 @@
     }
   </script>
   <style>
-    /* Prevent double-tap zoom on buttons and interactive elements */
-    button, a, .cursor-pointer {
-      touch-action: manipulation;
-    }
+    button, a, .cursor-pointer { touch-action: manipulation; }
     .silk-pattern {
       background-color: #faf6f0;
       background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
@@ -64,7 +61,6 @@
 
   <div id="cursorGlow" class="hidden md:block"></div>
 
-  <!-- TOP PRESTIGE TICKER -->
   <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30 flex items-center justify-center gap-4 overflow-hidden">
     <span>✨ Worldwide Express Shipping</span>
     <span class="hidden sm:inline">•</span>
@@ -73,7 +69,6 @@
     <span>Strict Unboxing Video Policy for Claims</span>
   </div>
 
-  <!-- ROYAL MAISON HEADER -->
   <header class="sticky top-0 z-40 bg-champagne-silk/90 backdrop-blur-md border-b border-champagne-border transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
@@ -98,7 +93,6 @@
     </div>
   </header>
 
-  <!-- HAUTE HERO SECTION -->
   <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border overflow-hidden">
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold/20 rounded-full blur-3xl aura-glow pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-burgundy/10 rounded-full blur-3xl aura-glow pointer-events-none" style="animation-delay: 3s;"></div>
@@ -128,7 +122,6 @@
     </div>
   </section>
 
-  <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
     <div class="text-center max-w-2xl mx-auto mb-10">
       <h3 class="font-serif text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
@@ -147,7 +140,6 @@
     </div>
   </section>
 
-  <!-- OUR STORY SECTION -->
   <section id="story" class="bg-champagne-soft border-y border-champagne-border py-20 px-4">
     <div class="max-w-4xl mx-auto text-center space-y-6">
       <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Maison Heritage</span>
@@ -159,7 +151,6 @@
     </div>
   </section>
 
-  <!-- COUTURE REELS -->
   <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-b border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2">
@@ -171,7 +162,6 @@
     </div>
   </section>
 
-  <!-- SAVOIR-FAIRE -->
   <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
       <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
@@ -245,9 +235,8 @@
               <p>No returns. Replacements only for transit damage. Unboxing video required.</p>
             </div>
 
-            <div class="pt-2 flex gap-3">
-              <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition shadow-md">Add to Bag</button>
-              <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition flex items-center justify-center">WhatsApp</button>
+            <div class="pt-2 flex gap-3" id="modalActionContainer">
+              <!-- Dynamically populated Add to Bag or Sold Out button -->
             </div>
 
             <div class="border-t border-champagne-border pt-4 space-y-3">
@@ -291,7 +280,7 @@
     </div>
   </div>
 
-  <!-- POLICY & CONTACT MODAL -->
+  <!-- POLICY MODAL -->
   <div id="policyModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closePolicyModal()"></div>
@@ -303,21 +292,18 @@
     </div>
   </div>
 
-  <!-- ROYAL FOOTER WITH CONTACT & T&C -->
+  <!-- FOOTER -->
   <footer class="bg-burgundy-deep text-champagne-silk py-16 border-t border-gold/40 text-center text-xs tracking-wider">
     <div class="max-w-7xl mx-auto px-4 space-y-6">
       <h5 class="font-serif text-2xl tracking-[0.25em] text-gold-foil">KALANVII • कलान्वी</h5>
       <p class="text-champagne/60 text-[11px] uppercase tracking-[0.2em]">YOUR CELEBRATION, OUR SIGNATURE</p>
       <div class="w-12 h-0.5 bg-gold/40 mx-auto"></div>
-      
-      <!-- FOOTER LINKS -->
       <div class="flex flex-wrap justify-center gap-6 text-[11px] text-champagne/80 uppercase tracking-widest">
         <a href="#story" class="hover:text-gold transition">Our Story</a>
         <button onclick="openPolicy('contact')" class="hover:text-gold transition uppercase">Contact Us</button>
         <button onclick="openPolicy('tc')" class="hover:text-gold transition uppercase">Terms & Conditions</button>
         <a href="./admin.html" class="text-gold-foil hover:underline">Admin Portal →</a>
       </div>
-
       <p class="text-[11px] text-champagne/40 max-w-md mx-auto leading-relaxed pt-2">
         Crafting modern bridal and evening heirlooms with timeless Indian craftsmanship.
       </p>
@@ -328,7 +314,6 @@
     </div>
   </footer>
 
-  <!-- SCRIPT -->
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
@@ -359,10 +344,7 @@
 
     async function loadCatalog() {
       const client = getSupabase();
-      if (!client) {
-        setTimeout(loadCatalog, 500);
-        return;
-      }
+      if (!client) { setTimeout(loadCatalog, 500); return; }
       try {
         const { data, error } = await client.from('products').select('*').order('created_at', { ascending: false });
         if (error) throw error;
@@ -379,9 +361,9 @@
 
     function renderReels(products) {
       const reelsContainer = document.getElementById('reelsContainer');
-      const videoItems = products.filter(p => p.video_url);
+      const videoItems = products.filter(p => p.video_url && !p.is_sold_out);
       if (videoItems.length === 0) {
-        reelsContainer.innerHTML = '<div class="col-span-full text-center text-xs text-champagne/60 py-8">Upload showcase videos via your admin portal to feature them here.</div>';
+        reelsContainer.innerHTML = '<div class="col-span-full text-center text-xs text-champagne/60 py-8">No active showcase videos available.</div>';
         return;
       }
       reelsContainer.innerHTML = videoItems.map(item => `
@@ -409,13 +391,14 @@
         const salePrice = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         const doublePrice = currency === 'INR' ? `₹${(item.price_inr * 2).toLocaleString('en-IN')}` : `$${item.price_usd * 2}`;
         const mediaCount = (item.gallery_images?.length || 0) + (item.video_url ? 1 : 0);
+        const isSoldOut = item.is_sold_out;
 
         return `
-          <div class="group bg-champagne-silk border border-champagne-border/80 hover:border-gold/60 p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-1">
+          <div class="group bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-1">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer" onclick="openQuickView('${item.id}')">
-              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">50% OFF</span>
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 ${isSoldOut ? 'bg-red-800' : 'bg-burgundy'} text-champagne-silk font-semibold rounded-full shadow">${isSoldOut ? 'SOLD OUT' : '50% OFF'}</span>
               ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
-              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ${isSoldOut ? 'grayscale contrast-75' : ''}">
               <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                 <span class="bg-champagne-silk/95 text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-semibold rounded-full shadow-lg">Quick View</span>
               </div>
@@ -430,7 +413,10 @@
               <p class="text-[11px] text-gray-500 line-clamp-1 pt-1 font-light">${item.materials || 'Handcrafted Luxury'}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-champagne-border flex gap-2">
-              <button onclick="addToCart('${item.id}')" class="w-full py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest font-semibold rounded-xl transition">Add to Bag</button>
+              ${isSoldOut 
+                ? `<button disabled class="w-full py-3 bg-gray-300 text-gray-600 text-[11px] uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Sold Out</button>`
+                : `<button onclick="addToCart('${item.id}')" class="w-full py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest font-semibold rounded-xl transition">Add to Bag</button>`
+              }
             </div>
           </div>
         `;
@@ -498,6 +484,19 @@
         `;
       }).join('');
 
+      const actionContainer = document.getElementById('modalActionContainer');
+      if (item.is_sold_out) {
+        actionContainer.innerHTML = `
+          <button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>
+        `;
+      } else {
+        actionContainer.innerHTML = `
+          <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition shadow-md">Add to Bag</button>
+          <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition flex items-center justify-center">WhatsApp</button>
+        `;
+        document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
+      }
+
       const reviews = getGeneratedReviews(item.id);
       document.getElementById('modalReviewsList').innerHTML = reviews.map(r => `
         <div class="bg-champagne-soft p-3 rounded-xl border border-champagne-border space-y-1">
@@ -517,7 +516,6 @@
         </div>
       `).join('');
 
-      document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       document.getElementById('quickModal').classList.remove('hidden');
     }
 
@@ -562,13 +560,13 @@
 
     function orderViaWhatsAppModal() {
       if (!selectedModalItem) return;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in the "${selectedModalItem.title}". Could you please share availability and confirmation?`);
+      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in the "${selectedModalItem.title}". Could you please share availability?`);
       window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
     function addToCart(id) {
       const item = allProducts.find(p => p.id == id);
-      if (!item) return;
+      if (!item || item.is_sold_out) return;
       const existing = cart.find(i => i.id == id);
       if (existing) { existing.qty += 1; } else { cart.push({ ...item, qty: 1 }); }
       document.getElementById('cartCount').innerText = cart.reduce((sum, i) => sum + i.qty, 0);
