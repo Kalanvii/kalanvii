@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>KALANVII | Your Celebration, Our Signature</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -29,6 +29,10 @@
     }
   </script>
   <style>
+    /* Prevent double-tap zoom on buttons and interactive elements */
+    button, a, .cursor-pointer {
+      touch-action: manipulation;
+    }
     .silk-pattern {
       background-color: #faf6f0;
       background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
@@ -44,8 +48,6 @@
       50% { transform: translateY(-15px) scale(1.05); opacity: 0.75; }
     }
     .aura-glow { animation: floatAura 7s ease-in-out infinite; }
-    
-    /* Custom Luxury Spotlight Cursor Glow */
     #cursorGlow {
       pointer-events: none;
       position: fixed;
@@ -60,7 +62,6 @@
 </head>
 <body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk relative">
 
-  <!-- LUXURY SPOTLIGHT CURSOR GLOW -->
   <div id="cursorGlow" class="hidden md:block"></div>
 
   <!-- TOP PRESTIGE TICKER -->
@@ -78,6 +79,7 @@
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
         <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
         <a href="#reels" class="hover:text-gold transition duration-300">Couture Reels</a>
+        <a href="#story" class="hover:text-gold transition duration-300">Our Story</a>
         <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
       </nav>
       <div class="text-center md:absolute md:left-1/2 md:-translate-x-1/2">
@@ -96,7 +98,7 @@
     </div>
   </header>
 
-  <!-- HAUTE HERO SECTION WITH MOTION AURA -->
+  <!-- HAUTE HERO SECTION -->
   <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border overflow-hidden">
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold/20 rounded-full blur-3xl aura-glow pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-burgundy/10 rounded-full blur-3xl aura-glow pointer-events-none" style="animation-delay: 3s;"></div>
@@ -114,8 +116,8 @@
           Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries.
         </p>
         <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md rounded-xl">Explore Collection</a>
-          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!%20I%20am%20exploring%20your%20collection." target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl">Speak to Concierge</a>
+          <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md rounded-xl text-center">Explore Collection</a>
+          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl text-center">Speak to Concierge</a>
         </div>
       </div>
       <div class="lg:col-span-6 flex justify-center">
@@ -145,21 +147,31 @@
     </div>
   </section>
 
-  <!-- IMMERSIVE COUTURE REELS SECTION -->
-  <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-y border-gold/30">
+  <!-- OUR STORY SECTION -->
+  <section id="story" class="bg-champagne-soft border-y border-champagne-border py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center space-y-6">
+      <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Maison Heritage</span>
+      <h3 class="font-serif text-3xl sm:text-4xl text-burgundy font-bold">Our Story</h3>
+      <div class="w-12 h-0.5 bg-gold mx-auto"></div>
+      <p class="text-sm sm:text-base text-[#5c4a40] leading-relaxed font-light">
+        Founded in <strong class="text-burgundy font-semibold">2026</strong> with a visionary dream: to bring the finest, most luxurious artisanal party handbags and clutches available to everyone worldwide. Rooted in traditional Indian karigari and crafted for global celebrations, KALANVII bridges heritage craftsmanship with contemporary grandeur.
+      </p>
+    </div>
+  </section>
+
+  <!-- COUTURE REELS -->
+  <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-b border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Cinematic Showcase</span>
         <h3 class="font-serif text-3xl text-gold-light">The Couture Reel</h3>
         <p class="text-xs text-champagne/70 font-light">Witness the tactile shimmer and exquisite movement of our handcrafted beadwork.</p>
       </div>
-      <div id="reelsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Dynamic video showcase cards injected here -->
-      </div>
+      <div id="reelsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
     </div>
   </section>
 
-  <!-- SAVOIR-FAIRE SECTION -->
+  <!-- SAVOIR-FAIRE -->
   <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
       <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
@@ -167,7 +179,6 @@
         <h3 class="font-serif text-3xl text-gold-light">The Art of Indian Karigari</h3>
         <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every piece.</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
           <div class="font-serif text-3xl text-gold-foil">48+ Hours</div>
@@ -188,7 +199,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW DETAIL MODAL WITH SLIDER ARROWS & BESPOKE SELECTOR -->
+  <!-- QUICK VIEW MODAL -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
@@ -196,8 +207,6 @@
         <button onclick="closeQuickView()" class="absolute top-5 right-5 text-gray-500 hover:text-burgundy text-2xl z-20 bg-champagne-soft w-10 h-10 rounded-full flex items-center justify-center border border-gold/30">✕</button>
         
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          
-          <!-- MEDIA SLIDER COLUMN -->
           <div class="md:col-span-7 space-y-4">
             <div class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group">
               <img id="modalImg" src="" class="w-full h-full object-cover transition duration-500">
@@ -208,11 +217,9 @@
               
               <div id="slideCounter" class="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] px-3 py-1 rounded-full font-bold">1 / 1</div>
             </div>
-
             <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-2"></div>
           </div>
 
-          <!-- DETAILS, BESPOKE SELECTOR & REVIEWS -->
           <div class="md:col-span-5 space-y-6 max-h-[75vh] overflow-y-auto pr-1">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
@@ -228,17 +235,6 @@
 
             <p id="modalDesc" class="text-xs text-[#5c4a40] leading-relaxed font-light"></p>
             
-            <!-- BESPOKE COLOR SELECTOR -->
-            <div class="space-y-2 bg-champagne-soft p-3.5 rounded-xl border border-gold/30">
-              <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold">Select Bridal Tint / Customization</label>
-              <select id="bespokeTint" class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg text-burgundy font-semibold outline-none focus:border-gold">
-                <option value="Standard Atelier Tint (As Pictured)">Standard Atelier Tint (As Pictured)</option>
-                <option value="Custom Bridal Gold Leaf Accent">Custom Bridal Gold Leaf Accent</option>
-                <option value="Royal Ivory & Pearl Tint">Royal Ivory & Pearl Tint</option>
-                <option value="Deep Midnight / Custom Outfit Match">Deep Midnight / Custom Outfit Match</option>
-              </select>
-            </div>
-
             <div class="border-t border-champagne-border pt-4 space-y-2 text-xs text-gray-600">
               <p><strong>Artisan Hours:</strong> <span>48 Hours</span></p>
               <p><strong>Materials:</strong> <span id="modalMaterials"></span></p>
@@ -295,23 +291,44 @@
     </div>
   </div>
 
-  <!-- ROYAL FOOTER -->
+  <!-- POLICY & CONTACT MODAL -->
+  <div id="policyModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
+      <div class="fixed inset-0" onclick="closePolicyModal()"></div>
+      <div class="inline-block w-full max-w-2xl p-6 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left space-y-4">
+        <button onclick="closePolicyModal()" class="absolute top-5 right-5 text-gray-500 hover:text-burgundy text-2xl z-20 bg-champagne-soft w-10 h-10 rounded-full flex items-center justify-center border border-gold/30">✕</button>
+        <h3 id="policyModalTitle" class="font-serif text-xl text-burgundy font-bold"></h3>
+        <div id="policyModalBody" class="text-xs text-[#5c4a40] leading-relaxed space-y-3 font-light max-h-[60vh] overflow-y-auto pr-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROYAL FOOTER WITH CONTACT & T&C -->
   <footer class="bg-burgundy-deep text-champagne-silk py-16 border-t border-gold/40 text-center text-xs tracking-wider">
     <div class="max-w-7xl mx-auto px-4 space-y-6">
       <h5 class="font-serif text-2xl tracking-[0.25em] text-gold-foil">KALANVII • कलान्वी</h5>
       <p class="text-champagne/60 text-[11px] uppercase tracking-[0.2em]">YOUR CELEBRATION, OUR SIGNATURE</p>
       <div class="w-12 h-0.5 bg-gold/40 mx-auto"></div>
-      <p class="text-[11px] text-champagne/40 max-w-md mx-auto leading-relaxed">
-        Crafting modern bridal and evening heirlooms with timeless Indian craftsmanship. Strict no-return policy; replacements only for transit damage with unboxing video.
+      
+      <!-- FOOTER LINKS -->
+      <div class="flex flex-wrap justify-center gap-6 text-[11px] text-champagne/80 uppercase tracking-widest">
+        <a href="#story" class="hover:text-gold transition">Our Story</a>
+        <button onclick="openPolicy('contact')" class="hover:text-gold transition uppercase">Contact Us</button>
+        <button onclick="openPolicy('tc')" class="hover:text-gold transition uppercase">Terms & Conditions</button>
+        <a href="./admin.html" class="text-gold-foil hover:underline">Admin Portal →</a>
+      </div>
+
+      <p class="text-[11px] text-champagne/40 max-w-md mx-auto leading-relaxed pt-2">
+        Crafting modern bridal and evening heirlooms with timeless Indian craftsmanship.
       </p>
       <div class="pt-6 border-t border-gold/20 flex flex-col sm:flex-row justify-between items-center text-[11px] text-champagne/50 gap-4">
         <span>© 2026 KALANVII Luxury. All Rights Reserved.</span>
-        <a href="./admin.html" class="text-gold-foil hover:underline">Portal Login (Admin) →</a>
+        <span>Global Concierge: +91 97739 99654</span>
       </div>
     </div>
   </footer>
 
-  <!-- SCRIPT & DYNAMIC DATABASE LOGIC -->
+  <!-- SCRIPT -->
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
@@ -332,7 +349,6 @@
     let currentMediaList = [];
     let currentMediaIndex = 0;
 
-    // SPOTLIGHT CURSOR FOLLOWER
     document.addEventListener('mousemove', (e) => {
       const glow = document.getElementById('cursorGlow');
       if (glow) {
@@ -364,25 +380,17 @@
     function renderReels(products) {
       const reelsContainer = document.getElementById('reelsContainer');
       const videoItems = products.filter(p => p.video_url);
-      
       if (videoItems.length === 0) {
-        reelsContainer.innerHTML = `
-          <div class="col-span-full text-center text-xs text-champagne/60 py-8">
-            Upload showcase videos via your admin portal to feature them in the Couture Reel.
-          </div>
-        `;
+        reelsContainer.innerHTML = '<div class="col-span-full text-center text-xs text-champagne/60 py-8">Upload showcase videos via your admin portal to feature them here.</div>';
         return;
       }
-
       reelsContainer.innerHTML = videoItems.map(item => `
         <div class="group relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl">
           <video src="${item.video_url}" autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
           <div class="absolute inset-0 bg-gradient-to-t from-burgundy-deep via-transparent to-transparent flex flex-col justify-end p-6 space-y-2">
             <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold">Couture Highlight</span>
             <h4 class="font-serif text-sm font-bold text-champagne-silk">${item.title}</h4>
-            <button onclick="openQuickView('${item.id}')" class="mt-2 py-2.5 px-4 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gold transition shadow">
-              Shop This Look ↗
-            </button>
+            <button onclick="openQuickView('${item.id}')" class="mt-2 py-2.5 px-4 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gold transition shadow">Shop This Look ↗</button>
           </div>
         </div>
       `).join('');
@@ -554,8 +562,7 @@
 
     function orderViaWhatsAppModal() {
       if (!selectedModalItem) return;
-      const tint = document.getElementById('bespokeTint').value;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in the "${selectedModalItem.title}".\nSelected Bespoke Tint: ${tint}\n\nCould you please share availability and confirmation?`);
+      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in the "${selectedModalItem.title}". Could you please share availability and confirmation?`);
       window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
@@ -625,7 +632,37 @@
       window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
+    function openPolicy(type) {
+      const modal = document.getElementById('policyModal');
+      const title = document.getElementById('policyModalTitle');
+      const body = document.getElementById('policyModalBody');
+
+      if (type === 'contact') {
+        title.innerText = "Contact Our Concierge";
+        body.innerHTML = `
+          <p>We are delighted to assist you with inquiries, custom styling, or order tracking.</p>
+          <p><strong>WhatsApp Concierge:</strong> <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="text-burgundy underline font-bold">+91 97739 99654</a></p>
+          <p><strong>Instagram:</strong> <a href="https://instagram.com/kalanvii_in" target="_blank" class="text-burgundy underline font-bold">@kalanvii_in</a></p>
+          <p><strong>Atelier Hours:</strong> Monday – Saturday (10:00 AM – 7:00 PM IST)</p>
+        `;
+      } else if (type === 'tc') {
+        title.innerText = "Terms & Conditions";
+        body.innerHTML = `
+          <p><strong>1. Artisanal Craftsmanship:</strong> Each KALANVII piece is meticulously hand-embroidered by master Indian artisans. Minor variances in bead placement highlight the authenticity of handmade luxury.</p>
+          <p><strong>2. Strict No-Return Policy:</strong> All sales are final. We do not offer returns or exchanges for change of mind.</p>
+          <p><strong>3. Transit Damage & Replacements:</strong> Replacements are exclusively issued in the event of severe transit damage. To qualify, customers must provide a continuous, unedited unboxing video starting from the sealed outer courier package within 24 hours of delivery.</p>
+          <p><strong>4. Pricing & Currency:</strong> Prices are displayed in INR and USD. All international shipments are subject to local customs duties where applicable.</p>
+        `;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closePolicyModal() {
+      document.getElementById('policyModal').classList.add('hidden');
+    }
+
     document.addEventListener('DOMContentLoaded', loadCatalog);
   </script>
 </body>
 </html>
+
