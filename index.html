@@ -62,7 +62,7 @@
   <div id="cursorGlow" class="hidden md:block"></div>
 
   <!-- TOP PRESTIGE TICKER -->
-  <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-2">
+  <div class="bg-burgundy-deep text-champagne-silk py-2 px-4 text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-2">
     <span>✨ Free Shipping Over ₹3,999</span>
     <span class="hidden sm:inline">•</span>
     <span>Direct Artisanal Pricing</span>
@@ -70,29 +70,40 @@
     <span>Unboxing Video Policy</span>
   </div>
 
-  <!-- FULLY RESPONSIVE HEADER (NO OVERLAPPING ON MOBILE OR DESKTOP) -->
+  <!-- ROYAL MAISON HEADER (NAVIGATION ON NEXT LINE FOR DESKTOP TO PREVENT OVERLAP) -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex md:grid md:grid-cols-3 items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       
-      <!-- LEFT DESKTOP NAVIGATION -->
-      <nav class="hidden md:flex items-center space-x-6 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy">
-        <a href="#collection" class="hover:text-gold transition duration-300">Collection</a>
-        <a href="#reels" class="hover:text-gold transition duration-300">Reels</a>
-        <a href="#testimonials" class="hover:text-gold transition duration-300">Testimonials</a>
-        <a href="#story" class="hover:text-gold transition duration-300">Story</a>
-      </nav>
-
-      <!-- BRAND LOGO (Centered on desktop, left-aligned on mobile) -->
-      <div class="text-left md:text-center">
-        <a href="#" class="inline-block group">
-          <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
-          <p class="font-hindi text-burgundy-light text-[10px] sm:text-xs tracking-widest -mt-1">कलान्वी</p>
+      <!-- TOP ROW ON MOBILE / LEFT ACTIONS -->
+      <div class="w-full md:w-auto flex items-center justify-between md:justify-start">
+        <div class="md:hidden"></div> <!-- Spacer -->
+        <!-- BRAND LOGO -->
+        <a href="#" class="inline-block group text-center md:text-left">
+          <h1 class="font-serif text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
+          <p class="font-hindi text-burgundy-light text-[10px] tracking-widest -mt-1">कलान्वी</p>
         </a>
+        <!-- MOBILE ACTIONS -->
+        <div class="flex items-center space-x-3 md:hidden">
+          <button onclick="toggleCurrency()" id="currencyBtnMobile" class="text-[10px] font-semibold border border-burgundy/30 px-2 py-1 rounded-full text-burgundy">INR (₹)</button>
+          <button onclick="openCart()" class="relative p-1.5 text-burgundy">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <span id="cartCountMobile" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
+          </button>
+        </div>
       </div>
 
-      <!-- RIGHT ACTIONS -->
-      <div class="flex items-center justify-end space-x-3 sm:space-x-5">
-        <button onclick="toggleCurrency()" id="currencyBtn" class="text-[11px] tracking-wider font-semibold border border-burgundy/30 px-2.5 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
+      <!-- DESKTOP NAVIGATION (ON ITS OWN LINE, NO OVERLAPPING) -->
+      <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1">
+        <a href="#collection" class="hover:text-gold transition duration-300">Collection</a>
+        <a href="#reels" class="hover:text-gold transition duration-300">Couture Reels</a>
+        <a href="#testimonials" class="hover:text-gold transition duration-300">Testimonials</a>
+        <a href="#story" class="hover:text-gold transition duration-300">Our Story</a>
+        <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
+      </nav>
+
+      <!-- DESKTOP ACTIONS -->
+      <div class="hidden md:flex items-center space-x-4">
+        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
         <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
@@ -212,7 +223,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL WITH SUBMIT REVIEW FORM -->
+  <!-- QUICK VIEW MODAL (SMOOTH MOBILE INPUT SCROLLING) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
@@ -472,7 +483,9 @@
 
     function toggleCurrency() {
       currency = currency === 'INR' ? 'USD' : 'INR';
-      document.getElementById('currencyBtn').innerText = currency === 'INR' ? 'INR (₹)' : 'USD ($)';
+      const curText = currency === 'INR' ? 'INR (₹)' : 'USD ($)';
+      document.getElementById('currencyBtn').innerText = curText;
+      document.getElementById('currencyBtnMobile').innerText = curText;
       renderCatalog();
       updateCartDrawer();
     }
@@ -648,21 +661,27 @@
       if (!item || item.is_sold_out) return;
       const existing = cart.find(i => i.id == id);
       if (existing) { existing.qty += 1; } else { cart.push({ ...item, qty: 1 }); }
-      document.getElementById('cartCount').innerText = cart.reduce((sum, i) => sum + i.qty, 0);
+      const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+      document.getElementById('cartCount').innerText = totalCount;
+      document.getElementById('cartCountMobile').innerText = totalCount;
       openCart();
     }
 
     function changeQty(index, delta) {
       cart[index].qty += delta;
       if (cart[index].qty <= 0) cart.splice(index, 1);
-      document.getElementById('cartCount').innerText = cart.reduce((sum, i) => sum + i.qty, 0);
+      const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+      document.getElementById('cartCount').innerText = totalCount;
+      document.getElementById('cartCountMobile').innerText = totalCount;
       updateCartDrawer();
     }
 
     function removeFromCart(event, index) {
       event.stopPropagation();
       cart.splice(index, 1);
-      document.getElementById('cartCount').innerText = cart.reduce((sum, i) => sum + i.qty, 0);
+      const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+      document.getElementById('cartCount').innerText = totalCount;
+      document.getElementById('cartCountMobile').innerText = totalCount;
       updateCartDrawer();
     }
 
@@ -745,6 +764,7 @@
   </script>
 </body>
 </html>
+
 
 
 
