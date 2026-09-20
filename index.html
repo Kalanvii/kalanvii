@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>KALANVII | Your Celebration, Our Signature</title>
+  <title>KALANVII | Luxury Artisanal Handbags & Bridal Clutches</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,36 +55,36 @@
       z-index: 99;
       transform: translate(-50%, -50%);
     }
+    /* Hide scrollbar for clean carousel movement */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk relative">
 
   <div id="cursorGlow" class="hidden md:block"></div>
 
-  <!-- TOP PRESTIGE TICKER -->
-  <div class="bg-burgundy-deep text-champagne-silk py-2 px-4 text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-2">
-    <span>✨ Free Shipping Over ₹3,999</span>
-    <span class="hidden sm:inline">•</span>
-    <span>Direct Artisanal Pricing</span>
-    <span class="hidden sm:inline">•</span>
-    <span>Unboxing Video Policy</span>
+  <!-- TRUST & CONVERSION TICKER -->
+  <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-3">
+    <span>✨ Complimentary Express Shipping Across India on Orders Above ₹3,999</span>
+    <span class="hidden md:inline">•</span>
+    <span>Direct Atelier Manufacturer Pricing</span>
+    <span class="hidden md:inline">•</span>
+    <span>Authenticity Guaranteed</span>
   </div>
 
-  <!-- ROYAL MAISON HEADER (NAVIGATION ON NEXT LINE FOR DESKTOP TO PREVENT OVERLAP) -->
+  <!-- ROYAL MAISON HEADER -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       
-      <!-- TOP ROW ON MOBILE / LEFT ACTIONS -->
       <div class="w-full md:w-auto flex items-center justify-between md:justify-start">
-        <div class="md:hidden"></div> <!-- Spacer -->
-        <!-- BRAND LOGO -->
+        <div class="md:hidden"></div>
         <a href="#" class="inline-block group text-center md:text-left">
           <h1 class="font-serif text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
           <p class="font-hindi text-burgundy-light text-[10px] tracking-widest -mt-1">कलान्वी</p>
         </a>
-        <!-- MOBILE ACTIONS -->
         <div class="flex items-center space-x-3 md:hidden">
-          <button onclick="toggleCurrency()" id="currencyBtnMobile" class="text-[10px] font-semibold border border-burgundy/30 px-2 py-1 rounded-full text-burgundy">INR (₹)</button>
+          <button onclick="toggleCurrency()" id="currencyBtnMobile" class="text-[10px] font-semibold border border-burgundy/30 px-2.5 py-1 rounded-full text-burgundy">INR (₹)</button>
           <button onclick="openCart()" class="relative p-1.5 text-burgundy">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
             <span id="cartCountMobile" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
@@ -92,16 +92,14 @@
         </div>
       </div>
 
-      <!-- DESKTOP NAVIGATION (ON ITS OWN LINE, NO OVERLAPPING) -->
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1">
-        <a href="#collection" class="hover:text-gold transition duration-300">Collection</a>
-        <a href="#reels" class="hover:text-gold transition duration-300">Couture Reels</a>
-        <a href="#testimonials" class="hover:text-gold transition duration-300">Testimonials</a>
-        <a href="#story" class="hover:text-gold transition duration-300">Our Story</a>
+        <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
+        <a href="#carouselSection" class="hover:text-gold transition duration-300">Signature Spotlight</a>
+        <a href="#testimonials" class="hover:text-gold transition duration-300">Client Testimonials</a>
+        <a href="#story" class="hover:text-gold transition duration-300">Our Heritage</a>
         <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
       </nav>
 
-      <!-- DESKTOP ACTIONS -->
       <div class="hidden md:flex items-center space-x-4">
         <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
         <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
@@ -121,23 +119,44 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
       <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 border border-gold/40 text-[10px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-gold-light/60 rounded-full shadow-sm">
-          <span>Global Luxury Handbags & Clutches Exporter</span>
+          <span>Global Atelier of Handcrafted Luxury Heirlooms</span>
         </div>
         <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-burgundy leading-tight">
           Your Celebration, <br>
           <span class="italic font-editorial font-normal text-gold-antique">Our Signature</span>
         </h2>
         <p class="text-sm sm:text-base text-[#5c4a40] max-w-lg leading-relaxed mx-auto lg:mx-0 font-light">
-          Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries worldwide.
+          Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entrances worldwide.
         </p>
         <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
           <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md rounded-xl text-center">Explore Collection</a>
-          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl text-center">Speak to Concierge</a>
+          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!%20I%20would%20like%20expert%20styling%20advice." target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl text-center">Speak to Concierge</a>
         </div>
       </div>
       <div class="lg:col-span-6 flex justify-center">
         <div class="relative w-full max-w-md aspect-[4/5] rounded-t-full border-2 border-gold/50 p-3 bg-champagne-silk shadow-2xl overflow-hidden gold-shimmer-border">
           <img id="heroShowcaseImg" src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80" alt="Kalanvii Masterpiece" class="w-full h-full object-cover rounded-t-full transition duration-700">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE HOMEPAGE PICTURE CAROUSEL -->
+  <section id="carouselSection" class="py-16 bg-champagne-soft border-b border-champagne-border overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <div class="text-center max-w-xl mx-auto space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Showcase</span>
+        <h3 class="font-serif text-2xl sm:text-3xl text-burgundy font-bold">Signature Masterpieces Carousel</h3>
+        <p class="text-xs text-gray-600 font-light">Swipe or click any masterpiece to inspect its artisanal details and secure your look.</p>
+      </div>
+
+      <!-- CAROUSEL TRACK -->
+      <div class="relative">
+        <button onclick="scrollCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition">❮</button>
+        <button onclick="scrollCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition">❯</button>
+
+        <div id="homepageCarousel" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth px-8 py-4">
+          <!-- Dynamically injected carousel items -->
         </div>
       </div>
     </div>
@@ -162,68 +181,99 @@
     </div>
   </section>
 
-  <!-- HOMEPAGE CUSTOMER TESTIMONIALS SECTION -->
+  <!-- CLIENT TESTIMONIALS SECTION -->
   <section id="testimonials" class="bg-champagne-soft py-20 border-y border-champagne-border px-4">
     <div class="max-w-7xl mx-auto space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2">
-        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Client Love</span>
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Verified Patronage</span>
         <h3 class="font-serif text-3xl text-burgundy font-bold">Maison Testimonials</h3>
-        <p class="text-xs text-gray-600 font-light">Words from brides and connoisseurs around the globe.</p>
+        <p class="text-xs text-gray-600 font-light">Unfiltered appreciation from discerning brides and connoisseurs worldwide.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
           <div class="text-gold text-sm">★★★★★</div>
-          <p class="text-xs text-gray-700 italic leading-relaxed">"The emerald crystals caught every light during my sangeet. KALANVII packaging and quality rival top Parisian houses!"</p>
-          <p class="text-[11px] font-bold text-burgundy">— Ananya Sharma, Delhi</p>
+          <p class="text-xs text-gray-700 italic leading-relaxed">"The emerald crystals caught every light during my sangeet. KALANVII packaging and quality rival top Parisian luxury houses!"</p>
+          <p class="text-[11px] font-bold text-burgundy">— Ananya Sharma, New Delhi</p>
         </div>
         <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
           <div class="text-gold text-sm">★★★★★</div>
-          <p class="text-xs text-gray-700 italic leading-relaxed">"Ordered two potlis for my wedding reception. The beadwork is extraordinarily precise and sturdy."</p>
+          <p class="text-xs text-gray-700 italic leading-relaxed">"Ordered two potlis for my wedding reception. The beadwork is extraordinarily precise and sturdy across hours of celebration."</p>
           <p class="text-[11px] font-bold text-burgundy">— Riya Merchant, Mumbai</p>
         </div>
         <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
           <div class="text-gold text-sm">★★★★★</div>
-          <p class="text-xs text-gray-700 italic leading-relaxed">"Delivered all the way to London in pristine condition. Exceptional luxury and wonderful WhatsApp support."</p>
-          <p class="text-[11px] font-bold text-burgundy">— Natasha K., London</p>
+          <p class="text-xs text-gray-700 italic leading-relaxed">"Delivered all the way to London in pristine condition. Exceptional craftsmanship and wonderful WhatsApp support throughout."</p>
+          <p class="text-[11px] font-bold text-burgundy">— Natasha Kapoor, London</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- OUR HERITAGE STORY -->
   <section id="story" class="bg-champagne-silk py-20 px-4 border-b border-champagne-border">
     <div class="max-w-4xl mx-auto text-center space-y-6">
       <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Maison Heritage</span>
       <h3 class="font-serif text-3xl sm:text-4xl text-burgundy font-bold">Our Story</h3>
       <div class="w-12 h-0.5 bg-gold mx-auto"></div>
       <p class="text-sm sm:text-base text-[#5c4a40] leading-relaxed font-light">
-        Founded in <strong class="text-burgundy font-semibold">2026</strong> with a visionary dream: to bring the finest, most luxurious artisanal party handbags and clutches available to everyone worldwide. Rooted in traditional Indian karigari and crafted for global celebrations, KALANVII bridges heritage craftsmanship with contemporary grandeur.
+        Established in <strong class="text-burgundy font-semibold">2026</strong>, <strong class="text-burgundy font-semibold">KALANVII</strong> was founded upon an uncompromising vision: to curate and export the finest, most breathtaking artisanal party handbags and bridal clutches directly from master Indian karigars to connoisseurs worldwide. We unite centuries-old zardozi and pearl-stringing traditions with modern structural elegance, ensuring your celebrations are marked by timeless distinction.
       </p>
     </div>
   </section>
 
+  <!-- COUTURE REELS -->
   <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-b border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Cinematic Showcase</span>
         <h3 class="font-serif text-3xl text-gold-light">The Couture Reel</h3>
-        <p class="text-xs text-champagne/70 font-light">Witness the tactile shimmer and exquisite movement of our handcrafted beadwork.</p>
+        <p class="text-xs text-champagne/70 font-light">Witness the tactile shimmer and exquisite movement of our handcrafted beadwork in motion.</p>
       </div>
       <div id="reelsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
     </div>
   </section>
 
+  <!-- VIP CIRCLE NEWSLETTER -->
   <section class="bg-champagne-silk py-16 border-b border-champagne-border text-center px-4">
     <div class="max-w-xl mx-auto space-y-4 bg-champagne-soft p-8 rounded-3xl border border-gold/30 shadow-lg">
       <h4 class="font-serif text-xl font-bold text-burgundy uppercase">Join the KALANVII VIP Circle</h4>
-      <p class="text-xs text-gray-600 font-light">Subscribe for free shipping on your first purchase and early access to limited artisanal festive drops.</p>
-      <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to the KALANVII VIP Circle!');" class="flex gap-2">
+      <p class="text-xs text-gray-600 font-light">Subscribe for complimentary shipping on your first acquisition and priority access to limited artisanal festive drops.</p>
+      <form onsubmit="event.preventDefault(); alert('Welcome to the KALANVII VIP Circle. Your priority access invitation has been registered.');" class="flex gap-2">
         <input type="email" placeholder="Enter your email address" required class="flex-grow text-xs p-3 bg-white border border-champagne-border rounded-xl outline-none focus:border-gold">
         <button type="submit" class="px-6 py-3 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-burgundy-light transition">Subscribe</button>
       </form>
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL (SMOOTH MOBILE INPUT SCROLLING) -->
+  <!-- SAVOIR-FAIRE -->
+  <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Artisanal Pedigree</span>
+        <h3 class="font-serif text-3xl text-gold-light">The Art of Indian Karigari</h3>
+        <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every single heirloom piece.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+          <div class="font-serif text-3xl text-gold-foil">48+ Hours</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Hand-Embroidered</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Thousands of micro seed pearls strung individually with high-tensile silk thread to guarantee lifelong durability.</p>
+        </div>
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+          <div class="font-serif text-3xl text-gold-foil">Gilded Finish</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Gold Electroplate</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Frames and clasps are coated in an anti-tarnish protective luster for enduring elegance across generations.</p>
+        </div>
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+          <div class="font-serif text-3xl text-gold-foil">Bespoke</div>
+          <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Bridal Customization</h4>
+          <p class="text-xs text-champagne/70 leading-relaxed font-light">Dedicated concierge matching for your bridal lehenga, sangeet gown, or reception ensemble.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK VIEW MODAL -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
@@ -265,8 +315,8 @@
             </div>
 
             <div class="bg-champagne-soft p-3 rounded-xl border border-gold/30 text-[10px] text-gray-600 space-y-1">
-              <p class="font-bold text-burgundy uppercase tracking-wider">🔒 Guarantee & Return Policy</p>
-              <p>No returns. Replacements only for transit damage. Unboxing video required.</p>
+              <p class="font-bold text-burgundy uppercase tracking-wider">🔒 Authenticity & Unboxing Video Policy</p>
+              <p>Every piece undergoes rigorous inspection. Replacements are issued exclusively for transit damage upon providing a continuous, unedited unboxing video from the sealed courier package.</p>
             </div>
 
             <div class="pt-2 flex gap-3" id="modalActionContainer"></div>
@@ -343,17 +393,17 @@
       <p class="text-champagne/60 text-[11px] uppercase tracking-[0.2em]">YOUR CELEBRATION, OUR SIGNATURE</p>
       <div class="w-12 h-0.5 bg-gold/40 mx-auto"></div>
       <div class="flex flex-wrap justify-center gap-6 text-[11px] text-champagne/80 uppercase tracking-widest">
-        <a href="#story" class="hover:text-gold transition">Our Story</a>
-        <button onclick="openPolicy('contact')" class="hover:text-gold transition uppercase">Contact Us</button>
+        <a href="#story" class="hover:text-gold transition">Our Heritage</a>
+        <button onclick="openPolicy('contact')" class="hover:text-gold transition uppercase">Contact Concierge</button>
         <button onclick="openPolicy('tc')" class="hover:text-gold transition uppercase">Terms & Conditions</button>
         <button onclick="openPolicy('shipping')" class="hover:text-gold transition uppercase">Shipping Policy</button>
         <a href="./admin.html" class="text-gold-foil hover:underline">Admin Portal →</a>
       </div>
       <p class="text-[11px] text-champagne/40 max-w-md mx-auto leading-relaxed pt-2">
-        Crafting modern bridal and evening heirlooms with timeless Indian craftsmanship.
+        Curating modern bridal and evening heirlooms with timeless Indian craftsmanship.
       </p>
       <div class="pt-6 border-t border-gold/20 flex flex-col sm:flex-row justify-between items-center text-[11px] text-champagne/50 gap-4">
-        <span>© 2026 KALANVII Luxury. All Rights Reserved.</span>
+        <span>© 2026 KALANVII Luxury Maison. All Rights Reserved.</span>
         <span>Global Concierge: +91 97739 99654</span>
       </div>
     </div>
@@ -397,11 +447,46 @@
           allProducts = data;
           if (data[0].image_url) document.getElementById('heroShowcaseImg').src = data[0].image_url;
           renderReels(data);
+          renderHomepageCarousel(data);
         }
       } catch (err) {
         console.log("Error loading catalog:", err);
       }
       renderCatalog();
+    }
+
+    function renderHomepageCarousel(products) {
+      const carousel = document.getElementById('homepageCarousel');
+      const activeProducts = products.filter(p => !p.is_sold_out);
+      if (activeProducts.length === 0) {
+        carousel.innerHTML = '<div class="w-full text-center text-xs text-gray-500 py-6">No active masterpieces to display in carousel.</div>';
+        return;
+      }
+
+      carousel.innerHTML = activeProducts.map(item => {
+        const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
+        return `
+          <div onclick="openQuickView('${item.id}')" class="min-w-[240px] sm:min-w-[280px] bg-champagne-silk border border-gold/40 rounded-2xl overflow-hidden shadow-lg cursor-pointer group flex-shrink-0 transform hover:-translate-y-1 transition duration-300">
+            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft">
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">50% OFF</span>
+              <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+              <div class="absolute inset-0 bg-burgundy/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                <span class="bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-lg">Quick View ↗</span>
+              </div>
+            </div>
+            <div class="p-4 text-center space-y-1">
+              <h4 class="font-serif text-xs font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
+              <p class="font-hindi text-[10px] text-gold-antique">${item.hindi_title || ''}</p>
+              <p class="font-serif text-sm font-bold text-burgundy pt-1">${price}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById('homepageCarousel');
+      carousel.scrollBy({ left: direction * 320, behavior: 'smooth' });
     }
 
     function renderReels(products) {
@@ -487,12 +572,13 @@
       document.getElementById('currencyBtn').innerText = curText;
       document.getElementById('currencyBtnMobile').innerText = curText;
       renderCatalog();
+      if (allProducts.length > 0) renderHomepageCarousel(allProducts);
       updateCartDrawer();
     }
 
     function getGeneratedReviews(productId) {
       const reviewPools = [
-        { name: "Ananya Sharma", location: "Delhi", text: `Ordered this for my sister's sangeet and received non-stop compliments! The pearl work is exceptionally high-end.` },
+        { name: "Ananya Sharma", location: "New Delhi", text: `Ordered this for my sister's sangeet and received non-stop compliments! The pearl work is exceptionally high-end.` },
         { name: "Natasha Kapoor", location: "Chandigarh", text: `Absolute perfection. The gold electroplate finish is sturdy and the velvet feels genuinely royal.` },
         { name: "Riya Merchant", location: "Mumbai", text: `Worth every single rupee. Shipped securely and packaged like true haute couture.` },
         { name: "Meera Sen", location: "Kolkata", text: `Stunning craftsmanship! The photos don't even do justice to how much it sparkles under evening lights.` }
@@ -605,7 +691,7 @@
       if (error) {
         alert("Failed to submit review: " + error.message);
       } else {
-        alert("Thank you! Your review has been submitted and will appear on the store after admin approval.");
+        alert("Thank you! Your review has been submitted and will appear on the store after admin review.");
         document.getElementById('reviewForm').reset();
         document.getElementById('reviewForm').classList.add('hidden');
       }
@@ -652,7 +738,7 @@
 
     function orderViaWhatsAppModal() {
       if (!selectedModalItem) return;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in the "${selectedModalItem.title}". Could you please share availability?`);
+      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in acquiring the "${selectedModalItem.title}". Could you please confirm express availability?`);
       window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
@@ -724,7 +810,7 @@
       if (cart.length === 0) return;
       const bagList = cart.map(i => `• ${i.qty}x ${i.title}`).join('\n');
       const totalStr = document.getElementById('cartTotal').innerText;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI would like to place an order for:\n${bagList}\n\nEstimated Total: ${totalStr}\n\nPlease share payment details.`);
+      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI would like to place an order for:\n${bagList}\n\nEstimated Total: ${totalStr}\n\nPlease share secure payment details.`);
       window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
@@ -736,7 +822,7 @@
       if (type === 'contact') {
         title.innerText = "Contact Our Concierge";
         body.innerHTML = `
-          <p>We are delighted to assist you with inquiries, custom styling, or order tracking.</p>
+          <p>We are delighted to assist you with bespoke styling inquiries, order tracking, or international shipping details.</p>
           <p><strong>WhatsApp Concierge:</strong> <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="text-burgundy underline font-bold">+91 97739 99654</a></p>
           <p><strong>Instagram:</strong> <a href="https://instagram.com/kalanvii_in" target="_blank" class="text-burgundy underline font-bold">@kalanvii_in</a></p>
           <p><strong>Atelier Hours:</strong> Monday – Saturday (10:00 AM – 7:00 PM IST)</p>
@@ -746,13 +832,13 @@
         body.innerHTML = `
           <p><strong>1. Artisanal Craftsmanship:</strong> Each KALANVII piece is meticulously hand-embroidered by master Indian artisans. Minor variances in bead placement highlight the authenticity of handmade luxury.</p>
           <p><strong>2. Strict No-Return Policy:</strong> All sales are final. We do not offer returns or exchanges for change of mind.</p>
-          <p><strong>3. Transit Damage & Replacements:</strong> Replacements are exclusively issued in the event of severe transit damage. To qualify, customers can provide a continuous unboxing video starting from the sealed outer package within 24 hours.</p>
+          <p><strong>3. Transit Damage & Replacements:</strong> Replacements are exclusively issued in the event of severe transit damage. To qualify, customers must provide a continuous, unedited unboxing video starting from the sealed outer courier package within 24 hours of delivery.</p>
         `;
       } else if (type === 'shipping') {
         title.innerText = "Shipping Policy";
         body.innerHTML = `
-          <p><strong>Free Shipping:</strong> Enjoy complimentary express delivery across India on all orders over ₹3,999.</p>
-          <p><strong>Global Shipping:</strong> We ship worldwide using express courier partners.</p>
+          <p><strong>Complimentary Express Shipping:</strong> Enjoy free express delivery across India on all orders over ₹3,999.</p>
+          <p><strong>Global Express Shipping:</strong> We ship worldwide via verified secure courier partners. Rates and estimated delivery windows are calculated upon inquiry.</p>
         `;
       }
       modal.classList.remove('hidden');
@@ -764,6 +850,7 @@
   </script>
 </body>
 </html>
+
 
 
 
