@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>KALANVII | Secure Management Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -22,6 +22,7 @@
     }
   </script>
   <style>
+    button, a, .cursor-pointer { touch-action: manipulation; }
     .silk-pattern {
       background-color: #faf6f0;
       background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
@@ -34,7 +35,6 @@
 </head>
 <body class="silk-pattern text-[#2a1d17] antialiased min-h-screen font-sans selection:bg-burgundy selection:text-champagne-silk">
 
-  <!-- TOP BAR -->
   <header class="bg-burgundy-dark text-champagne-silk sticky top-0 z-50 border-b border-gold/40 shadow-xl">
     <div class="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -52,7 +52,6 @@
     </div>
   </header>
 
-  <!-- LOCK SCREEN -->
   <div id="lockScreen" class="max-w-md mx-auto mt-20 px-4">
     <div class="bg-champagne-silk border border-gold/40 p-8 rounded-2xl shadow-2xl text-center space-y-6">
       <div class="w-16 h-16 mx-auto bg-burgundy rounded-full flex items-center justify-center border-2 border-gold mb-4">
@@ -66,49 +65,35 @@
     </div>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="dashboard" class="max-w-3xl mx-auto px-4 py-8 hidden space-y-8">
-    
-    <!-- PRODUCT FORM -->
     <div class="bg-champagne-silk border border-gold/40 rounded-2xl shadow-2xl overflow-hidden">
       <div class="bg-burgundy text-champagne-silk px-6 py-4 border-b border-gold/30">
         <h2 id="formTitle" class="font-serif text-sm tracking-widest uppercase font-bold">Add New Masterpiece</h2>
       </div>
       <form id="productForm" class="p-6 space-y-6">
-        
-        <!-- MEDIA GALLERY SECTION -->
         <div class="space-y-4 border-2 border-dashed border-champagne-border p-5 rounded-xl bg-white/50">
           <h3 class="font-serif text-burgundy text-sm font-bold tracking-widest uppercase text-center border-b border-champagne-border pb-2">Media Gallery</h3>
-          
-          <!-- MAIN IMAGE -->
           <div>
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-1">Main Cover Photo *</label>
             <input type="file" id="imageFile" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy/10 file:text-burgundy hover:file:bg-burgundy/20">
             <div id="imagePreview" class="mt-2 hidden"><img src="" class="h-20 w-20 object-cover rounded border border-gold/50 shadow"></div>
           </div>
-
-          <!-- GALLERY IMAGES -->
           <div class="pt-3 border-t border-champagne-border">
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-1">Additional Angles (Select Multiple)</label>
             <input type="file" id="extraImages" accept="image/*" multiple class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy/10 file:text-burgundy hover:file:bg-burgundy/20">
-            <p class="text-[9px] text-gray-400 mt-1">Select multiple photos at once. Choosing new photos will replace the old gallery.</p>
-            <div id="extraPreview" class="mt-2 flex gap-2 flex-wrap text-xs text-emerald-700 font-bold hidden">Photos Selected</div>
+            <div id="extraPreview" class="mt-2 text-xs text-emerald-700 font-bold hidden">Photos Selected</div>
           </div>
-
-          <!-- VIDEO -->
           <div class="pt-3 border-t border-champagne-border">
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-1">Showcase Video (Optional)</label>
             <input type="file" id="productVideo" accept="video/mp4,video/quicktime" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy/10 file:text-burgundy hover:file:bg-burgundy/20">
-            <p class="text-[9px] text-gray-400 mt-1">Keep under 15 seconds. Choosing a new video replaces the old one.</p>
             <div id="videoPreview" class="mt-2 text-xs text-emerald-700 font-bold hidden">✓ Video Selected</div>
           </div>
         </div>
 
-        <!-- DETAILS -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">English Title *</label>
-            <input type="text" id="title" required class="w-full text-sm p-3 bg-white border border-champagne-border rounded focus:border-gold focus:ring-1 focus:ring-gold outline-none">
+            <input type="text" id="title" required class="w-full text-sm p-3 bg-white border border-champagne-border rounded focus:border-gold outline-none">
           </div>
           <div>
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Hindi Title (Optional)</label>
@@ -117,7 +102,6 @@
           <div>
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Selling Price (INR ₹) *</label>
             <input type="number" id="price_inr" required class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
-            <p class="text-[9px] text-gray-400 mt-1">The system will automatically calculate and display the crossed-out 50% discount price.</p>
           </div>
           <div>
             <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Selling Price (USD $) *</label>
@@ -142,38 +126,29 @@
           <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Materials</label>
           <input type="text" id="materials" class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
         </div>
-        
         <div>
           <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Editorial Description</label>
           <textarea id="description" rows="3" class="w-full text-sm p-3 bg-white border border-champagne-border rounded"></textarea>
         </div>
 
-        <!-- STATUS/BUTTONS -->
         <div id="uploadStatus" class="hidden text-sm text-center font-bold text-burgundy bg-gold/20 p-3 rounded border border-gold">
           Uploading Media... Please keep window open.
         </div>
         
         <div class="flex gap-3">
-          <button type="submit" id="submitBtn" class="flex-grow py-4 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-bold rounded transition shadow-lg">
-            Publish Handbag to Live Store
-          </button>
-          <button type="button" id="cancelEditBtn" onclick="cancelEdit()" class="hidden px-6 py-4 border border-burgundy text-burgundy text-xs uppercase tracking-widest font-bold rounded hover:bg-burgundy/5 transition">
-            Cancel
-          </button>
+          <button type="submit" id="submitBtn" class="flex-grow py-4 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-bold rounded transition shadow-lg">Publish Handbag to Live Store</button>
+          <button type="button" id="cancelEditBtn" onclick="cancelEdit()" class="hidden px-6 py-4 border border-burgundy text-burgundy text-xs uppercase tracking-widest font-bold rounded hover:bg-burgundy/5 transition">Cancel</button>
         </div>
       </form>
     </div>
 
-    <!-- CATALOG LIST -->
     <div class="bg-champagne-silk border border-gold/40 rounded-2xl shadow-2xl overflow-hidden">
       <div class="bg-champagne-border/30 px-6 py-4 flex justify-between items-center border-b border-champagne-border">
         <div>
           <h2 class="font-serif text-sm tracking-widest uppercase font-bold text-burgundy">Active Live Catalog</h2>
-          <p class="text-[10px] text-gray-500">Manage and edit your published collection.</p>
+          <p class="text-[10px] text-gray-500">Manage, edit, or toggle stock availability.</p>
         </div>
-        <button onclick="loadProducts()" class="text-xs text-burgundy font-bold hover:text-gold flex items-center gap-1">
-          ↻ Refresh
-        </button>
+        <button onclick="loadProducts()" class="text-xs text-burgundy font-bold hover:text-gold flex items-center gap-1">↻ Refresh</button>
       </div>
       <div id="productList" class="p-4 space-y-4 max-h-[600px] overflow-y-auto"></div>
     </div>
@@ -183,7 +158,6 @@
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
-    // SAFE-LOAD SAFEGUARD FOR MOBILE BROWSERS
     let supabaseClient = null;
     function getSupabase() {
       if (!supabaseClient && window.supabase) {
@@ -198,7 +172,6 @@
     let existingVideo = null;
     let productsCache = [];
 
-    // FILE INPUT LISTENERS FOR UI PREVIEWS
     document.getElementById('extraImages').addEventListener('change', function() {
       if(this.files.length > 0) {
         document.getElementById('extraPreview').classList.remove('hidden');
@@ -226,9 +199,7 @@
       }
     }
 
-    document.getElementById('passcode').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') checkPin();
-    });
+    document.getElementById('passcode').addEventListener('keypress', function(e) { if (e.key === 'Enter') checkPin(); });
 
     async function uploadMedia(file, prefix) {
       const supabase = getSupabase();
@@ -244,35 +215,28 @@
     document.getElementById('productForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const supabase = getSupabase();
-      if (!supabase) {
-        alert("System is still connecting... please wait a second and try again.");
-        return;
-      }
+      if (!supabase) { alert("Connecting... please try again."); return; }
 
       const status = document.getElementById('uploadStatus');
       const btn = document.getElementById('submitBtn');
-      
       btn.disabled = true;
       status.classList.remove('hidden');
       
       try {
-        // 1. Process Main Image
         const mainFile = document.getElementById('imageFile').files[0];
         let mainUrl = existingMainImage;
         if (mainFile) mainUrl = await uploadMedia(mainFile, 'main');
         if (!mainUrl && !editingId) throw new Error("Cover photo is required");
 
-        // 2. Process Gallery Images
         const extraFiles = document.getElementById('extraImages').files;
         let galleryUrls = existingGallery;
         if (extraFiles.length > 0) {
-          galleryUrls = []; // Replace old gallery if new files selected
+          galleryUrls = [];
           for (let i = 0; i < extraFiles.length; i++) {
             galleryUrls.push(await uploadMedia(extraFiles[i], 'gallery'));
           }
         }
 
-        // 3. Process Video
         const videoFile = document.getElementById('productVideo').files[0];
         let videoUrl = existingVideo;
         if (videoFile) videoUrl = await uploadMedia(videoFile, 'video');
@@ -294,11 +258,11 @@
         if (editingId) {
           const { error } = await supabase.from('products').update(productData).eq('id', editingId);
           if (error) throw error;
-          alert('Handbag successfully updated!');
+          alert('Handbag updated!');
         } else {
           const { error } = await supabase.from('products').insert([productData]);
           if (error) throw error;
-          alert('Handbag successfully published!');
+          alert('Handbag published!');
         }
 
         cancelEdit();
@@ -333,7 +297,6 @@
       document.getElementById('materials').value = item.materials || '';
       document.getElementById('description').value = item.description || '';
 
-      // Reset file inputs UI
       document.getElementById('imageFile').value = '';
       document.getElementById('extraImages').value = '';
       document.getElementById('productVideo').value = '';
@@ -342,10 +305,8 @@
         document.getElementById('imagePreview').classList.remove('hidden');
         document.getElementById('imagePreview').querySelector('img').src = item.image_url;
       }
-      
       document.getElementById('extraPreview').classList.add('hidden');
       document.getElementById('videoPreview').classList.add('hidden');
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -363,18 +324,27 @@
       document.getElementById('videoPreview').classList.add('hidden');
     }
 
+    async function toggleStock(id, currentStatus) {
+      const supabase = getSupabase();
+      if (!supabase) return;
+      const newStatus = !currentStatus;
+      const { error } = await supabase.from('products').update({ is_sold_out: newStatus }).eq('id', id);
+      if (error) {
+        alert("Failed to update stock status: " + error.message);
+      } else {
+        loadProducts();
+      }
+    }
+
     async function loadProducts() {
       const supabase = getSupabase();
-      if (!supabase) {
-        setTimeout(loadProducts, 500); // Wait for connection if slow
-        return;
-      }
+      if (!supabase) { setTimeout(loadProducts, 500); return; }
 
       document.getElementById('productList').innerHTML = '<div class="text-center text-xs p-4 text-gray-500">Syncing with database...</div>';
       const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
       
       if (error || !data || data.length === 0) {
-        document.getElementById('productList').innerHTML = '<div class="text-center text-xs p-4 text-gray-500">No handbags found in the collection yet.</div>';
+        document.getElementById('productList').innerHTML = '<div class="text-center text-xs p-4 text-gray-500">No handbags found.</div>';
         return;
       }
       
@@ -382,19 +352,22 @@
       document.getElementById('productList').innerHTML = data.map(item => {
         const doublePrice = `₹${(item.price_inr * 2).toLocaleString('en-IN')}`;
         const salePrice = `₹${Number(item.price_inr).toLocaleString('en-IN')}`;
-        const mediaCount = (item.gallery_images?.length || 0) + (item.video_url ? 1 : 0);
-        
+        const isSoldOut = item.is_sold_out;
+
         return `
-          <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-champagne-border shadow-sm">
+          <div class="flex items-center gap-4 bg-white p-4 rounded-xl border ${isSoldOut ? 'border-red-300 bg-red-50/40' : 'border-champagne-border'} shadow-sm">
             <img src="${item.image_url}" class="w-16 h-16 object-cover rounded border border-gold/30">
             <div class="flex-grow">
-              <span class="bg-red-700 text-white text-[9px] px-2 py-0.5 rounded font-bold tracking-widest uppercase mb-1 inline-block">50% OFF</span>
+              <div class="flex gap-2 mb-1">
+                <span class="bg-red-700 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-widest">50% OFF</span>
+                <span class="${isSoldOut ? 'bg-red-900 text-white' : 'bg-emerald-700 text-white'} text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-widest">${isSoldOut ? 'SOLD OUT' : 'IN STOCK'}</span>
+              </div>
               <h4 class="font-serif text-xs font-bold text-burgundy uppercase">${item.title}</h4>
               <p class="text-[10px] text-gray-500 line-through inline-block mr-1">${doublePrice}</p>
               <p class="text-xs font-bold text-burgundy inline-block">${salePrice}</p>
-              ${mediaCount > 0 ? `<p class="text-[9px] text-emerald-700 font-bold mt-1">✓ Includes Extra Media (${mediaCount})</p>` : ''}
             </div>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1.5">
+              <button onclick="toggleStock('${item.id}', ${isSoldOut})" class="text-[9px] px-3 py-1.5 ${isSoldOut ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-amber-700 hover:bg-amber-800'} text-white rounded font-bold uppercase transition">${isSoldOut ? 'Mark In Stock' : 'Mark Sold Out'}</button>
               <button onclick="triggerEdit('${item.id}')" class="text-[9px] px-3 py-1.5 bg-gold-antique text-white rounded font-bold uppercase hover:bg-gold transition">Edit</button>
               <button onclick="deleteProduct('${item.id}')" class="text-[9px] px-3 py-1.5 border border-red-200 text-red-600 rounded font-bold uppercase hover:bg-red-50 transition">Delete</button>
             </div>
@@ -406,7 +379,6 @@
     async function deleteProduct(id) {
       const supabase = getSupabase();
       if (!supabase) return;
-
       if (confirm('Are you certain you want to permanently remove this masterpiece?')) {
         await supabase.from('products').delete().eq('id', id);
         loadProducts();
@@ -415,3 +387,4 @@
   </script>
 </body>
 </html>
+
