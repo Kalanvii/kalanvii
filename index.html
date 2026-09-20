@@ -55,7 +55,6 @@
       z-index: 99;
       transform: translate(-50%, -50%);
     }
-    /* Hide scrollbar for clean carousel movement */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
@@ -111,30 +110,30 @@
     </div>
   </header>
 
-  <!-- HAUTE HERO SECTION -->
-  <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-16 sm:py-24 border-b border-champagne-border overflow-hidden">
+  <!-- HAUTE HERO SECTION (PROPORTIONED MOBILE SIZING) -->
+  <section class="relative bg-gradient-to-b from-champagne-silk via-champagne-soft to-champagne-silk py-12 sm:py-20 border-b border-champagne-border overflow-hidden">
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold/20 rounded-full blur-3xl aura-glow pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-burgundy/10 rounded-full blur-3xl aura-glow pointer-events-none" style="animation-delay: 3s;"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-      <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+      <div class="lg:col-span-6 space-y-5 text-center lg:text-left">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 border border-gold/40 text-[10px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-gold-light/60 rounded-full shadow-sm">
           <span>Global Atelier of Handcrafted Luxury Heirlooms</span>
         </div>
-        <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-burgundy leading-tight">
+        <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl text-burgundy leading-tight">
           Your Celebration, <br>
           <span class="italic font-editorial font-normal text-gold-antique">Our Signature</span>
         </h2>
-        <p class="text-sm sm:text-base text-[#5c4a40] max-w-lg leading-relaxed mx-auto lg:mx-0 font-light">
+        <p class="text-xs sm:text-base text-[#5c4a40] max-w-lg leading-relaxed mx-auto lg:mx-0 font-light">
           Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entrances worldwide.
         </p>
-        <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          <a href="#collection" class="px-8 py-4 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md rounded-xl text-center">Explore Collection</a>
-          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!%20I%20would%20like%20expert%20styling%20advice." target="_blank" class="px-8 py-4 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl text-center">Speak to Concierge</a>
+        <div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <a href="#collection" class="px-7 py-3.5 bg-burgundy text-champagne-silk text-xs tracking-[0.25em] uppercase hover:bg-gold-antique transition duration-300 shadow-md rounded-xl text-center">Explore Collection</a>
+          <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!%20I%20would%20like%20expert%20styling%20advice." target="_blank" class="px-7 py-3.5 border border-burgundy/40 text-burgundy text-xs tracking-[0.25em] uppercase hover:bg-burgundy/5 transition duration-300 rounded-xl text-center">Speak to Concierge</a>
         </div>
       </div>
       <div class="lg:col-span-6 flex justify-center">
-        <div class="relative w-full max-w-md aspect-[4/5] rounded-t-full border-2 border-gold/50 p-3 bg-champagne-silk shadow-2xl overflow-hidden gold-shimmer-border">
+        <div class="relative w-full max-w-xs sm:max-w-sm aspect-[4/5] rounded-t-full border-2 border-gold/50 p-2.5 bg-champagne-silk shadow-xl overflow-hidden gold-shimmer-border">
           <img id="heroShowcaseImg" src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1000&q=80" alt="Kalanvii Masterpiece" class="w-full h-full object-cover rounded-t-full transition duration-700">
         </div>
       </div>
@@ -150,7 +149,6 @@
         <p class="text-xs text-gray-600 font-light">Swipe or click any masterpiece to inspect its artisanal details and secure your look.</p>
       </div>
 
-      <!-- CAROUSEL TRACK -->
       <div class="relative">
         <button onclick="scrollCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition">❮</button>
         <button onclick="scrollCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition">❯</button>
@@ -850,7 +848,6 @@
   </script>
 </body>
 </html>
-
 
 
 
