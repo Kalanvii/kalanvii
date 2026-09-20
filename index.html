@@ -281,17 +281,15 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL (100% SINGLE VERTICAL SCROLL FLOW) -->
+  <!-- QUICK VIEW MODAL -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden backdrop-blur-md bg-black/60 transition-opacity">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
       <div class="inline-block w-full max-w-2xl p-5 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left max-h-[90vh] overflow-y-auto">
         <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30">✕</button>
         
-        <!-- SINGLE UNIFIED VERTICAL FLOW CONTAINER -->
         <div class="space-y-6 pt-2">
           
-          <!-- IMAGE SLIDER & THUMBNAILS -->
           <div class="space-y-3">
             <div id="mediaSwipeContainer" class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group touch-pan-y">
               <img id="modalImg" src="" class="w-full h-full object-cover transition duration-300 pointer-events-none">
@@ -305,7 +303,6 @@
             <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
           </div>
 
-          <!-- PRODUCT DETAILS & ACTIONS -->
           <div class="space-y-5">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
@@ -334,7 +331,6 @@
             <div class="pt-1 flex gap-3" id="modalActionContainer"></div>
           </div>
 
-          <!-- CLIENT REVIEWS SECTION -->
           <div class="border-t border-champagne-border pt-5 space-y-4">
             <div class="flex justify-between items-center">
               <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
@@ -352,7 +348,6 @@
             <div id="modalReviewsList" class="space-y-3"></div>
           </div>
 
-          <!-- YOU MAY ALSO ADORE -->
           <div class="border-t border-champagne-border pt-5 space-y-3">
             <h4 class="font-serif text-xs font-bold text-burgundy uppercase tracking-widest">You May Also Adore</h4>
             <div id="modalCrossSell" class="grid grid-cols-3 gap-3"></div>
@@ -875,7 +870,7 @@
           <p><strong>Global Express Shipping:</strong> We ship worldwide via verified secure courier partners. Rates and estimated delivery windows are calculated upon inquiry.</p>
         `;
       }
-      modal.classList.add('hidden');
+      modal.classList.remove('hidden');
     }
 
     function closePolicyModal() { document.getElementById('policyModal').classList.add('hidden'); }
@@ -884,7 +879,6 @@
   </script>
 </body>
 </html>
-
 
 
 
