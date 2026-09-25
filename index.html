@@ -29,16 +29,23 @@
     }
   </script>
   <style>
+    /* MOTION DESIGN SYSTEM TOKENS */
+    :root {
+      --motion-fast: 150ms;
+      --motion-medium: 300ms;
+      --motion-slow: 600ms;
+      --ease-standard: cubic-bezier(.2, .8, .2, 1);
+      --ease-emphasized: cubic-bezier(.16, 1, .3, 1);
+      --ease-linear: linear;
+    }
+
     button, a, .cursor-pointer { touch-action: manipulation; }
+    
     .silk-pattern {
       background-color: #faf6f0;
       background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
       background-size: 28px 28px;
       background-position: 0 0, 14px 14px;
-    }
-    .gold-shimmer-border {
-      border: 1px solid rgba(197, 160, 89, 0.45);
-      box-shadow: 0 0 35px rgba(197, 160, 89, 0.15);
     }
     .user-exact-satin-bg {
       background: linear-gradient(135deg, rgba(254, 250, 244, 0.92) 0%, rgba(242, 232, 218, 0.88) 100%), url('https://images.unsplash.com/photo-1606851091851-f722959dd043?auto=format&fit=crop&w=1600&q=80');
@@ -47,6 +54,34 @@
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* REUSABLE ANIMATION PRIMITIVES */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--motion-slow) var(--ease-emphasized), 
+                  transform var(--motion-slow) var(--ease-emphasized);
+      transition-delay: var(--delay, 0ms);
+    }
+    
+    .reveal-up.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* REDUCED MOTION PREFERENCE */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal-up {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk relative">
@@ -63,7 +98,6 @@
   <!-- ROYAL MAISON HEADER -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
-      
       <div class="w-full md:w-auto flex items-center justify-between md:justify-start">
         <div class="md:hidden"></div>
         <a href="#" class="inline-block group text-center md:text-left">
@@ -71,8 +105,8 @@
           <p class="font-[Rozha_One] text-burgundy-light text-[10px] tracking-widest -mt-1">कलान्वी</p>
         </a>
         <div class="flex items-center space-x-3 md:hidden">
-          <button onclick="toggleCurrency()" id="currencyBtnMobile" class="text-[10px] font-semibold border border-burgundy/30 px-2.5 py-1 rounded-full text-burgundy">INR (₹)</button>
-          <button onclick="openCart()" class="relative p-1.5 text-burgundy">
+          <button onclick="toggleCurrency()" id="currencyBtnMobile" class="text-[10px] font-semibold border border-burgundy/30 px-2.5 py-1 rounded-full text-burgundy active:scale-[0.98] transition-transform">INR (₹)</button>
+          <button onclick="openCart()" class="relative p-1.5 text-burgundy active:scale-[0.98] transition-transform">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
             <span id="cartCountMobile" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
           </button>
@@ -88,19 +122,18 @@
       </nav>
 
       <div class="hidden md:flex items-center space-x-4">
-        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm">INR (₹)</button>
-        <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition">
+        <button onclick="toggleCurrency()" id="currencyBtn" class="text-xs tracking-wider font-semibold border border-burgundy/30 px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm active:scale-[0.98]">INR (₹)</button>
+        <button onclick="openCart()" class="relative p-2 text-burgundy hover:text-gold transition active:scale-[0.98]">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <span id="cartCount" class="absolute top-0 right-0 bg-burgundy text-champagne-silk text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
         </button>
       </div>
-
     </div>
   </header>
 
   <!-- HERO SECTION -->
   <section class="relative bg-champagne-soft py-12 sm:py-20 border-b border-gold/40 text-center px-4 overflow-hidden">
-    <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative">
+    <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative reveal-up">
       <span class="inline-block px-4 py-1.5 border border-gold/40 text-[9px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-champagne-silk/90 rounded-full shadow-sm">
         BRIDAL • FESTIVE • PARTY WEAR
       </span>
@@ -117,8 +150,8 @@
         Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries worldwide.
       </p>
       <div class="pt-3 flex justify-center gap-3">
-        <a href="#collection" class="px-7 py-3.5 bg-burgundy text-champagne-silk text-[11px] tracking-[0.2em] uppercase hover:bg-gold-antique transition duration-300 rounded-xl shadow-md font-semibold">Explore Collection</a>
-        <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="px-7 py-3.5 border border-burgundy bg-champagne-silk/90 text-burgundy text-[11px] tracking-[0.2em] uppercase hover:bg-champagne-silk transition duration-300 rounded-xl font-semibold shadow-sm">Concierge</a>
+        <a href="#collection" class="px-7 py-3.5 bg-burgundy text-champagne-silk text-[11px] tracking-[0.2em] uppercase hover:bg-gold-antique transition-all duration-300 rounded-xl shadow-md font-semibold active:scale-[0.98]">Explore Collection</a>
+        <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="px-7 py-3.5 border border-burgundy bg-champagne-silk/90 text-burgundy text-[11px] tracking-[0.2em] uppercase hover:bg-champagne-silk transition-all duration-300 rounded-xl font-semibold shadow-sm active:scale-[0.98]">Concierge</a>
       </div>
     </div>
   </section>
@@ -126,15 +159,15 @@
   <!-- INTERACTIVE PICTURE CAROUSEL -->
   <section id="carouselSection" class="py-14 bg-champagne-soft border-b border-champagne-border overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
-      <div class="text-center max-w-xl mx-auto space-y-1">
+      <div class="text-center max-w-xl mx-auto space-y-1 reveal-up">
         <span class="text-[9px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Showcase</span>
         <h3 class="font-[Cinzel] text-xl sm:text-2xl text-burgundy font-bold">Signature Masterpieces Carousel</h3>
         <p class="text-[11px] text-gray-600 font-light">Tap any heirloom below to inspect details and acquire your look.</p>
       </div>
 
-      <div class="relative">
-        <button onclick="scrollCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition">❮</button>
-        <button onclick="scrollCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition">❯</button>
+      <div class="relative reveal-up" style="--delay: 150ms;">
+        <button onclick="scrollCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition-all active:scale-95">❮</button>
+        <button onclick="scrollCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition-all active:scale-95">❯</button>
 
         <div id="homepageCarousel" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-8 py-2">
           <div class="w-full text-center text-xs text-gray-500 py-6">Curating spotlight carousel...</div>
@@ -143,17 +176,17 @@
     </div>
   </section>
 
-  <!-- EXPANDED HERITAGE & STORY SECTION (ABOVE COLLECTION) -->
+  <!-- EXPANDED HERITAGE & STORY SECTION -->
   <section id="story" class="bg-champagne-silk py-24 px-4 border-b border-champagne-border">
     <div class="max-w-5xl mx-auto space-y-12">
-      <div class="text-center space-y-3">
+      <div class="text-center space-y-3 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Maison Heritage & Philosophy</span>
         <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold">The KALANVII Legacy of Splendor</h3>
         <div class="w-16 h-0.5 bg-gold mx-auto mt-2"></div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <div class="space-y-4 text-xs sm:text-sm text-[#5c4a40] leading-relaxed font-light">
+        <div class="space-y-4 text-xs sm:text-sm text-[#5c4a40] leading-relaxed font-light reveal-up" style="--delay: 100ms;">
           <p>
             Founded in <strong class="text-burgundy font-semibold">2026</strong>, <strong class="text-burgundy font-semibold">KALANVII (कलान्वी)</strong> was born out of a profound reverence for India's royal textile heritage and master artisan communities. Our name symbolizes the harmonious confluence of classical art (*Kala*) and refined wisdom (*Anand/Nidhi*).
           </p>
@@ -161,7 +194,7 @@
             Every potli, batua, and crescent minaudiere in our atelier is a labor of intense devotion. Passing through the skilled hands of master karigars whose families have perfected zardozi and moti-stringing across generations, each piece requires upwards of 48 hours of meticulous needlework.
           </p>
         </div>
-        <div class="bg-champagne-soft p-8 rounded-3xl border border-gold/40 shadow-lg space-y-4">
+        <div class="bg-champagne-soft p-8 rounded-3xl border border-gold/40 shadow-lg space-y-4 reveal-up" style="--delay: 250ms;">
           <h4 class="font-[Cinzel] text-lg font-bold text-burgundy uppercase">The Three Pillars of KALANVII</h4>
           <ul class="space-y-3 text-xs text-gray-700">
             <li class="flex items-start gap-2">
@@ -184,17 +217,17 @@
 
   <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
-    <div class="text-center max-w-2xl mx-auto mb-10">
+    <div class="text-center max-w-2xl mx-auto mb-10 reveal-up">
       <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
       <p class="font-[Rozha_One] text-gold-antique text-sm mt-1">दस्तकारी पोटली एवं क्लच</p>
       <div class="w-16 h-0.5 bg-gold mx-auto mt-4"></div>
     </div>
-    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 text-xs uppercase tracking-widest">
-      <button onclick="filterCategory('All')" class="filter-btn active-tab px-5 py-2.5 border border-burgundy bg-burgundy text-champagne-silk transition rounded-full shadow-sm">All</button>
-      <button onclick="filterCategory('Potlis')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Potlis & Batua</button>
-      <button onclick="filterCategory('Crescents')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Crescent Clutches</button>
-      <button onclick="filterCategory('Minaudieres')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Minaudières</button>
-      <button onclick="filterCategory('Cocktail')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition rounded-full">Cocktail Bags</button>
+    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 text-xs uppercase tracking-widest reveal-up" style="--delay: 150ms;">
+      <button onclick="filterCategory('All')" class="filter-btn active-tab px-5 py-2.5 border border-burgundy bg-burgundy text-champagne-silk transition-colors rounded-full shadow-sm active:scale-95">All</button>
+      <button onclick="filterCategory('Potlis')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Potlis & Batua</button>
+      <button onclick="filterCategory('Crescents')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Crescent Clutches</button>
+      <button onclick="filterCategory('Minaudieres')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Minaudières</button>
+      <button onclick="filterCategory('Cocktail')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Cocktail Bags</button>
     </div>
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <div class="col-span-full py-16 text-center text-sm text-burgundy/60 animate-pulse">Curating royal collection...</div>
@@ -204,23 +237,23 @@
   <!-- CLIENT TESTIMONIALS SECTION -->
   <section id="testimonials" class="bg-champagne-soft py-20 border-y border-champagne-border px-4">
     <div class="max-w-7xl mx-auto space-y-12">
-      <div class="text-center max-w-xl mx-auto space-y-2">
+      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Verified Patronage</span>
         <h3 class="font-[Cinzel] text-3xl text-burgundy font-bold">Maison Testimonials</h3>
         <p class="text-xs text-gray-600 font-light">Unfiltered appreciation from discerning brides and connoisseurs worldwide.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
+        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3 reveal-up" style="--delay: 0ms;">
           <div class="text-gold text-sm">★★★★★</div>
           <p class="text-xs text-gray-700 italic leading-relaxed">"The emerald crystals caught every light during my sangeet. KALANVII packaging and quality rival top Parisian luxury houses!"</p>
           <p class="text-[11px] font-bold text-burgundy">— Ananya Sharma, New Delhi</p>
         </div>
-        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
+        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3 reveal-up" style="--delay: 150ms;">
           <div class="text-gold text-sm">★★★★★</div>
           <p class="text-xs text-gray-700 italic leading-relaxed">"Ordered two potlis for my wedding reception. The beadwork is extraordinarily precise and sturdy across hours of celebration."</p>
           <p class="text-[11px] font-bold text-burgundy">— Riya Merchant, Mumbai</p>
         </div>
-        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3">
+        <div class="bg-champagne-silk p-6 rounded-2xl border border-gold/30 shadow-md space-y-3 reveal-up" style="--delay: 300ms;">
           <div class="text-gold text-sm">★★★★★</div>
           <p class="text-xs text-gray-700 italic leading-relaxed">"Delivered all the way to London in pristine condition. Exceptional craftsmanship and wonderful WhatsApp support throughout."</p>
           <p class="text-[11px] font-bold text-burgundy">— Natasha Kapoor, London</p>
@@ -232,23 +265,23 @@
   <!-- SAVOIR-FAIRE -->
   <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
-      <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-2 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Artisanal Pedigree</span>
         <h3 class="font-[Cinzel] text-3xl text-gold-light">The Art of Indian Karigari</h3>
         <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every single heirloom piece.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl reveal-up" style="--delay: 0ms;">
           <div class="font-[Cinzel] text-3xl text-gold-foil">48+ Hours</div>
           <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Hand-Embroidered</h4>
           <p class="text-xs text-champagne/70 leading-relaxed font-light">Thousands of micro seed pearls strung individually with high-tensile silk thread to guarantee lifelong durability.</p>
         </div>
-        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl reveal-up" style="--delay: 150ms;">
           <div class="font-[Cinzel] text-3xl text-gold-foil">Gilded Finish</div>
           <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Gold Electroplate</h4>
           <p class="text-xs text-champagne/70 leading-relaxed font-light">Frames and clasps are coated in an anti-tarnish protective luster for enduring elegance across generations.</p>
         </div>
-        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl">
+        <div class="p-8 border border-gold/20 rounded-2xl bg-burgundy-deep/60 space-y-4 shadow-xl reveal-up" style="--delay: 300ms;">
           <div class="font-[Cinzel] text-3xl text-gold-foil">Bespoke</div>
           <h4 class="text-xs uppercase tracking-widest font-semibold text-champagne">Bridal Customization</h4>
           <p class="text-xs text-champagne/70 leading-relaxed font-light">Dedicated concierge matching for your bridal lehenga, sangeet gown, or reception ensemble.</p>
@@ -262,26 +295,22 @@
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div class="fixed inset-0" onclick="closeQuickView()"></div>
       <div class="inline-block w-full max-w-2xl p-5 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left max-h-[90vh] overflow-y-auto">
-        <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30">✕</button>
+        <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
         
-        <!-- SINGLE UNIFIED VERTICAL FLOW CONTAINER -->
         <div class="space-y-6 pt-2">
-          
-          <!-- IMAGE SLIDER & THUMBNAILS -->
           <div class="space-y-3">
             <div id="mediaSwipeContainer" class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group touch-pan-y">
               <img id="modalImg" src="" class="w-full h-full object-cover transition duration-300 pointer-events-none">
               <video id="modalVideo" src="" controls class="w-full h-full object-cover hidden"></video>
 
-              <button onclick="slideMedia(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10">❮</button>
-              <button onclick="slideMedia(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10">❯</button>
+              <button onclick="slideMedia(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10 active:scale-95">❮</button>
+              <button onclick="slideMedia(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-burgundy/80 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-burgundy shadow-lg transition opacity-80 group-hover:opacity-100 z-10 active:scale-95">❯</button>
               
               <div id="slideCounter" class="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] px-3 py-1 rounded-full font-bold z-10">1 / 1</div>
             </div>
             <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
           </div>
 
-          <!-- PRODUCT DETAILS & ACTIONS -->
           <div class="space-y-5">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
@@ -310,7 +339,6 @@
             <div class="pt-1 flex gap-3" id="modalActionContainer"></div>
           </div>
 
-          <!-- CLIENT REVIEWS SECTION -->
           <div class="border-t border-champagne-border pt-5 space-y-4">
             <div class="flex justify-between items-center">
               <h4 class="font-[Cinzel] text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
@@ -319,16 +347,15 @@
 
             <form id="reviewForm" onsubmit="submitClientReview(event)" class="hidden bg-champagne-soft p-4 rounded-xl border border-gold/30 space-y-3">
               <h5 class="text-xs font-bold text-burgundy uppercase">Share Your Experience</h5>
-              <input type="text" id="reviewAuthor" placeholder="Your Full Name *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
-              <input type="text" id="reviewLocation" placeholder="City / Country (e.g., Delhi) *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none">
-              <textarea id="reviewComment" rows="2" placeholder="Write your review here... *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none"></textarea>
-              <button type="submit" class="w-full py-2.5 bg-burgundy text-champagne-silk text-[10px] uppercase font-bold rounded-lg hover:bg-burgundy-light transition">Submit for Review</button>
+              <input type="text" id="reviewAuthor" placeholder="Your Full Name *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none transition-shadow focus:shadow-md">
+              <input type="text" id="reviewLocation" placeholder="City / Country (e.g., Delhi) *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none transition-shadow focus:shadow-md">
+              <textarea id="reviewComment" rows="2" placeholder="Write your review here... *" required class="w-full text-xs p-2.5 bg-white border border-champagne-border rounded-lg outline-none transition-shadow focus:shadow-md"></textarea>
+              <button type="submit" class="w-full py-2.5 bg-burgundy text-champagne-silk text-[10px] uppercase font-bold rounded-lg hover:bg-burgundy-light transition-colors active:scale-[0.98]">Submit for Review</button>
             </form>
 
             <div id="modalReviewsList" class="space-y-3"></div>
           </div>
 
-          <!-- YOU MAY ALSO ADORE -->
           <div class="border-t border-champagne-border pt-5 space-y-3">
             <h4 class="font-[Cinzel] text-xs font-bold text-burgundy uppercase tracking-widest">You May Also Adore</h4>
             <div id="modalCrossSell" class="grid grid-cols-3 gap-3"></div>
@@ -343,13 +370,13 @@
   <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeCart()"></div>
     <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
-      <div class="w-screen max-w-md bg-champagne-silk shadow-2xl flex flex-col border-l border-gold/40">
+      <div class="w-screen max-w-md bg-champagne-silk shadow-2xl flex flex-col border-l border-gold/40 transform transition-transform translate-x-0">
         <div class="p-6 bg-burgundy text-champagne-silk flex items-center justify-between border-b border-gold/30">
           <div>
             <h3 class="font-[Cinzel] text-sm tracking-widest uppercase font-bold">Your Shopping Bag</h3>
             <p class="text-[10px] text-champagne/70 tracking-wider">COMPLIMENTARY LUXURY GIFT BOXING</p>
           </div>
-          <button onclick="closeCart()" class="text-champagne-silk/80 hover:text-champagne-silk text-2xl">✕</button>
+          <button onclick="closeCart()" class="text-champagne-silk/80 hover:text-champagne-silk text-2xl active:scale-95 transition-transform">✕</button>
         </div>
         <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
         <div class="p-6 bg-champagne-soft border-t border-champagne-border space-y-4">
@@ -357,7 +384,7 @@
             <span>Estimated Total:</span>
             <span id="cartTotal" class="font-bold text-base">₹0</span>
           </div>
-          <button onclick="checkoutOnWhatsApp()" class="w-full py-4 bg-burgundy hover:bg-burgundy-light text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition shadow-md">
+          <button onclick="checkoutOnWhatsApp()" class="w-full py-4 bg-burgundy hover:bg-burgundy-light text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">
             Secure Checkout via WhatsApp
           </button>
         </div>
@@ -370,7 +397,7 @@
     <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
       <div class="fixed inset-0" onclick="closePolicyModal()"></div>
       <div class="inline-block w-full max-w-2xl p-6 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left space-y-4">
-        <button onclick="closePolicyModal()" class="absolute top-5 right-5 text-gray-500 hover:text-burgundy text-2xl z-20 bg-champagne-soft w-10 h-10 rounded-full flex items-center justify-center border border-gold/30">✕</button>
+        <button onclick="closePolicyModal()" class="absolute top-5 right-5 text-gray-500 hover:text-burgundy text-2xl z-20 bg-champagne-soft w-10 h-10 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
         <h3 id="policyModalTitle" class="font-[Cinzel] text-xl text-burgundy font-bold"></h3>
         <div id="policyModalBody" class="text-xs text-[#5c4a40] leading-relaxed space-y-3 font-light max-h-[60vh] overflow-y-auto pr-2"></div>
       </div>
@@ -379,17 +406,16 @@
 
   <!-- FOOTER -->
   <footer class="bg-burgundy-deep text-champagne-silk py-16 border-t border-gold/40 text-center text-xs tracking-wider">
-    <div class="max-w-7xl mx-auto px-4 space-y-6">
+    <div class="max-w-7xl mx-auto px-4 space-y-6 reveal-up">
       <h5 class="font-[Cinzel] text-2xl tracking-[0.25em] text-gold-foil">KALANVII • कलान्वी</h5>
       <p class="text-champagne/60 text-[11px] uppercase tracking-[0.2em]">YOUR CELEBRATION, OUR SIGNATURE</p>
       <div class="w-12 h-0.5 bg-gold/40 mx-auto"></div>
       
-      <!-- FIXED BUTTONS -->
       <div class="flex flex-wrap justify-center gap-6 text-[11px] text-champagne/80 uppercase tracking-widest">
-        <a href="#story" class="hover:text-gold transition">Our Heritage</a>
-        <button type="button" onclick="openPolicy('contact')" class="hover:text-gold transition uppercase relative z-10">Contact Concierge</button>
-        <button type="button" onclick="openPolicy('tc')" class="hover:text-gold transition uppercase relative z-10">Terms & Conditions</button>
-        <button type="button" onclick="openPolicy('shipping')" class="hover:text-gold transition uppercase relative z-10">Shipping Policy</button>
+        <a href="#story" class="hover:text-gold transition-colors">Our Heritage</a>
+        <button type="button" onclick="openPolicy('contact')" class="hover:text-gold transition-colors uppercase relative z-10">Contact Concierge</button>
+        <button type="button" onclick="openPolicy('tc')" class="hover:text-gold transition-colors uppercase relative z-10">Terms & Conditions</button>
+        <button type="button" onclick="openPolicy('shipping')" class="hover:text-gold transition-colors uppercase relative z-10">Shipping Policy</button>
         <a href="./admin.html" class="text-gold-foil hover:underline relative z-10">Admin Portal →</a>
       </div>
 
@@ -426,8 +452,28 @@
     let touchStartX = 0;
     let touchEndX = 0;
 
+    // SCROLL ANIMATION OBSERVER
+    function initScrollReveals() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target); // Animate once per element
+          }
+        });
+      }, {
+        threshold: 0.15
+      });
+
+      document.querySelectorAll('.reveal-up').forEach((el) => {
+        observer.observe(el);
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       loadCatalog();
+      initScrollReveals(); // Initialize static elements
+
       const swipeContainer = document.getElementById('mediaSwipeContainer');
       if (swipeContainer) {
         swipeContainer.addEventListener('touchstart', e => {
@@ -478,10 +524,10 @@
       carousel.innerHTML = activeProducts.map(item => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div onclick="openQuickView('${item.id}')" class="w-[170px] sm:w-[220px] bg-champagne-silk border border-gold/40 rounded-xl overflow-hidden shadow cursor-pointer group flex-shrink-0 transform hover:-translate-y-1 transition duration-300">
+          <div onclick="openQuickView('${item.id}')" class="w-[170px] sm:w-[220px] bg-champagne-silk border border-gold/40 rounded-xl overflow-hidden shadow cursor-pointer group flex-shrink-0 transform transition-transform duration-300 hover:-translate-y-2 active:scale-95">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft">
               <span class="absolute top-2 left-2 z-10 text-[8px] uppercase tracking-widest px-2 py-0.5 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">50% OFF</span>
-              <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+              <img src="${item.image_url}" class="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-105">
               <div class="absolute inset-0 bg-burgundy/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                 <span class="bg-champagne-silk text-burgundy text-[9px] uppercase tracking-widest px-3 py-1.5 font-bold rounded-full shadow">Quick View ↗</span>
               </div>
@@ -510,18 +556,21 @@
         return;
       }
 
-      grid.innerHTML = filtered.map(item => {
+      grid.innerHTML = filtered.map((item, index) => {
         const salePrice = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         const doublePrice = currency === 'INR' ? `₹${(item.price_inr * 2).toLocaleString('en-IN')}` : `$${item.price_usd * 2}`;
         const mediaCount = (item.gallery_images?.length || 0) + (item.video_url ? 1 : 0);
         const isSoldOut = item.is_sold_out;
+        
+        // Stagger logic: Modulo 3 creates a row-based wave delay on desktop grids
+        const staggerDelay = (index % 3) * 150; 
 
         return `
-          <div class="group bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-1">
+          <div class="group reveal-up bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2" style="--delay: ${staggerDelay}ms">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer" onclick="openQuickView('${item.id}')">
               <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 ${isSoldOut ? 'bg-red-800' : 'bg-burgundy'} text-champagne-silk font-semibold rounded-full shadow">${isSoldOut ? 'SOLD OUT' : '50% OFF'}</span>
               ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
-              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ${isSoldOut ? 'grayscale contrast-75' : ''}">
+              <img src="${item.image_url}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-105 ${isSoldOut ? 'grayscale contrast-75' : ''}">
               <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                 <span class="bg-champagne-silk/95 text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-semibold rounded-full shadow-lg">Quick View</span>
               </div>
@@ -538,12 +587,15 @@
             <div class="mt-4 pt-4 border-t border-champagne-border flex gap-2">
               ${isSoldOut 
                 ? `<button disabled class="w-full py-3 bg-gray-300 text-gray-600 text-[11px] uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Sold Out</button>`
-                : `<button onclick="addToCart('${item.id}')" class="w-full py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest font-semibold rounded-xl transition">Add to Bag</button>`
+                : `<button onclick="addToCart('${item.id}')" class="w-full py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest font-semibold rounded-xl transition-all active:scale-[0.98]">Add to Bag</button>`
               }
             </div>
           </div>
         `;
       }).join('');
+      
+      // Initialize observer for dynamically added products
+      initScrollReveals();
     }
 
     function filterCategory(cat) {
@@ -605,7 +657,7 @@
       thumbsContainer.innerHTML = currentMediaList.map((url, idx) => {
         const isVid = url.endsWith('.mp4') || url.includes('video');
         return `
-          <div onclick="setMediaIndex(${idx})" class="w-14 h-14 rounded-xl overflow-hidden border-2 ${idx === 0 ? 'border-gold' : 'border-gold/30'} cursor-pointer flex-shrink-0 bg-burgundy/10 flex items-center justify-center">
+          <div onclick="setMediaIndex(${idx})" class="w-14 h-14 rounded-xl overflow-hidden border-2 transition-colors ${idx === 0 ? 'border-gold' : 'border-gold/30'} cursor-pointer flex-shrink-0 bg-burgundy/10 flex items-center justify-center">
             ${isVid ? '<span class="text-[9px] font-bold text-burgundy">▶ Video</span>' : `<img src="${url}" class="w-full h-full object-cover">`}
           </div>
         `;
@@ -616,8 +668,8 @@
         actionContainer.innerHTML = `<button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>`;
       } else {
         actionContainer.innerHTML = `
-          <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition shadow-md">Add to Bag</button>
-          <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition flex items-center justify-center">WhatsApp</button>
+          <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">Add to Bag</button>
+          <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center active:scale-95">WhatsApp</button>
         `;
         document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       }
@@ -626,7 +678,7 @@
 
       const otherProducts = allProducts.filter(p => p.id != id).slice(0, 3);
       document.getElementById('modalCrossSell').innerHTML = otherProducts.map(p => `
-        <div onclick="openQuickView('${p.id}')" class="cursor-pointer group bg-white p-2 rounded-xl border border-champagne-border hover:border-gold transition">
+        <div onclick="openQuickView('${p.id}')" class="cursor-pointer group bg-white p-2 rounded-xl border border-champagne-border hover:border-gold transition-colors active:scale-95">
           <img src="${p.image_url}" class="w-full aspect-square object-cover rounded-lg mb-1">
           <p class="text-[9px] font-[Cinzel] font-bold text-burgundy truncate">${p.title}</p>
         </div>
@@ -787,9 +839,9 @@
               <h5 class="text-xs font-[Cinzel] text-burgundy font-bold">${item.title}</h5>
               <div class="text-xs text-gold-antique font-semibold pt-0.5">${priceFormatted}</div>
               <div class="flex items-center gap-3 mt-2">
-                <button type="button" onclick="changeQty(${index}, -1)" class="w-6 h-6 bg-champagne-border rounded flex items-center justify-center font-bold text-burgundy">-</button>
+                <button type="button" onclick="changeQty(${index}, -1)" class="w-6 h-6 bg-champagne-border rounded flex items-center justify-center font-bold text-burgundy active:scale-95 transition-transform">-</button>
                 <span class="text-xs font-bold text-burgundy">${item.qty}</span>
-                <button type="button" onclick="changeQty(${index}, 1)" class="w-6 h-6 bg-champagne-border rounded flex items-center justify-center font-bold text-burgundy">+</button>
+                <button type="button" onclick="changeQty(${index}, 1)" class="w-6 h-6 bg-champagne-border rounded flex items-center justify-center font-bold text-burgundy active:scale-95 transition-transform">+</button>
               </div>
             </div>
             <button type="button" onclick="removeFromCart(event, ${index})" class="text-xs text-red-700 hover:underline p-2">Remove</button>
@@ -839,12 +891,9 @@
 
     function closePolicyModal() { document.getElementById('policyModal').classList.add('hidden'); }
 
-    document.addEventListener('DOMContentLoaded', loadCatalog);
   </script>
 </body>
 </html>
-
-
 
 
 
