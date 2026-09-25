@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KALANVII | Master Control Admin</title>
+  <title>KALANVII | Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            burgundy: { DEFAULT: '#430917', deep: '#28050e', light: '#611024' },
-            champagne: { silk: '#faf6f0', soft: '#f3ece1', border: '#decbb4' },
-            gold: { DEFAULT: '#c5a059', foil: '#e4c982', antique: '#99732b' }
+            burgundy: { DEFAULT: '#430917', light: '#611024' },
+            champagne: { DEFAULT: '#eedfc8', silk: '#faf6f0', border: '#decbb4' },
+            gold: '#c5a059'
           },
           fontFamily: {
             serif: ['Cinzel', 'serif'],
@@ -25,93 +25,188 @@
     }
   </script>
 </head>
-<body class="bg-[#faf6f0] text-[#2a1d17] min-h-screen flex flex-col font-sans">
+<body class="bg-champagne-silk text-gray-800 font-sans min-h-screen">
 
-  <header class="bg-burgundy text-champagne-silk py-4 px-6 border-b border-gold/40 sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div>
-        <h1 class="font-[Cinzel] text-xl font-bold tracking-[0.2em] text-gold-foil uppercase">KALANVII ADMIN</h1>
-        <p class="text-[9px] uppercase tracking-widest text-champagne-silk/70">Master Control</p>
-      </div>
-      <nav class="flex items-center space-x-6 text-xs uppercase tracking-widest font-semibold">
-        <button onclick="switchTab('orders')" id="navOrders" class="hover:text-gold transition-colors pb-1 border-b-2 border-gold text-gold">Leads & Orders</button>
-        <button onclick="switchTab('inventory')" id="navInventory" class="hover:text-gold transition-colors pb-1 border-b-2 border-transparent">Inventory</button>
-        <a href="./index.html" class="text-champagne-silk/60 hover:text-white transition-colors">Exit →</a>
-      </nav>
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full border border-champagne-border text-center">
+      <h1 class="font-[Cinzel] text-3xl text-burgundy font-bold mb-2">KALANVII</h1>
+      <p class="text-xs text-gray-500 uppercase tracking-widest mb-6">Maison Admin Portal</p>
+      <input type="password" id="pinInput" placeholder="Enter Secure PIN" class="w-full text-center p-3 border border-champagne-border rounded-lg mb-4 focus:outline-none focus:border-gold">
+      <button onclick="checkPin()" class="w-full py-3 bg-burgundy text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg hover:bg-burgundy-light transition">Authenticate</button>
+      <p id="errorMsg" class="text-red-500 text-xs mt-3 hidden">Incorrect PIN. Access Denied.</p>
     </div>
-  </header>
+  </div>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full space-y-8">
-    
-    <!-- ORDERS TAB -->
-    <section id="ordersTab" class="space-y-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-champagne-soft p-6 rounded-2xl border border-gold/30">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden min-h-screen flex flex-col">
+    <!-- TOP NAV -->
+    <header class="bg-burgundy text-champagne-silk py-4 px-6 shadow-md flex justify-between items-center">
+      <div>
+        <h2 class="font-[Cinzel] text-xl font-bold tracking-widest">KALANVII ADMIN</h2>
+        <p class="text-[10px] uppercase tracking-widest text-champagne/70">Master Control</p>
+      </div>
+      <div class="flex gap-4 text-xs font-bold tracking-widest uppercase">
+        <button onclick="switchTab('inventory')" id="tabInventory" class="hover:text-gold border-b-2 border-gold transition px-2 py-1">Inventory</button>
+        <button onclick="switchTab('leads')" id="tabLeads" class="hover:text-gold border-b-2 border-transparent transition px-2 py-1">Leads & Orders</button>
+        <a href="./index.html" class="text-champagne/50 hover:text-white px-2 py-1">Exit →</a>
+      </div>
+    </header>
+
+    <main class="p-6 max-w-7xl mx-auto w-full flex-grow">
+      
+      <!-- INVENTORY SECTION -->
+      <section id="inventorySection" class="space-y-8">
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-champagne-border">
+          <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Add New Masterpiece</h3>
+          <form id="uploadForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Basic Details -->
+            <input type="text" id="title" placeholder="Product Title (e.g. GULABÉ)" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <input type="text" id="hindi" placeholder="Hindi Title (e.g. गुलाबी)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <input type="text" id="tag" placeholder="Label Tag (e.g. Bridal Heirloom)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            
+            <!-- Pricing & Category -->
+            <div class="flex gap-2">
+              <input type="number" id="priceInr" placeholder="Price (INR)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+              <input type="number" id="priceUsd" placeholder="Price (USD)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            </div>
+            <select id="category" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+              <option value="Potlis">Potlis & Batua</option>
+              <option value="Crescents">Crescent Clutches</option>
+              <option value="Minaudieres">Minaudières</option>
+              <option value="Cocktail">Cocktail Bags</option>
+            </select>
+
+            <!-- Detailed Copy -->
+            <textarea id="desc" rows="2" placeholder="Luxury Description..." class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
+            <input type="text" id="materials" placeholder="Materials Used (e.g. Seed pearls, gold frame)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2">
+
+            <!-- Native File Uploads -->
+            <div class="space-y-1">
+              <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Main Image *</label>
+              <input type="file" id="imageFile" accept="image/*" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            </div>
+            
+            <div class="space-y-1">
+              <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Video (.mp4) (Optional)</label>
+              <input type="file" id="videoFile" accept="video/mp4,video/mov" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            </div>
+
+            <div class="space-y-1 col-span-1 md:col-span-2">
+              <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Gallery Images (Optional)</label>
+              <input type="file" id="galleryFiles" accept="image/*" multiple class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+              <p class="text-[9px] text-gray-400 mt-1">You can select multiple photos at once.</p>
+            </div>
+
+            <div class="col-span-full pt-2">
+              <button type="button" id="uploadBtn" onclick="uploadProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Add to Collection</button>
+            </div>
+          </form>
+        </div>
+
         <div>
-          <h2 class="font-[Cinzel] text-2xl font-bold text-burgundy uppercase">Captured Orders & Leads</h2>
-          <p class="text-xs text-gray-600">Review and manage website checkout submissions.</p>
+          <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Current Inventory</h3>
+          <div id="adminProductList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="text-sm text-gray-500 py-4 col-span-full">Loading inventory...</div>
+          </div>
         </div>
-        <button onclick="loadOrders()" class="px-5 py-2.5 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl hover:bg-burgundy-light transition shadow active:scale-95 flex items-center gap-2">
-          <span>🔄 Refresh Leads</span>
-        </button>
-      </div>
+      </section>
 
-      <div class="bg-champagne-silk rounded-2xl border border-gold/30 shadow-lg overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-burgundy text-champagne-silk font-[Cinzel] text-[10px] uppercase tracking-widest">
-                <th class="p-4">Customer Details</th>
-                <th class="p-4">Shipping Address</th>
-                <th class="p-4">Order Value</th>
-                <th class="p-4">Request Items</th>
-                <th class="p-4">Action</th>
-              </tr>
-            </thead>
-            <tbody id="ordersTableBody" class="divide-y divide-champagne-border text-xs">
-              <tr><td colspan="5" class="p-10 text-center text-gray-500">Loading captured leads...</td></tr>
-            </tbody>
-          </table>
+      <!-- LEADS & ORDERS SECTION (WITH REFRESH BUTTON) -->
+      <section id="leadsSection" class="hidden space-y-6">
+        <div class="flex justify-between items-center border-b border-champagne-border pb-2 mb-4">
+          <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest">Captured Orders & Leads</h3>
+          <button onclick="loadOrders()" class="bg-champagne-border text-burgundy px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-gold hover:text-white transition shadow-sm active:scale-95 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Refresh Leads
+          </button>
         </div>
-      </div>
-    </section>
-
-    <!-- INVENTORY TAB -->
-    <section id="inventoryTab" class="space-y-6 hidden">
-      <div class="flex justify-between items-center bg-champagne-soft p-6 rounded-2xl border border-gold/30">
-        <div>
-          <h2 class="font-[Cinzel] text-2xl font-bold text-burgundy uppercase">Catalog Inventory</h2>
-          <p class="text-xs text-gray-600">Toggle stock status or manage items.</p>
+        
+        <div class="bg-white rounded-2xl shadow-md border border-champagne-border overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-champagne-soft text-burgundy font-[Cinzel] uppercase text-[10px] tracking-widest">
+                <tr>
+                  <th class="p-4">Date</th>
+                  <th class="p-4">Customer Details</th>
+                  <th class="p-4">Shipping Address</th>
+                  <th class="p-4">Order Value</th>
+                  <th class="p-4">Requested Items</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody" class="divide-y divide-champagne-border text-xs">
+                <tr><td colspan="5" class="p-8 text-center text-gray-500">Loading leads...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <button onclick="loadInventory()" class="px-5 py-2.5 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl hover:bg-burgundy-light transition shadow active:scale-95">Refresh Inventory</button>
-      </div>
+      </section>
 
-      <div class="bg-champagne-silk rounded-2xl border border-gold/30 shadow-lg overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-burgundy text-champagne-silk font-[Cinzel] text-[10px] uppercase tracking-widest">
-                <th class="p-4">Item</th>
-                <th class="p-4">Category</th>
-                <th class="p-4">Price (INR)</th>
-                <th class="p-4">Status</th>
-                <th class="p-4">Toggle Stock</th>
-              </tr>
-            </thead>
-            <tbody id="inventoryTableBody" class="divide-y divide-champagne-border text-xs">
-              <tr><td colspan="5" class="p-10 text-center text-gray-500">Loading catalog...</td></tr>
-            </tbody>
-          </table>
+    </main>
+  </div>
+
+  <!-- EDIT PRODUCT MODAL -->
+  <div id="editModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto relative shadow-2xl">
+      <button onclick="closeEditModal()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy font-bold text-xl">✕</button>
+      <h3 class="font-[Cinzel] text-xl text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Edit Masterpiece</h3>
+      
+      <form id="editForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="hidden" id="editId">
+        <input type="hidden" id="existingImage">
+        <input type="hidden" id="existingVideo">
+        <input type="hidden" id="existingGallery">
+
+        <input type="text" id="editTitle" placeholder="Product Title" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        <input type="text" id="editHindi" placeholder="Hindi Title" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        <input type="text" id="editTag" placeholder="Label Tag" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        
+        <div class="flex gap-2">
+          <input type="number" id="editPriceInr" placeholder="Price (INR)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+          <input type="number" id="editPriceUsd" placeholder="Price (USD)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
         </div>
-      </div>
-    </section>
+        
+        <select id="editCategory" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none md:col-span-2">
+          <option value="Potlis">Potlis & Batua</option>
+          <option value="Crescents">Crescent Clutches</option>
+          <option value="Minaudieres">Minaudières</option>
+          <option value="Cocktail">Cocktail Bags</option>
+        </select>
 
-  </main>
+        <textarea id="editDesc" rows="2" placeholder="Description..." class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
+        <input type="text" id="editMaterials" placeholder="Materials Used" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2">
+
+        <div class="space-y-1">
+          <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Main Image</label>
+          <input type="file" id="editImageFile" accept="image/*" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        </div>
+        
+        <div class="space-y-1">
+          <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Video</label>
+          <input type="file" id="editVideoFile" accept="video/mp4,video/mov" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        </div>
+
+        <div class="space-y-1 col-span-1 md:col-span-2">
+          <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Gallery Images</label>
+          <input type="file" id="editGalleryFiles" accept="image/*" multiple class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+          <p class="text-[9px] text-gray-400 mt-1">Leave all file inputs empty to keep current media.</p>
+        </div>
+
+        <div class="col-span-full pt-2">
+          <button type="button" id="editSaveBtn" onclick="saveEditProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
+    const BUCKET_NAME = "kalanvii-assets"; 
     
     let supabaseClient = null;
+    let allAdminProducts = [];
+
     function getSupabase() {
       if (!supabaseClient && window.supabase) {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -119,145 +214,280 @@
       return supabaseClient;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadOrders();
-    });
-
-    function switchTab(tab) {
-      const ordersTab = document.getElementById('ordersTab');
-      const inventoryTab = document.getElementById('inventoryTab');
-      const navOrders = document.getElementById('navOrders');
-      const navInventory = document.getElementById('navInventory');
-
-      if (tab === 'orders') {
-        ordersTab.classList.remove('hidden');
-        inventoryTab.classList.add('hidden');
-        navOrders.classList.add('border-gold', 'text-gold');
-        navInventory.classList.remove('border-gold', 'text-gold');
+    function checkPin() {
+      if (document.getElementById('pinInput').value === '1221') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'flex';
+        loadAdminCatalog();
         loadOrders();
       } else {
-        ordersTab.classList.add('hidden');
-        inventoryTab.classList.remove('hidden');
-        navInventory.classList.add('border-gold', 'text-gold');
-        navOrders.classList.remove('border-gold', 'text-gold');
-        loadInventory();
+        document.getElementById('errorMsg').classList.remove('hidden');
+      }
+    }
+
+    function switchTab(tab) {
+      if (tab === 'inventory') {
+        document.getElementById('inventorySection').classList.remove('hidden');
+        document.getElementById('leadsSection').classList.add('hidden');
+        document.getElementById('tabInventory').classList.add('border-gold');
+        document.getElementById('tabInventory').classList.remove('border-transparent');
+        document.getElementById('tabLeads').classList.add('border-transparent');
+        document.getElementById('tabLeads').classList.remove('border-gold');
+      } else {
+        document.getElementById('inventorySection').classList.add('hidden');
+        document.getElementById('leadsSection').classList.remove('hidden');
+        document.getElementById('tabLeads').classList.add('border-gold');
+        document.getElementById('tabLeads').classList.remove('border-transparent');
+        document.getElementById('tabInventory').classList.add('border-transparent');
+        document.getElementById('tabInventory').classList.remove('border-gold');
+        loadOrders();
+      }
+    }
+
+    async function uploadFileToSupabase(file) {
+      if (!file) return null;
+      const client = getSupabase();
+      
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `uploads/${fileName}`;
+
+      const { error } = await client.storage.from(BUCKET_NAME).upload(filePath, file);
+      if (error) {
+        alert("File upload failed: " + error.message);
+        return null;
+      }
+
+      const { data } = client.storage.from(BUCKET_NAME).getPublicUrl(filePath);
+      return data.publicUrl;
+    }
+
+    async function loadAdminCatalog() {
+      const client = getSupabase();
+      if (!client) return setTimeout(loadAdminCatalog, 500);
+      const { data } = await client.from('products').select('*').order('created_at', { ascending: false });
+      
+      const container = document.getElementById('adminProductList');
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div class="col-span-full py-4 text-gray-500 text-sm">No items found.</div>';
+        return;
+      }
+
+      allAdminProducts = data;
+
+      container.innerHTML = data.map(item => `
+        <div class="bg-white border border-champagne-border rounded-xl p-3 flex flex-col justify-between shadow-sm">
+          <div>
+            <img src="${item.image_url}" class="w-full h-32 object-cover rounded-lg mb-2">
+            <h4 class="font-bold text-xs text-burgundy truncate">${item.title}</h4>
+            <p class="text-[10px] text-gray-500">₹${item.price_inr} | $${item.price_usd}</p>
+            <p class="text-[9px] uppercase font-bold ${item.is_sold_out ? 'text-red-600' : 'text-emerald-600'} mt-1">${item.is_sold_out ? 'SOLD OUT' : 'IN STOCK'}</p>
+          </div>
+          <div class="mt-3 pt-3 border-t border-champagne-border flex flex-col gap-2">
+            <button onclick="openEditModal('${item.id}')" class="w-full py-1.5 bg-champagne-soft hover:bg-champagne border border-champagne-border text-burgundy text-[9px] font-bold uppercase rounded transition">Edit Details</button>
+            <div class="flex gap-2">
+              <button onclick="toggleSoldOut('${item.id}', ${item.is_sold_out})" class="flex-grow py-1.5 bg-gray-100 hover:bg-gray-200 text-[9px] font-bold uppercase rounded">Toggle Stock</button>
+              <button onclick="deleteProduct('${item.id}')" class="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 text-[9px] font-bold uppercase rounded">Drop</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function uploadProduct() {
+      const client = getSupabase();
+      const btn = document.getElementById('uploadBtn');
+      
+      const imageFile = document.getElementById('imageFile').files[0];
+      const videoFile = document.getElementById('videoFile').files[0];
+      const galleryFiles = document.getElementById('galleryFiles').files;
+
+      if (!imageFile) {
+        alert("Main Image is required!");
+        return;
+      }
+
+      btn.innerText = "Uploading Media... Please wait.";
+      btn.disabled = true;
+
+      try {
+        const imageUrl = await uploadFileToSupabase(imageFile);
+        const videoUrl = videoFile ? await uploadFileToSupabase(videoFile) : null;
+        
+        let galleryUrls = [];
+        if (galleryFiles.length > 0) {
+          for (let i = 0; i < galleryFiles.length; i++) {
+            const gUrl = await uploadFileToSupabase(galleryFiles[i]);
+            if (gUrl) galleryUrls.push(gUrl);
+          }
+        }
+
+        const product = {
+          title: document.getElementById('title').value,
+          hindi_title: document.getElementById('hindi').value,
+          tag: document.getElementById('tag').value,
+          price_inr: document.getElementById('priceInr').value,
+          price_usd: document.getElementById('priceUsd').value,
+          category: document.getElementById('category').value,
+          description: document.getElementById('desc').value,
+          materials: document.getElementById('materials').value,
+          image_url: imageUrl,
+          video_url: videoUrl,
+          gallery_images: galleryUrls.length > 0 ? galleryUrls : null,
+          is_sold_out: false
+        };
+        
+        await client.from('products').insert([product]);
+        document.getElementById('uploadForm').reset();
+        loadAdminCatalog();
+        
+      } catch (e) {
+        alert("An error occurred during upload.");
+        console.error(e);
+      } finally {
+        btn.innerText = "Add to Collection";
+        btn.disabled = false;
+      }
+    }
+
+    function openEditModal(id) {
+      const product = allAdminProducts.find(p => p.id === id);
+      if (!product) return;
+
+      document.getElementById('editId').value = product.id;
+      document.getElementById('existingImage').value = product.image_url || '';
+      document.getElementById('existingVideo').value = product.video_url || '';
+      document.getElementById('existingGallery').value = product.gallery_images ? product.gallery_images.join(',') : '';
+
+      document.getElementById('editTitle').value = product.title || '';
+      document.getElementById('editHindi').value = product.hindi_title || '';
+      document.getElementById('editTag').value = product.tag || '';
+      document.getElementById('editPriceInr').value = product.price_inr || '';
+      document.getElementById('editPriceUsd').value = product.price_usd || '';
+      document.getElementById('editCategory').value = product.category || 'Potlis';
+      document.getElementById('editDesc').value = product.description || '';
+      document.getElementById('editMaterials').value = product.materials || '';
+
+      document.getElementById('editModal').classList.remove('hidden');
+      document.getElementById('editModal').classList.add('flex');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.add('hidden');
+      document.getElementById('editModal').classList.remove('flex');
+      document.getElementById('editForm').reset();
+    }
+
+    async function saveEditProduct() {
+      const client = getSupabase();
+      const id = document.getElementById('editId').value;
+      const btn = document.getElementById('editSaveBtn');
+
+      const imageFile = document.getElementById('editImageFile').files[0];
+      const videoFile = document.getElementById('editVideoFile').files[0];
+      const galleryFiles = document.getElementById('editGalleryFiles').files;
+
+      btn.innerText = "Saving Changes... Please wait.";
+      btn.disabled = true;
+
+      try {
+        let finalImageUrl = document.getElementById('existingImage').value;
+        if (imageFile) finalImageUrl = await uploadFileToSupabase(imageFile);
+
+        let finalVideoUrl = document.getElementById('existingVideo').value;
+        if (videoFile) finalVideoUrl = await uploadFileToSupabase(videoFile);
+
+        let finalGalleryUrls = document.getElementById('existingGallery').value ? document.getElementById('existingGallery').value.split(',') : [];
+        if (galleryFiles.length > 0) {
+          finalGalleryUrls = [];
+          for (let i = 0; i < galleryFiles.length; i++) {
+            const gUrl = await uploadFileToSupabase(galleryFiles[i]);
+            if (gUrl) finalGalleryUrls.push(gUrl);
+          }
+        }
+
+        const updates = {
+          title: document.getElementById('editTitle').value,
+          hindi_title: document.getElementById('editHindi').value,
+          tag: document.getElementById('editTag').value,
+          price_inr: document.getElementById('editPriceInr').value,
+          price_usd: document.getElementById('editPriceUsd').value,
+          category: document.getElementById('editCategory').value,
+          description: document.getElementById('editDesc').value,
+          materials: document.getElementById('editMaterials').value,
+          image_url: finalImageUrl,
+          video_url: finalVideoUrl,
+          gallery_images: finalGalleryUrls.length > 0 ? finalGalleryUrls : null
+        };
+
+        await client.from('products').update(updates).eq('id', id);
+        closeEditModal();
+        loadAdminCatalog();
+
+      } catch (e) {
+        alert("An error occurred while saving.");
+      } finally {
+        btn.innerText = "Save Changes";
+        btn.disabled = false;
+      }
+    }
+
+    async function toggleSoldOut(id, currentState) {
+      const client = getSupabase();
+      await client.from('products').update({ is_sold_out: !currentState }).eq('id', id);
+      loadAdminCatalog();
+    }
+
+    async function deleteProduct(id) {
+      if(confirm("Permanently delete this piece?")) {
+        const client = getSupabase();
+        await client.from('products').delete().eq('id', id);
+        loadAdminCatalog();
       }
     }
 
     async function loadOrders() {
       const client = getSupabase();
-      const tbody = document.getElementById('ordersTableBody');
       if (!client) return;
+      const tbody = document.getElementById('leadsTableBody');
+      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Refreshing leads...</td></tr>`;
 
-      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500 animate-pulse">Syncing leads...</td></tr>`;
-
-      try {
-        const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-gray-500 italic">No leads captured yet. Keep promoting!</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = data.map(order => {
-          let itemsHtml = 'No item specs';
-          try {
-            const parsed = typeof order.order_details === 'string' ? JSON.parse(order.order_details) : order.order_details;
-            if (Array.isArray(parsed)) {
-              itemsHtml = parsed.map(i => `<div class="text-[11px]">• ${i.qty}x <strong>${i.title}</strong></div>`).join('');
-            }
-          } catch(e) {}
-
-          const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : 'Recent';
-
-          return `
-            <tr class="hover:bg-champagne-soft transition-colors">
-              <td class="p-4 align-top space-y-1">
-                <div class="font-bold text-burgundy text-sm">${order.customer_name || 'Anonymous'}</div>
-                <div class="text-gray-600 font-medium">📞 ${order.customer_phone || 'N/A'}</div>
-                <div class="text-gray-500 text-[11px]">✉️ ${order.customer_email || 'N/A'}</div>
-                <div class="text-[10px] text-gray-400 pt-1">${dateStr}</div>
-              </td>
-              <td class="p-4 align-top text-gray-700 max-w-xs font-light">${order.shipping_address || 'N/A'}</td>
-              <td class="p-4 align-top font-bold text-burgundy font-[Cinzel]">${order.cart_total || 'N/A'}</td>
-              <td class="p-4 align-top">${itemsHtml}</td>
-              <td class="p-4 align-top">
-                <button onclick="deleteOrder('${order.id}')" class="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 text-[10px] font-bold uppercase rounded-lg transition active:scale-95 shadow-sm">
-                  🗑️ Delete
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-
-      } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-700 font-medium">Error: ${err.message}</td></tr>`;
-      }
-    }
-
-    async function deleteOrder(orderId) {
-      if (!confirm("Are you sure you want to delete this lead?")) return;
-      const client = getSupabase();
-      if (!client) return;
-
-      const { error } = await client.from('orders').delete().eq('id', orderId);
+      const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
+      
       if (error) {
-        alert("Failed to delete order: " + error.message);
-      } else {
-        loadOrders();
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600 font-bold">Supabase Error: ${error.message}</td></tr>`;
+        return;
       }
-    }
 
-    async function loadInventory() {
-      const client = getSupabase();
-      const tbody = document.getElementById('inventoryTableBody');
-      if (!client) return;
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No leads captured yet. Keep promoting!</td></tr>`;
+        return;
+      }
 
-      try {
-        const { data, error } = await client.from('products').select('*').order('title');
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found.</td></tr>`;
-          return;
+      tbody.innerHTML = data.map(order => {
+        const date = new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute:'2-digit' });
+        
+        let itemsHtml = "No items recorded";
+        if (order.order_details && Array.isArray(order.order_details)) {
+          itemsHtml = order.order_details.map(i => `• ${i.qty}x ${i.title}`).join('<br>');
         }
 
-        tbody.innerHTML = data.map(item => `
-          <tr class="hover:bg-champagne-soft transition-colors">
-            <td class="p-4 flex items-center gap-3">
-              <img src="${item.image_url}" class="w-10 h-10 rounded-lg object-cover border border-gold/30">
-              <span class="font-bold text-burgundy">${item.title}</span>
+        return `
+          <tr class="hover:bg-champagne-soft/50 transition border-b border-champagne-border">
+            <td class="p-4 whitespace-nowrap align-top">${date}</td>
+            <td class="p-4 align-top">
+              <div class="font-bold text-burgundy">${order.customer_name}</div>
+              <div>${order.customer_phone}</div>
+              <div class="text-gray-500 text-[10px]">${order.customer_email}</div>
             </td>
-            <td class="p-4 uppercase tracking-wider text-[11px] text-gray-600">${item.category || 'General'}</td>
-            <td class="p-4 font-[Cinzel] font-bold text-burgundy">₹${Number(item.price_inr).toLocaleString('en-IN')}</td>
-            <td class="p-4">
-              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${item.is_sold_out ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'}">
-                ${item.is_sold_out ? 'Sold Out' : 'Available'}
-              </span>
-            </td>
-            <td class="p-4">
-              <button onclick="toggleStock('${item.id}', ${!item.is_sold_out})" class="px-3 py-1.5 bg-burgundy text-champagne-silk text-[10px] uppercase font-bold rounded-lg hover:bg-gold-antique transition active:scale-95 shadow-sm">
-                Toggle Status
-              </button>
-            </td>
+            <td class="p-4 max-w-xs truncate align-top">${order.shipping_address}</td>
+            <td class="p-4 font-bold text-burgundy align-top">${order.cart_total}</td>
+            <td class="p-4 text-gray-600 align-top">${itemsHtml}</td>
           </tr>
-        `).join('');
-      } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-700">Error: ${err.message}</td></tr>`;
-      }
-    }
-
-    async function toggleStock(id, newStatus) {
-      const client = getSupabase();
-      if (!client) return;
-      const { error } = await client.from('products').update({ is_sold_out: newStatus }).eq('id', id);
-      if (error) {
-        alert("Error updating status: " + error.message);
-      } else {
-        loadInventory();
-      }
+        `;
+      }).join('');
     }
   </script>
 </body>
 </html>
+
