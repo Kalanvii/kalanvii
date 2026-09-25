@@ -1020,7 +1020,6 @@
       btn.innerHTML = "Securing Order...";
       btn.disabled = true;
 
-      // Direct HTTP POST to Supabase REST API (Bypasses library overhead)
       try {
         await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
           method: 'POST',
@@ -1095,7 +1094,7 @@
       modal.classList.remove('hidden');
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          backdrop.classList.0 && backdrop.classList.remove('opacity-0');
+          backdrop.classList.remove('opacity-0');
           panel.classList.remove('opacity-0', 'scale-95', 'translate-y-4');
         });
       });
@@ -1114,5 +1113,3 @@
   </script>
 </body>
 </html>
-
-
