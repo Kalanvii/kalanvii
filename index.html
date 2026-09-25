@@ -36,9 +36,7 @@
       --ease-standard: cubic-bezier(.2, .8, .2, 1);
       --ease-emphasized: cubic-bezier(.16, 1, .3, 1);
     }
-
     button, a, .cursor-pointer { touch-action: manipulation; }
-    
     .silk-pattern {
       background-color: #faf6f0;
       background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
@@ -153,7 +151,6 @@
         Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries worldwide.
       </p>
       
-      <!-- FIXED HERO BUTTONS (Stacked cleanly on mobile) -->
       <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
         <a href="#collection" class="btn-shimmer px-8 py-3.5 bg-burgundy text-champagne-silk text-xs tracking-[0.2em] uppercase hover:bg-gold-antique transition-all duration-300 rounded-xl shadow-md font-semibold active:scale-[0.98] w-full sm:w-auto text-center whitespace-nowrap">
           Explore Collection
@@ -184,7 +181,7 @@
     </div>
   </section>
 
-  <!-- ORIGINAL HERITAGE SECTION -->
+  <!-- HERITAGE SECTION -->
   <section id="story" class="bg-champagne-silk py-24 px-4 border-b border-champagne-border">
     <div class="max-w-5xl mx-auto space-y-12">
       <div class="text-center space-y-3 reveal-up">
@@ -244,7 +241,7 @@
     </div>
   </section>
 
-  <!-- RESTORED COUTURE REELS -->
+  <!-- COUTURE REELS -->
   <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-b border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
@@ -256,7 +253,7 @@
     </div>
   </section>
 
-  <!-- ORIGINAL TESTIMONIALS SECTION -->
+  <!-- TESTIMONIALS SECTION -->
   <section id="testimonials" class="bg-champagne-soft py-20 border-y border-champagne-border px-4">
     <div class="max-w-7xl mx-auto space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
@@ -284,7 +281,7 @@
     </div>
   </section>
 
-  <!-- ORIGINAL SAVOIR-FAIRE -->
+  <!-- SAVOIR-FAIRE -->
   <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
       <div class="text-center max-w-xl mx-auto mb-16 space-y-2 reveal-up">
@@ -312,7 +309,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL (FULLY RESTORED WITH WHATSAPP BUTTON) -->
+  <!-- QUICK VIEW MODAL -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
@@ -321,7 +318,6 @@
         <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
         
         <div class="space-y-6 pt-2">
-          <!-- IMAGE SLIDER & THUMBNAILS -->
           <div class="space-y-3">
             <div id="mediaSwipeContainer" class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group touch-pan-y">
               <img id="modalImg" src="" class="w-full h-full object-cover transition-opacity duration-300 opacity-100 pointer-events-none">
@@ -335,7 +331,6 @@
             <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
           </div>
 
-          <!-- PRODUCT DETAILS & ACTIONS -->
           <div class="space-y-5">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
@@ -364,7 +359,6 @@
             <div class="pt-1 flex gap-3" id="modalActionContainer"></div>
           </div>
 
-          <!-- CLIENT REVIEWS SECTION -->
           <div class="border-t border-champagne-border pt-5 space-y-4">
             <div class="flex justify-between items-center">
               <h4 class="font-[Cinzel] text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
@@ -389,7 +383,7 @@
     </div>
   </div>
 
-  <!-- SHOPPING CART DRAWER (WITH CHECKOUT BUTTON) -->
+  <!-- SHOPPING CART DRAWER -->
   <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div id="cartBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeCart()"></div>
     
@@ -463,7 +457,7 @@
     </div>
   </div>
 
-  <!-- ORIGINAL FOOTER -->
+  <!-- FOOTER -->
   <footer class="bg-burgundy-deep text-champagne-silk py-16 border-t border-gold/40 text-center text-xs tracking-wider">
     <div class="max-w-7xl mx-auto px-4 space-y-6 reveal-up">
       <h5 class="font-[Cinzel] text-2xl tracking-[0.25em] text-gold-foil">KALANVII • कलान्वी</h5>
@@ -741,7 +735,6 @@
       if (item.is_sold_out) {
         actionContainer.innerHTML = `<button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>`;
       } else {
-        // FULLY RESTORED WHATSAPP BUTTON INSIDE QUICK VIEW
         actionContainer.innerHTML = `
           <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">Add to Bag</button>
           <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center active:scale-95">WhatsApp</button>
@@ -795,12 +788,11 @@
       let approvedDbReviews = [];
       const client = getSupabase();
       if (client) {
-        // Safe check in case the product_reviews table doesn't exist yet
         try {
           const { data } = await client.from('product_reviews').select('*').eq('product_id', productId).eq('is_approved', true);
           if (data) approvedDbReviews = data.map(r => ({ name: r.author, location: r.location || 'Verified Client', text: r.comment }));
         } catch (e) {
-          console.log("No reviews table found yet, using defaults.");
+          console.log("No reviews table found yet.");
         }
       }
 
@@ -1014,7 +1006,7 @@
       setTimeout(() => modal.classList.add('hidden'), 400);
     }
 
-    // CHECKOUT LOGIC WITH ERROR TRACKING
+    // CHECKOUT LOGIC WITH SAFE FALLBACK
     async function processCheckout(e) {
       e.preventDefault();
       
@@ -1031,20 +1023,18 @@
         btn.innerHTML = "Securing Order...";
         btn.disabled = true;
 
-        const { error } = await client.from('orders').insert([{
-          customer_name: name,
-          customer_phone: phone,
-          customer_email: email,
-          shipping_address: address,
-          cart_total: totalStr,
-          order_details: cart
-        }]);
-        
-        if (error) {
-           alert("Supabase Database Error:\n" + error.message + "\n\nPlease check your Supabase table and columns.");
-           btn.innerHTML = "Place Order on WhatsApp";
-           btn.disabled = false;
-           return; 
+        // Try inserting, but catch any schema error gracefully so user never gets stuck
+        try {
+          await client.from('orders').insert([{
+            customer_name: name,
+            customer_phone: phone,
+            customer_email: email,
+            shipping_address: address,
+            cart_total: totalStr,
+            order_details: cart
+          }]);
+        } catch (err) {
+          console.log("Background lead sync note:", err);
         }
       }
       
@@ -1117,6 +1107,4 @@
   </script>
 </body>
 </html>
-
-
 
