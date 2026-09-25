@@ -153,7 +153,7 @@
         Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries worldwide.
       </p>
       
-      <!-- FIXED HERO BUTTONS -->
+      <!-- FIXED HERO BUTTONS (Stacked cleanly on mobile) -->
       <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
         <a href="#collection" class="btn-shimmer px-8 py-3.5 bg-burgundy text-champagne-silk text-xs tracking-[0.2em] uppercase hover:bg-gold-antique transition-all duration-300 rounded-xl shadow-md font-semibold active:scale-[0.98] w-full sm:w-auto text-center whitespace-nowrap">
           Explore Collection
@@ -244,6 +244,18 @@
     </div>
   </section>
 
+  <!-- RESTORED COUTURE REELS -->
+  <section id="reels" class="bg-burgundy-deep text-champagne-silk py-20 border-b border-gold/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
+      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Cinematic Showcase</span>
+        <h3 class="font-[Cinzel] text-3xl text-gold-light">The Couture Reel</h3>
+        <p class="text-xs text-champagne/70 font-light">Witness the tactile shimmer and exquisite movement of our handcrafted beadwork in motion.</p>
+      </div>
+      <div id="reelsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
   <!-- ORIGINAL TESTIMONIALS SECTION -->
   <section id="testimonials" class="bg-champagne-soft py-20 border-y border-champagne-border px-4">
     <div class="max-w-7xl mx-auto space-y-12">
@@ -300,7 +312,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL -->
+  <!-- QUICK VIEW MODAL (FULLY RESTORED WITH WHATSAPP BUTTON) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
@@ -377,7 +389,7 @@
     </div>
   </div>
 
-  <!-- SHOPPING CART DRAWER -->
+  <!-- SHOPPING CART DRAWER (WITH CHECKOUT BUTTON) -->
   <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div id="cartBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeCart()"></div>
     
@@ -539,6 +551,7 @@
         if (data && data.length > 0) {
           allProducts = data;
           renderHomepageCarousel(data);
+          renderReels(data);
         }
       } catch (err) {
         console.log("Error loading catalog:", err);
@@ -575,6 +588,25 @@
     function scrollCarousel(direction) {
       const carousel = document.getElementById('homepageCarousel');
       carousel.scrollBy({ left: direction * 240, behavior: 'smooth' });
+    }
+
+    function renderReels(products) {
+      const reelsContainer = document.getElementById('reelsContainer');
+      const videoItems = products.filter(p => p.video_url && !p.is_sold_out);
+      if (videoItems.length === 0) {
+        document.getElementById('reels').style.display = 'none';
+        return;
+      }
+      reelsContainer.innerHTML = videoItems.map((item, index) => `
+        <div class="group reveal-up relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl" style="--delay: ${(index % 3) * 150}ms">
+          <video src="${item.video_url}" autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
+          <div class="absolute inset-0 bg-gradient-to-t from-burgundy-deep via-transparent to-transparent flex flex-col justify-end p-6 space-y-2">
+            <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold">Couture Highlight</span>
+            <h4 class="font-[Cinzel] text-sm font-bold text-champagne-silk">${item.title}</h4>
+            <button onclick="openQuickView('${item.id}')" class="mt-2 py-2.5 px-4 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gold transition shadow active:scale-95">Shop This Look ↗</button>
+          </div>
+        </div>
+      `).join('');
     }
 
     function renderCatalog() {
@@ -709,8 +741,10 @@
       if (item.is_sold_out) {
         actionContainer.innerHTML = `<button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>`;
       } else {
+        // FULLY RESTORED WHATSAPP BUTTON INSIDE QUICK VIEW
         actionContainer.innerHTML = `
           <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">Add to Bag</button>
+          <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center active:scale-95">WhatsApp</button>
         `;
         document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       }
@@ -752,6 +786,66 @@
         modal.classList.add('hidden');
         document.getElementById('modalVideo').pause();
       }, 400);
+    }
+
+    async function loadProductReviews(productId) {
+      const container = document.getElementById('modalReviewsList');
+      const defaultReviews = getGeneratedReviews(productId);
+      
+      let approvedDbReviews = [];
+      const client = getSupabase();
+      if (client) {
+        // Safe check in case the product_reviews table doesn't exist yet
+        try {
+          const { data } = await client.from('product_reviews').select('*').eq('product_id', productId).eq('is_approved', true);
+          if (data) approvedDbReviews = data.map(r => ({ name: r.author, location: r.location || 'Verified Client', text: r.comment }));
+        } catch (e) {
+          console.log("No reviews table found yet, using defaults.");
+        }
+      }
+
+      const combined = [...approvedDbReviews, ...defaultReviews];
+      container.innerHTML = combined.map(r => `
+        <div class="bg-champagne-soft p-3 rounded-xl border border-champagne-border space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-burgundy">${r.name} (${r.location})</span>
+            <span class="text-gold text-xs">★★★★★</span>
+          </div>
+          <p class="text-[11px] text-gray-600 font-light">"${r.text}"</p>
+        </div>
+      `).join('');
+    }
+
+    function toggleReviewForm() {
+      const form = document.getElementById('reviewForm');
+      form.classList.toggle('hidden');
+    }
+
+    async function submitClientReview(e) {
+      e.preventDefault();
+      const client = getSupabase();
+      if (!client || !selectedModalItem) return;
+
+      const author = document.getElementById('reviewAuthor').value;
+      const location = document.getElementById('reviewLocation').value;
+      const comment = document.getElementById('reviewComment').value;
+
+      const { error } = await client.from('product_reviews').insert([{
+        product_id: selectedModalItem.id,
+        author: author,
+        location: location,
+        comment: comment,
+        rating: 5,
+        is_approved: false
+      }]);
+
+      if (error) {
+        alert("Failed to submit review: " + error.message);
+      } else {
+        alert("Thank you! Your review has been submitted and will appear on the store after admin review.");
+        document.getElementById('reviewForm').reset();
+        document.getElementById('reviewForm').classList.add('hidden');
+      }
     }
 
     function updateActiveMediaDisplay(skipFade = false) {
@@ -796,6 +890,12 @@
     function setMediaIndex(idx) {
       currentMediaIndex = idx;
       updateActiveMediaDisplay();
+    }
+
+    function orderViaWhatsAppModal() {
+      if (!selectedModalItem) return;
+      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in acquiring the "${selectedModalItem.title}". Could you please confirm express availability?`);
+      window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
     }
 
     function addToCart(id) {
@@ -914,7 +1014,7 @@
       setTimeout(() => modal.classList.add('hidden'), 400);
     }
 
-    // CHECKOUT LOGIC WITH NEW ERROR TRACKING
+    // CHECKOUT LOGIC WITH ERROR TRACKING
     async function processCheckout(e) {
       e.preventDefault();
       
@@ -931,7 +1031,6 @@
         btn.innerHTML = "Securing Order...";
         btn.disabled = true;
 
-        // Execute save to Supabase
         const { error } = await client.from('orders').insert([{
           customer_name: name,
           customer_phone: phone,
@@ -941,7 +1040,6 @@
           order_details: cart
         }]);
         
-        // NEW ERROR TRACKING: If it fails, stop everything and tell the user why
         if (error) {
            alert("Supabase Database Error:\n" + error.message + "\n\nPlease check your Supabase table and columns.");
            btn.innerHTML = "Place Order on WhatsApp";
@@ -1019,5 +1117,6 @@
   </script>
 </body>
 </html>
+
 
 
