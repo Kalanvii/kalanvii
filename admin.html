@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KALANVII | Master Control Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -26,44 +24,33 @@
       }
     }
   </script>
-  <style>
-    .silk-pattern {
-      background-color: #faf6f0;
-      background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
-      background-size: 28px 28px;
-    }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-  </style>
 </head>
-<body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans">
+<body class="bg-[#faf6f0] text-[#2a1d17] min-h-screen flex flex-col font-sans">
 
-  <!-- ADMIN HEADER -->
-  <header class="bg-burgundy text-champagne-silk py-4 px-6 border-b border-gold/40 sticky top-0 z-40 shadow-md">
+  <header class="bg-burgundy text-champagne-silk py-4 px-6 border-b border-gold/40 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="text-center sm:text-left">
-        <h1 class="font-[Cinzel] text-xl font-bold tracking-[0.25s] uppercase text-gold-foil">KALANVII ADMIN</h1>
-        <p class="text-[9px] uppercase tracking-widest text-champagne-silk/70">Master Control Panel</p>
+      <div>
+        <h1 class="font-[Cinzel] text-xl font-bold tracking-[0.2em] text-gold-foil uppercase">KALANVII ADMIN</h1>
+        <p class="text-[9px] uppercase tracking-widest text-champagne-silk/70">Master Control</p>
       </div>
-
       <nav class="flex items-center space-x-6 text-xs uppercase tracking-widest font-semibold">
-        <button onclick="switchTab('inventory')" id="navInventory" class="hover:text-gold transition-colors pb-1 border-b-2 border-transparent">Inventory</button>
         <button onclick="switchTab('orders')" id="navOrders" class="hover:text-gold transition-colors pb-1 border-b-2 border-gold text-gold">Leads & Orders</button>
+        <button onclick="switchTab('inventory')" id="navInventory" class="hover:text-gold transition-colors pb-1 border-b-2 border-transparent">Inventory</button>
         <a href="./index.html" class="text-champagne-silk/60 hover:text-white transition-colors">Exit →</a>
       </nav>
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full space-y-8">
     
     <!-- ORDERS TAB -->
     <section id="ordersTab" class="space-y-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-champagne-soft p-6 rounded-2xl border border-gold/30 shadow-sm">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-champagne-soft p-6 rounded-2xl border border-gold/30">
         <div>
-          <h2 class="font-[Cinzel] text-2xl font-bold text-burgundy uppercase tracking-wider">Captured Orders & Leads</h2>
-          <p class="text-xs text-gray-600 font-light mt-0.5">Manage customer inquiries and live checkout submissions.</p>
+          <h2 class="font-[Cinzel] text-2xl font-bold text-burgundy uppercase">Captured Orders & Leads</h2>
+          <p class="text-xs text-gray-600">Review and manage website checkout submissions.</p>
         </div>
-        <button onclick="loadOrders()" class="px-5 py-2.5 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl hover:bg-burgundy-light transition-all shadow active:scale-95 flex items-center gap-2">
+        <button onclick="loadOrders()" class="px-5 py-2.5 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl hover:bg-burgundy-light transition shadow active:scale-95 flex items-center gap-2">
           <span>🔄 Refresh Leads</span>
         </button>
       </div>
@@ -76,28 +63,26 @@
                 <th class="p-4">Customer Details</th>
                 <th class="p-4">Shipping Address</th>
                 <th class="p-4">Order Value</th>
-                <th class="p-4">Requested Items</th>
-                <th class="p-4">Actions</th>
+                <th class="p-4">Request Items</th>
+                <th class="p-4">Action</th>
               </tr>
             </thead>
             <tbody id="ordersTableBody" class="divide-y divide-champagne-border text-xs">
-              <tr>
-                <td colspan="5" class="p-10 text-center text-gray-500">Loading captured leads...</td>
-              </tr>
+              <tr><td colspan="5" class="p-10 text-center text-gray-500">Loading captured leads...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- INVENTORY TAB (Hidden by default) -->
+    <!-- INVENTORY TAB -->
     <section id="inventoryTab" class="space-y-6 hidden">
-      <div class="flex justify-between items-center bg-champagne-soft p-6 rounded-2xl border border-gold/30 shadow-sm">
+      <div class="flex justify-between items-center bg-champagne-soft p-6 rounded-2xl border border-gold/30">
         <div>
-          <h2 class="font-[Cinzel] text-2xl font-bold text-burgundy uppercase tracking-wider">Catalog Inventory</h2>
-          <p class="text-xs text-gray-600 font-light mt-0.5">Toggle stock status or manage items.</p>
+          <h2 class="font-[Cinzel] text-2xl font-bold text-burgundy uppercase">Catalog Inventory</h2>
+          <p class="text-xs text-gray-600">Toggle stock status or manage items.</p>
         </div>
-        <button onclick="loadInventory()" class="px-5 py-2.5 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl hover:bg-burgundy-light transition-all shadow active:scale-95">Refresh Inventory</button>
+        <button onclick="loadInventory()" class="px-5 py-2.5 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl hover:bg-burgundy-light transition shadow active:scale-95">Refresh Inventory</button>
       </div>
 
       <div class="bg-champagne-silk rounded-2xl border border-gold/30 shadow-lg overflow-hidden">
@@ -162,12 +147,9 @@
     async function loadOrders() {
       const client = getSupabase();
       const tbody = document.getElementById('ordersTableBody');
-      if (!client) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600">Supabase client failed to initialize.</td></tr>`;
-        return;
-      }
+      if (!client) return;
 
-      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500 animate-pulse">Syncing leads from database...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500 animate-pulse">Syncing leads...</td></tr>`;
 
       try {
         const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
@@ -210,13 +192,12 @@
         }).join('');
 
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-700 font-medium">Database Error: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-700 font-medium">Error: ${err.message}</td></tr>`;
       }
     }
 
     async function deleteOrder(orderId) {
       if (!confirm("Are you sure you want to delete this lead?")) return;
-      
       const client = getSupabase();
       if (!client) return;
 
@@ -224,7 +205,7 @@
       if (error) {
         alert("Failed to delete order: " + error.message);
       } else {
-        loadOrders(); // Refresh table instantly
+        loadOrders();
       }
     }
 
@@ -238,7 +219,7 @@
         if (error) throw error;
 
         if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found in inventory.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found.</td></tr>`;
           return;
         }
 
@@ -263,7 +244,7 @@
           </tr>
         `).join('');
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-700">Error loading catalog: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-700">Error: ${err.message}</td></tr>`;
       }
     }
 
@@ -280,5 +261,3 @@
   </script>
 </body>
 </html>
-
-
