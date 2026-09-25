@@ -2,167 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>KALANVII | Secure Management Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KALANVII | Admin Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&family=Rozha+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            burgundy: { DEFAULT: '#430917', dark: '#28050e' },
+            burgundy: { DEFAULT: '#430917', light: '#611024' },
             champagne: { DEFAULT: '#eedfc8', silk: '#faf6f0', border: '#decbb4' },
-            gold: { DEFAULT: '#c5a059', antique: '#99732b' }
+            gold: '#c5a059'
           },
-          fontFamily: { serif: ['Cinzel', 'serif'], sans: ['Montserrat', 'sans-serif'], hindi: ['Rozha One', 'serif'] }
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Montserrat', 'sans-serif']
+          }
         }
       }
     }
   </script>
-  <style>
-    button, a, .cursor-pointer { touch-action: manipulation; }
-    .silk-pattern {
-      background-color: #faf6f0;
-      background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
-      background-size: 28px 28px;
-      background-position: 0 0, 14px 14px;
-    }
-    .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-    @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
-  </style>
 </head>
-<body class="silk-pattern text-[#2a1d17] antialiased min-h-screen font-sans selection:bg-burgundy selection:text-champagne-silk">
+<body class="bg-champagne-silk text-gray-800 font-sans min-h-screen">
 
-  <header class="bg-burgundy-dark text-champagne-silk sticky top-0 z-50 border-b border-gold/40 shadow-xl">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-full border border-gold flex items-center justify-center font-serif text-gold font-bold">K</div>
-        <div>
-          <h1 class="font-serif text-sm tracking-[0.2em] font-bold">KALANVII <span class="font-hindi text-[10px] text-champagne/70 ml-1">कलान्वी</span></h1>
-          <p class="text-[8px] uppercase tracking-[0.2em] text-gold-antique">Your Celebration, Our Signature</p>
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <a href="./index.html" target="_blank" class="text-[9px] uppercase tracking-widest border border-gold/30 px-3 py-1.5 rounded hover:bg-gold/10 transition flex items-center gap-1">Live Storefront ↗</a>
-      </div>
-    </div>
-  </header>
-
-  <div id="lockScreen" class="max-w-md mx-auto mt-20 px-4">
-    <div class="bg-champagne-silk border border-gold/40 p-8 rounded-2xl shadow-2xl text-center space-y-6">
-      <div class="w-16 h-16 mx-auto bg-burgundy rounded-full flex items-center justify-center border-2 border-gold mb-4">
-        <svg class="w-8 h-8 text-champagne-silk" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-      </div>
-      <h2 class="font-serif text-xl text-burgundy font-bold tracking-widest">Master Access</h2>
-      <p class="text-xs text-gray-500 pb-2">Enter 4-digit security PIN to manage collection.</p>
-      <input type="password" id="passcode" inputmode="numeric" maxlength="4" class="w-full text-center text-3xl tracking-[1em] py-4 bg-white border border-champagne-border rounded-xl focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition shadow-inner">
-      <div id="errorMsg" class="hidden text-xs text-red-600 font-bold bg-red-50 py-2 rounded border border-red-200">Access Denied: Incorrect PIN</div>
-      <button onclick="checkPin()" class="w-full py-4 bg-burgundy text-champagne-silk text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-burgundy-dark transition shadow-lg">Unlock Portal</button>
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full border border-champagne-border text-center">
+      <h1 class="font-[Cinzel] text-3xl text-burgundy font-bold mb-2">KALANVII</h1>
+      <p class="text-xs text-gray-500 uppercase tracking-widest mb-6">Maison Admin Portal</p>
+      <input type="password" id="pinInput" placeholder="Enter Secure PIN" class="w-full text-center p-3 border border-champagne-border rounded-lg mb-4 focus:outline-none focus:border-gold">
+      <button onclick="checkPin()" class="w-full py-3 bg-burgundy text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg hover:bg-burgundy-light transition">Authenticate</button>
+      <p id="errorMsg" class="text-red-500 text-xs mt-3 hidden">Incorrect PIN. Access Denied.</p>
     </div>
   </div>
 
-  <div id="dashboard" class="max-w-4xl mx-auto px-4 py-8 hidden space-y-8">
-    
-    <!-- PENDING REVIEWS MODERATION PANEL -->
-    <div class="bg-champagne-silk border border-gold/40 rounded-2xl shadow-2xl overflow-hidden">
-      <div class="bg-burgundy text-champagne-silk px-6 py-4 flex justify-between items-center border-b border-gold/30">
-        <h2 class="font-serif text-sm tracking-widest uppercase font-bold">Pending Client Reviews Moderation</h2>
-        <button onclick="loadPendingReviews()" class="text-xs text-gold hover:underline">↻ Refresh Reviews</button>
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden min-h-screen flex flex-col">
+    <!-- TOP NAV -->
+    <header class="bg-burgundy text-champagne-silk py-4 px-6 shadow-md flex justify-between items-center">
+      <div>
+        <h2 class="font-[Cinzel] text-xl font-bold tracking-widest">KALANVII ADMIN</h2>
+        <p class="text-[10px] uppercase tracking-widest text-champagne/70">Master Control</p>
       </div>
-      <div id="pendingReviewsList" class="p-6 space-y-4">
-        <p class="text-xs text-gray-500 text-center">Checking for submitted reviews...</p>
+      <div class="flex gap-4 text-xs font-bold tracking-widest uppercase">
+        <button onclick="switchTab('inventory')" id="tabInventory" class="hover:text-gold border-b-2 border-gold transition px-2 py-1">Inventory</button>
+        <button onclick="switchTab('leads')" id="tabLeads" class="hover:text-gold border-b-2 border-transparent transition px-2 py-1">Leads & Orders</button>
+        <a href="./index.html" class="text-champagne/50 hover:text-white px-2 py-1">Exit →</a>
       </div>
-    </div>
+    </header>
 
-    <!-- PRODUCT FORM -->
-    <div class="bg-champagne-silk border border-gold/40 rounded-2xl shadow-2xl overflow-hidden">
-      <div class="bg-burgundy text-champagne-silk px-6 py-4 border-b border-gold/30">
-        <h2 id="formTitle" class="font-serif text-sm tracking-widest uppercase font-bold">Add New Masterpiece</h2>
-      </div>
-      <form id="productForm" class="p-6 space-y-6">
-        <div class="space-y-4 border-2 border-dashed border-champagne-border p-5 rounded-xl bg-white/50">
-          <h3 class="font-serif text-burgundy text-sm font-bold tracking-widest uppercase text-center border-b border-champagne-border pb-2">Media Gallery</h3>
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-1">Main Cover Photo *</label>
-            <input type="file" id="imageFile" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy/10 file:text-burgundy hover:file:bg-burgundy/20">
-            <div id="imagePreview" class="mt-2 hidden"><img src="" class="h-20 w-20 object-cover rounded border border-gold/50 shadow"></div>
-          </div>
-          <div class="pt-3 border-t border-champagne-border">
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-1">Additional Angles (Select Multiple)</label>
-            <input type="file" id="extraImages" accept="image/*" multiple class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy/10 file:text-burgundy hover:file:bg-burgundy/20">
-            <div id="extraPreview" class="mt-2 text-xs text-emerald-700 font-bold hidden">Photos Selected</div>
-          </div>
-          <div class="pt-3 border-t border-champagne-border">
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-1">Showcase Video (Optional)</label>
-            <input type="file" id="productVideo" accept="video/mp4,video/quicktime" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-burgundy/10 file:text-burgundy hover:file:bg-burgundy/20">
-            <div id="videoPreview" class="mt-2 text-xs text-emerald-700 font-bold hidden">✓ Video Selected</div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">English Title *</label>
-            <input type="text" id="title" required class="w-full text-sm p-3 bg-white border border-champagne-border rounded focus:border-gold outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Hindi Title (Optional)</label>
-            <input type="text" id="hindi_title" class="w-full text-sm p-3 bg-white border border-champagne-border rounded font-hindi">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Selling Price (INR ₹) *</label>
-            <input type="number" id="price_inr" required class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Selling Price (USD $) *</label>
-            <input type="number" id="price_usd" required class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Category *</label>
-            <select id="category" class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
+    <main class="p-6 max-w-7xl mx-auto w-full flex-grow">
+      
+      <!-- INVENTORY SECTION -->
+      <section id="inventorySection" class="space-y-8">
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-champagne-border">
+          <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Add New Masterpiece</h3>
+          <form id="uploadForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" id="title" placeholder="Product Title (e.g. GULABÉ)" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <input type="text" id="hindi" placeholder="Hindi Title (e.g. गुलाबी)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <input type="number" id="priceInr" placeholder="Price (INR)" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <input type="number" id="priceUsd" placeholder="Price (USD)" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <select id="category" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
               <option value="Potlis">Potlis & Batua</option>
-              <option value="Crescent Clutches">Crescent Clutches</option>
+              <option value="Crescents">Crescent Clutches</option>
               <option value="Minaudieres">Minaudières</option>
-              <option value="Cocktail Bags">Cocktail Bags</option>
+              <option value="Cocktail">Cocktail Bags</option>
             </select>
+            <input type="url" id="image" placeholder="Main Image URL" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            <div class="col-span-full">
+              <button type="button" onclick="uploadProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Add to Collection</button>
+            </div>
+          </form>
+        </div>
+
+        <div>
+          <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Current Inventory</h3>
+          <div id="adminProductList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="text-sm text-gray-500 py-4 col-span-full">Loading inventory...</div>
           </div>
-          <div>
-            <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Luxury Tag</label>
-            <input type="text" id="tag" placeholder="e.g., Bridal Heirloom" class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
+        </div>
+      </section>
+
+      <!-- LEADS & ORDERS SECTION -->
+      <section id="leadsSection" class="hidden space-y-6">
+        <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Captured Orders & Leads</h3>
+        <div class="bg-white rounded-2xl shadow-md border border-champagne-border overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-champagne-soft text-burgundy font-[Cinzel] uppercase text-[10px] tracking-widest">
+                <tr>
+                  <th class="p-4">Date</th>
+                  <th class="p-4">Customer Details</th>
+                  <th class="p-4">Shipping Address</th>
+                  <th class="p-4">Order Value</th>
+                  <th class="p-4">Requested Items</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody" class="divide-y divide-champagne-border text-xs">
+                <tr><td colspan="5" class="p-8 text-center text-gray-500">Loading leads...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
+      </section>
 
-        <div>
-          <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Materials</label>
-          <input type="text" id="materials" class="w-full text-sm p-3 bg-white border border-champagne-border rounded">
-        </div>
-        <div>
-          <label class="block text-[10px] uppercase tracking-widest text-burgundy font-bold mb-2">Editorial Description</label>
-          <textarea id="description" rows="3" class="w-full text-sm p-3 bg-white border border-champagne-border rounded"></textarea>
-        </div>
-
-        <div id="uploadStatus" class="hidden text-sm text-center font-bold text-burgundy bg-gold/20 p-3 rounded border border-gold">
-          Uploading Media... Please keep window open.
-        </div>
-        
-        <div class="flex gap-3">
-          <button type="submit" id="submitBtn" class="flex-grow py-4 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-bold rounded transition shadow-lg">Publish Handbag to Live Store</button>
-          <button type="button" id="cancelEditBtn" onclick="cancelEdit()" class="hidden px-6 py-4 border border-burgundy text-burgundy text-xs uppercase tracking-widest font-bold rounded hover:bg-burgundy/5 transition">Cancel</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="bg-champagne-silk border border-gold/40 rounded-2xl shadow-2xl overflow-hidden">
-      <div class="bg-champagne-border/30 px-6 py-4 flex justify-between items-center border-b border-champagne-border">
-        <div>
-          <h2 class="font-serif text-sm tracking-widest uppercase font-bold text-burgundy">Active Live Catalog</h2>
-          <p class="text-[10px] text-gray-500">Manage, edit, or toggle stock availability.</p>
-        </div>
-        <button onclick="loadProducts()" class="text-xs text-burgundy font-bold hover:text-gold flex items-center gap-1">↻ Refresh</button>
-      </div>
-      <div id="productList" class="p-4 space-y-4 max-h-[600px] overflow-y-auto"></div>
-    </div>
+    </main>
   </div>
 
   <script>
@@ -177,210 +123,131 @@
       return supabaseClient;
     }
 
-    let editingId = null;
-    let existingMainImage = null;
-    let existingGallery = [];
-    let existingVideo = null;
-    let productsCache = [];
-
     function checkPin() {
-      const pin = document.getElementById('passcode').value;
-      const err = document.getElementById('errorMsg');
-      const lock = document.getElementById('lockScreen');
-      if (pin === '1221') {
-        lock.classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
-        loadProducts();
-        loadPendingReviews();
+      if (document.getElementById('pinInput').value === '1221') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'flex';
+        loadAdminCatalog();
+        loadOrders();
       } else {
-        err.classList.remove('hidden');
-        lock.classList.remove('shake');
-        void lock.offsetWidth; 
-        lock.classList.add('shake');
-        document.getElementById('passcode').value = '';
+        document.getElementById('errorMsg').classList.remove('hidden');
       }
     }
 
-    document.getElementById('passcode').addEventListener('keypress', function(e) { if (e.key === 'Enter') checkPin(); });
+    function switchTab(tab) {
+      if (tab === 'inventory') {
+        document.getElementById('inventorySection').classList.remove('hidden');
+        document.getElementById('leadsSection').classList.add('hidden');
+        document.getElementById('tabInventory').classList.add('border-gold');
+        document.getElementById('tabInventory').classList.remove('border-transparent');
+        document.getElementById('tabLeads').classList.add('border-transparent');
+        document.getElementById('tabLeads').classList.remove('border-gold');
+      } else {
+        document.getElementById('inventorySection').classList.add('hidden');
+        document.getElementById('leadsSection').classList.remove('hidden');
+        document.getElementById('tabLeads').classList.add('border-gold');
+        document.getElementById('tabLeads').classList.remove('border-transparent');
+        document.getElementById('tabInventory').classList.add('border-transparent');
+        document.getElementById('tabInventory').classList.remove('border-gold');
+        loadOrders();
+      }
+    }
 
-    async function loadPendingReviews() {
-      const supabase = getSupabase();
-      if (!supabase) return;
-      const container = document.getElementById('pendingReviewsList');
-      const { data, error } = await supabase.from('product_reviews').select('*, products(title)').eq('is_approved', false).order('created_at', { ascending: false });
+    async function loadAdminCatalog() {
+      const client = getSupabase();
+      if (!client) return setTimeout(loadAdminCatalog, 500);
+      const { data } = await client.from('products').select('*').order('created_at', { ascending: false });
       
-      if (error || !data || data.length === 0) {
-        container.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">No pending reviews awaiting approval.</p>';
+      const container = document.getElementById('adminProductList');
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div class="col-span-full py-4 text-gray-500 text-sm">No items found.</div>';
         return;
       }
 
-      container.innerHTML = data.map(rev => `
-        <div class="bg-white p-4 rounded-xl border border-champagne-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
-          <div class="space-y-1">
-            <span class="text-[9px] uppercase tracking-widest bg-burgundy text-champagne-silk px-2 py-0.5 rounded font-bold">${rev.products?.title || 'Product'}</span>
-            <h4 class="text-xs font-bold text-burgundy">${rev.author} (${rev.location || 'Verified Client'})</h4>
-            <p class="text-gold text-xs">★★★★★</p>
-            <p class="text-xs text-gray-700 italic">"${rev.comment}"</p>
+      container.innerHTML = data.map(item => `
+        <div class="bg-white border border-champagne-border rounded-xl p-3 flex flex-col justify-between shadow-sm">
+          <div>
+            <img src="${item.image_url}" class="w-full h-32 object-cover rounded-lg mb-2">
+            <h4 class="font-bold text-xs text-burgundy truncate">${item.title}</h4>
+            <p class="text-[10px] text-gray-500">₹${item.price_inr} | $${item.price_usd}</p>
+            <p class="text-[9px] uppercase font-bold ${item.is_sold_out ? 'text-red-600' : 'text-emerald-600'} mt-1">${item.is_sold_out ? 'SOLD OUT' : 'IN STOCK'}</p>
           </div>
-          <div class="flex gap-2">
-            <button onclick="moderateReview('${rev.id}', true)" class="px-4 py-2 bg-emerald-700 text-white text-[10px] font-bold uppercase rounded hover:bg-emerald-800 transition">Approve</button>
-            <button onclick="moderateReview('${rev.id}', false)" class="px-4 py-2 border border-red-300 text-red-600 text-[10px] font-bold uppercase rounded hover:bg-red-50 transition">Reject</button>
+          <div class="mt-3 pt-3 border-t border-champagne-border flex gap-2">
+            <button onclick="toggleSoldOut('${item.id}', ${item.is_sold_out})" class="flex-grow py-1.5 bg-gray-100 hover:bg-gray-200 text-[9px] font-bold uppercase rounded">Toggle Stock</button>
+            <button onclick="deleteProduct('${item.id}')" class="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 text-[9px] font-bold uppercase rounded">Drop</button>
           </div>
         </div>
       `).join('');
     }
 
-    async function moderateReview(id, approve) {
-      const supabase = getSupabase();
-      if (!supabase) return;
-      if (approve) {
-        await supabase.from('product_reviews').update({ is_approved: true }).eq('id', id);
-        alert('Review approved and published to live store!');
-      } else {
-        await supabase.from('product_reviews').delete().eq('id', id);
-        alert('Review rejected and removed.');
-      }
-      loadPendingReviews();
-    }
-
-    async function uploadMedia(file, prefix) {
-      const supabase = getSupabase();
-      const ext = file.name.split('.').pop();
-      const fileName = `${prefix}-${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
-      const { error } = await supabase.storage.from('product-images').upload(fileName, file);
-      if (error) throw error;
-      const { data: pubData } = supabase.storage.from('product-images').getPublicUrl(fileName);
-      return pubData.publicUrl;
-    }
-
-    document.getElementById('productForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const supabase = getSupabase();
-      const status = document.getElementById('uploadStatus');
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      status.classList.remove('hidden');
+    async function uploadProduct() {
+      const client = getSupabase();
+      const product = {
+        title: document.getElementById('title').value,
+        hindi_title: document.getElementById('hindi').value,
+        price_inr: document.getElementById('priceInr').value,
+        price_usd: document.getElementById('priceUsd').value,
+        category: document.getElementById('category').value,
+        image_url: document.getElementById('image').value,
+        is_sold_out: false
+      };
       
-      try {
-        const mainFile = document.getElementById('imageFile').files[0];
-        let mainUrl = existingMainImage;
-        if (mainFile) mainUrl = await uploadMedia(mainFile, 'main');
-        if (!mainUrl && !editingId) throw new Error("Cover photo is required");
-
-        const extraFiles = document.getElementById('extraImages').files;
-        let galleryUrls = existingGallery;
-        if (extraFiles.length > 0) {
-          galleryUrls = [];
-          for (let i = 0; i < extraFiles.length; i++) {
-            galleryUrls.push(await uploadMedia(extraFiles[i], 'gallery'));
-          }
-        }
-
-        const videoFile = document.getElementById('productVideo').files[0];
-        let videoUrl = existingVideo;
-        if (videoFile) videoUrl = await uploadMedia(videoFile, 'video');
-
-        const productData = {
-          title: document.getElementById('title').value,
-          hindi_title: document.getElementById('hindi_title').value,
-          price_inr: parseFloat(document.getElementById('price_inr').value),
-          price_usd: parseFloat(document.getElementById('price_usd').value),
-          category: document.getElementById('category').value,
-          tag: document.getElementById('tag').value,
-          materials: document.getElementById('materials').value,
-          description: document.getElementById('description').value,
-          image_url: mainUrl,
-          gallery_images: galleryUrls,
-          video_url: videoUrl
-        };
-
-        if (editingId) {
-          await supabase.from('products').update(productData).eq('id', editingId);
-          alert('Handbag updated!');
-        } else {
-          await supabase.from('products').insert([productData]);
-          alert('Handbag published!');
-        }
-        cancelEdit();
-        loadProducts();
-      } catch (err) {
-        alert("Upload failed: " + err.message);
-      } finally {
-        btn.disabled = false;
-        status.classList.add('hidden');
-      }
-    });
-
-    function triggerEdit(id) {
-      const item = productsCache.find(p => p.id === id);
-      if (!item) return;
-      editingId = item.id;
-      existingMainImage = item.image_url;
-      existingGallery = item.gallery_images || [];
-      existingVideo = item.video_url || null;
-
-      document.getElementById('formTitle').innerText = `Editing: ${item.title}`;
-      document.getElementById('submitBtn').innerText = "Update Handbag in Live Store";
-      document.getElementById('cancelEditBtn').classList.remove('hidden');
-      document.getElementById('title').value = item.title;
-      document.getElementById('hindi_title').value = item.hindi_title || '';
-      document.getElementById('price_inr').value = item.price_inr;
-      document.getElementById('price_usd').value = item.price_usd;
-      document.getElementById('category').value = item.category || 'Potlis';
-      document.getElementById('tag').value = item.tag || '';
-      document.getElementById('materials').value = item.materials || '';
-      document.getElementById('description').value = item.description || '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      await client.from('products').insert([product]);
+      document.getElementById('uploadForm').reset();
+      loadAdminCatalog();
     }
 
-    function cancelEdit() {
-      editingId = null;
-      existingMainImage = null;
-      existingGallery = [];
-      existingVideo = null;
-      document.getElementById('productForm').reset();
-      document.getElementById('formTitle').innerText = "Add New Masterpiece";
-      document.getElementById('submitBtn').innerText = "Publish Handbag to Live Store";
-      document.getElementById('cancelEditBtn').classList.add('hidden');
-    }
-
-    async function toggleStock(id, currentStatus) {
-      const supabase = getSupabase();
-      await supabase.from('products').update({ is_sold_out: !currentStatus }).eq('id', id);
-      loadProducts();
-    }
-
-    async function loadProducts() {
-      const supabase = getSupabase();
-      if (!supabase) { setTimeout(loadProducts, 500); return; }
-      const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-      if (!data) return;
-      productsCache = data;
-      document.getElementById('productList').innerHTML = data.map(item => `
-        <div class="flex items-center gap-4 bg-white p-4 rounded-xl border shadow-sm">
-          <img src="${item.image_url}" class="w-16 h-16 object-cover rounded border border-gold/30">
-          <div class="flex-grow">
-            <h4 class="font-serif text-xs font-bold text-burgundy uppercase">${item.title}</h4>
-            <p class="text-xs font-bold text-burgundy">₹${Number(item.price_inr).toLocaleString('en-IN')}</p>
-          </div>
-          <div class="flex flex-col gap-1.5">
-            <button onclick="toggleStock('${item.id}', ${item.is_sold_out})" class="text-[9px] px-3 py-1.5 ${item.is_sold_out ? 'bg-emerald-700' : 'bg-amber-700'} text-white rounded font-bold uppercase">${item.is_sold_out ? 'Mark In Stock' : 'Mark Sold Out'}</button>
-            <button onclick="triggerEdit('${item.id}')" class="text-[9px] px-3 py-1.5 bg-gold-antique text-white rounded font-bold uppercase">Edit</button>
-            <button onclick="deleteProduct('${item.id}')" class="text-[9px] px-3 py-1.5 border border-red-200 text-red-600 rounded font-bold uppercase">Delete</button>
-          </div>
-        </div>
-      `).join('');
+    async function toggleSoldOut(id, currentState) {
+      const client = getSupabase();
+      await client.from('products').update({ is_sold_out: !currentState }).eq('id', id);
+      loadAdminCatalog();
     }
 
     async function deleteProduct(id) {
-      const supabase = getSupabase();
-      if (confirm('Delete this masterpiece?')) {
-        await supabase.from('products').delete().eq('id', id);
-        loadProducts();
+      if(confirm("Permanently delete this piece?")) {
+        const client = getSupabase();
+        await client.from('products').delete().eq('id', id);
+        loadAdminCatalog();
       }
+    }
+
+    async function loadOrders() {
+      const client = getSupabase();
+      if (!client) return;
+      const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
+      
+      const tbody = document.getElementById('leadsTableBody');
+      if (error || !data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No leads captured yet. Keep promoting!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.map(order => {
+        const date = new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute:'2-digit' });
+        
+        let itemsHtml = "No items recorded";
+        if (order.order_details && Array.isArray(order.order_details)) {
+          itemsHtml = order.order_details.map(i => `• ${i.qty}x ${i.title}`).join('<br>');
+        }
+
+        return `
+          <tr class="hover:bg-champagne-soft/50 transition">
+            <td class="p-4 whitespace-nowrap">${date}</td>
+            <td class="p-4">
+              <div class="font-bold text-burgundy">${order.customer_name}</div>
+              <div>${order.customer_phone}</div>
+              <div class="text-gray-500 text-[10px]">${order.customer_email}</div>
+            </td>
+            <td class="p-4 max-w-xs truncate">${order.shipping_address}</td>
+            <td class="p-4 font-bold text-burgundy">${order.cart_total}</td>
+            <td class="p-4 text-gray-600">${itemsHtml}</td>
+          </tr>
+        `;
+      }).join('');
     }
   </script>
 </body>
 </html>
+
 
 
