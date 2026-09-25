@@ -55,7 +55,7 @@
 
     <main class="p-6 max-w-7xl mx-auto w-full flex-grow">
       
-      <!-- INVENTORY SECTION (FULLY RESTORED) -->
+      <!-- INVENTORY SECTION (FULLY RESTORED WITH FILE UPLOADS) -->
       <section id="inventorySection" class="space-y-8">
         <div class="bg-white p-6 rounded-2xl shadow-md border border-champagne-border">
           <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Add New Masterpiece</h3>
@@ -81,13 +81,25 @@
             <textarea id="desc" rows="2" placeholder="Luxury Description..." class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
             <input type="text" id="materials" placeholder="Materials Used (e.g. Seed pearls, gold frame)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2">
 
-            <!-- Media Links -->
-            <input type="url" id="image" placeholder="Main Image URL *" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
-            <input type="url" id="video" placeholder="Video URL (.mp4) (Optional)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
-            <textarea id="gallery" rows="2" placeholder="Gallery Image URLs (Comma separated for multiple)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
+            <!-- RESTORED NATIVE FILE UPLOADS -->
+            <div class="space-y-1">
+              <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Main Image *</label>
+              <input type="file" id="imageFile" accept="image/*" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            </div>
+            
+            <div class="space-y-1">
+              <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Video (.mp4) (Optional)</label>
+              <input type="file" id="videoFile" accept="video/mp4,video/mov" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+            </div>
+
+            <div class="space-y-1 col-span-1 md:col-span-2">
+              <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Gallery Images (Optional)</label>
+              <input type="file" id="galleryFiles" accept="image/*" multiple class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+              <p class="text-[9px] text-gray-400 mt-1">You can select multiple photos at once.</p>
+            </div>
 
             <div class="col-span-full pt-2">
-              <button type="button" onclick="uploadProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Add to Collection</button>
+              <button type="button" id="uploadBtn" onclick="uploadProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Add to Collection</button>
             </div>
           </form>
         </div>
@@ -126,7 +138,7 @@
     </main>
   </div>
 
-  <!-- EDIT PRODUCT MODAL (RESTORED) -->
+  <!-- EDIT PRODUCT MODAL (RESTORED WITH FILE UPLOADS) -->
   <div id="editModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto relative shadow-2xl">
       <button onclick="closeEditModal()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy font-bold text-xl">✕</button>
@@ -134,6 +146,10 @@
       
       <form id="editForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input type="hidden" id="editId">
+        <input type="hidden" id="existingImage">
+        <input type="hidden" id="existingVideo">
+        <input type="hidden" id="existingGallery">
+
         <input type="text" id="editTitle" placeholder="Product Title" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
         <input type="text" id="editHindi" placeholder="Hindi Title" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
         <input type="text" id="editTag" placeholder="Label Tag" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
@@ -153,12 +169,25 @@
         <textarea id="editDesc" rows="2" placeholder="Description..." class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
         <input type="text" id="editMaterials" placeholder="Materials Used" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2">
 
-        <input type="url" id="editImage" placeholder="Main Image URL *" required class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
-        <input type="url" id="editVideo" placeholder="Video URL" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
-        <textarea id="editGallery" rows="2" placeholder="Gallery Image URLs (Comma separated)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
+        <!-- File uploads for Edit -->
+        <div class="space-y-1">
+          <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Main Image</label>
+          <input type="file" id="editImageFile" accept="image/*" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        </div>
+        
+        <div class="space-y-1">
+          <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Video</label>
+          <input type="file" id="editVideoFile" accept="video/mp4,video/mov" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+        </div>
+
+        <div class="space-y-1 col-span-1 md:col-span-2">
+          <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Gallery Images</label>
+          <input type="file" id="editGalleryFiles" accept="image/*" multiple class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+          <p class="text-[9px] text-gray-400 mt-1">Leave all file inputs empty to keep current media.</p>
+        </div>
 
         <div class="col-span-full pt-2">
-          <button type="button" onclick="saveEditProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Save Changes</button>
+          <button type="button" id="editSaveBtn" onclick="saveEditProduct()" class="w-full py-3 bg-burgundy hover:bg-burgundy-light text-champagne-silk uppercase tracking-widest text-xs font-bold rounded-lg transition shadow-md">Save Changes</button>
         </div>
       </form>
     </div>
@@ -167,6 +196,9 @@
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
+    
+    // NOTE: Make sure your bucket in Supabase is named exactly this and is set to "Public"
+    const BUCKET_NAME = "kalanvii-assets"; 
     
     let supabaseClient = null;
     let allAdminProducts = [];
@@ -208,6 +240,25 @@
       }
     }
 
+    // SUPABASE STORAGE UPLOAD HELPER FUNCTION
+    async function uploadFileToSupabase(file) {
+      if (!file) return null;
+      const client = getSupabase();
+      
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `uploads/${fileName}`;
+
+      const { error } = await client.storage.from(BUCKET_NAME).upload(filePath, file);
+      if (error) {
+        alert("File upload failed: " + error.message);
+        return null;
+      }
+
+      const { data } = client.storage.from(BUCKET_NAME).getPublicUrl(filePath);
+      return data.publicUrl;
+    }
+
     async function loadAdminCatalog() {
       const client = getSupabase();
       if (!client) return setTimeout(loadAdminCatalog, 500);
@@ -240,30 +291,61 @@
       `).join('');
     }
 
+    // MAIN UPLOAD FUNCTION (HANDLES FILES)
     async function uploadProduct() {
       const client = getSupabase();
+      const btn = document.getElementById('uploadBtn');
       
-      const galleryInput = document.getElementById('gallery').value;
-      const galleryArray = galleryInput ? galleryInput.split(',').map(url => url.trim()).filter(url => url !== '') : null;
+      const imageFile = document.getElementById('imageFile').files[0];
+      const videoFile = document.getElementById('videoFile').files[0];
+      const galleryFiles = document.getElementById('galleryFiles').files;
 
-      const product = {
-        title: document.getElementById('title').value,
-        hindi_title: document.getElementById('hindi').value,
-        tag: document.getElementById('tag').value,
-        price_inr: document.getElementById('priceInr').value,
-        price_usd: document.getElementById('priceUsd').value,
-        category: document.getElementById('category').value,
-        description: document.getElementById('desc').value,
-        materials: document.getElementById('materials').value,
-        image_url: document.getElementById('image').value,
-        video_url: document.getElementById('video').value || null,
-        gallery_images: galleryArray,
-        is_sold_out: false
-      };
-      
-      await client.from('products').insert([product]);
-      document.getElementById('uploadForm').reset();
-      loadAdminCatalog();
+      if (!imageFile) {
+        alert("Main Image is required!");
+        return;
+      }
+
+      btn.innerText = "Uploading Media... Please wait.";
+      btn.disabled = true;
+
+      try {
+        const imageUrl = await uploadFileToSupabase(imageFile);
+        const videoUrl = videoFile ? await uploadFileToSupabase(videoFile) : null;
+        
+        let galleryUrls = [];
+        if (galleryFiles.length > 0) {
+          for (let i = 0; i < galleryFiles.length; i++) {
+            const gUrl = await uploadFileToSupabase(galleryFiles[i]);
+            if (gUrl) galleryUrls.push(gUrl);
+          }
+        }
+
+        const product = {
+          title: document.getElementById('title').value,
+          hindi_title: document.getElementById('hindi').value,
+          tag: document.getElementById('tag').value,
+          price_inr: document.getElementById('priceInr').value,
+          price_usd: document.getElementById('priceUsd').value,
+          category: document.getElementById('category').value,
+          description: document.getElementById('desc').value,
+          materials: document.getElementById('materials').value,
+          image_url: imageUrl,
+          video_url: videoUrl,
+          gallery_images: galleryUrls.length > 0 ? galleryUrls : null,
+          is_sold_out: false
+        };
+        
+        await client.from('products').insert([product]);
+        document.getElementById('uploadForm').reset();
+        loadAdminCatalog();
+        
+      } catch (e) {
+        alert("An error occurred during upload.");
+        console.error(e);
+      } finally {
+        btn.innerText = "Add to Collection";
+        btn.disabled = false;
+      }
     }
 
     // EDIT MODAL LOGIC
@@ -272,6 +354,12 @@
       if (!product) return;
 
       document.getElementById('editId').value = product.id;
+      
+      // Store existing media URLs in hidden fields so they aren't lost if no new file is uploaded
+      document.getElementById('existingImage').value = product.image_url || '';
+      document.getElementById('existingVideo').value = product.video_url || '';
+      document.getElementById('existingGallery').value = product.gallery_images ? product.gallery_images.join(',') : '';
+
       document.getElementById('editTitle').value = product.title || '';
       document.getElementById('editHindi').value = product.hindi_title || '';
       document.getElementById('editTag').value = product.tag || '';
@@ -280,11 +368,6 @@
       document.getElementById('editCategory').value = product.category || 'Potlis';
       document.getElementById('editDesc').value = product.description || '';
       document.getElementById('editMaterials').value = product.materials || '';
-      document.getElementById('editImage').value = product.image_url || '';
-      document.getElementById('editVideo').value = product.video_url || '';
-      
-      const galleryStr = product.gallery_images ? product.gallery_images.join(', ') : '';
-      document.getElementById('editGallery').value = galleryStr;
 
       document.getElementById('editModal').classList.remove('hidden');
       document.getElementById('editModal').classList.add('flex');
@@ -293,32 +376,62 @@
     function closeEditModal() {
       document.getElementById('editModal').classList.add('hidden');
       document.getElementById('editModal').classList.remove('flex');
+      document.getElementById('editForm').reset();
     }
 
     async function saveEditProduct() {
       const client = getSupabase();
       const id = document.getElementById('editId').value;
-      
-      const galleryInput = document.getElementById('editGallery').value;
-      const galleryArray = galleryInput ? galleryInput.split(',').map(url => url.trim()).filter(url => url !== '') : null;
+      const btn = document.getElementById('editSaveBtn');
 
-      const updates = {
-        title: document.getElementById('editTitle').value,
-        hindi_title: document.getElementById('editHindi').value,
-        tag: document.getElementById('editTag').value,
-        price_inr: document.getElementById('editPriceInr').value,
-        price_usd: document.getElementById('editPriceUsd').value,
-        category: document.getElementById('editCategory').value,
-        description: document.getElementById('editDesc').value,
-        materials: document.getElementById('editMaterials').value,
-        image_url: document.getElementById('editImage').value,
-        video_url: document.getElementById('editVideo').value || null,
-        gallery_images: galleryArray
-      };
+      const imageFile = document.getElementById('editImageFile').files[0];
+      const videoFile = document.getElementById('editVideoFile').files[0];
+      const galleryFiles = document.getElementById('editGalleryFiles').files;
 
-      await client.from('products').update(updates).eq('id', id);
-      closeEditModal();
-      loadAdminCatalog();
+      btn.innerText = "Saving Changes... Please wait.";
+      btn.disabled = true;
+
+      try {
+        // If a new file is selected, upload it. Otherwise, keep the old existing hidden URL.
+        let finalImageUrl = document.getElementById('existingImage').value;
+        if (imageFile) finalImageUrl = await uploadFileToSupabase(imageFile);
+
+        let finalVideoUrl = document.getElementById('existingVideo').value;
+        if (videoFile) finalVideoUrl = await uploadFileToSupabase(videoFile);
+
+        let finalGalleryUrls = document.getElementById('existingGallery').value ? document.getElementById('existingGallery').value.split(',') : [];
+        if (galleryFiles.length > 0) {
+          finalGalleryUrls = []; // Override old gallery if new files are selected
+          for (let i = 0; i < galleryFiles.length; i++) {
+            const gUrl = await uploadFileToSupabase(galleryFiles[i]);
+            if (gUrl) finalGalleryUrls.push(gUrl);
+          }
+        }
+
+        const updates = {
+          title: document.getElementById('editTitle').value,
+          hindi_title: document.getElementById('editHindi').value,
+          tag: document.getElementById('editTag').value,
+          price_inr: document.getElementById('editPriceInr').value,
+          price_usd: document.getElementById('editPriceUsd').value,
+          category: document.getElementById('editCategory').value,
+          description: document.getElementById('editDesc').value,
+          materials: document.getElementById('editMaterials').value,
+          image_url: finalImageUrl,
+          video_url: finalVideoUrl,
+          gallery_images: finalGalleryUrls.length > 0 ? finalGalleryUrls : null
+        };
+
+        await client.from('products').update(updates).eq('id', id);
+        closeEditModal();
+        loadAdminCatalog();
+
+      } catch (e) {
+        alert("An error occurred while saving.");
+      } finally {
+        btn.innerText = "Save Changes";
+        btn.disabled = false;
+      }
     }
 
     async function toggleSoldOut(id, currentState) {
@@ -372,6 +485,7 @@
   </script>
 </body>
 </html>
+
 
 
 
