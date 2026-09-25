@@ -55,7 +55,7 @@
 
     <main class="p-6 max-w-7xl mx-auto w-full flex-grow">
       
-      <!-- INVENTORY SECTION (FULLY RESTORED WITH FILE UPLOADS) -->
+      <!-- INVENTORY SECTION -->
       <section id="inventorySection" class="space-y-8">
         <div class="bg-white p-6 rounded-2xl shadow-md border border-champagne-border">
           <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Add New Masterpiece</h3>
@@ -81,7 +81,7 @@
             <textarea id="desc" rows="2" placeholder="Luxury Description..." class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
             <input type="text" id="materials" placeholder="Materials Used (e.g. Seed pearls, gold frame)" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2">
 
-            <!-- RESTORED NATIVE FILE UPLOADS -->
+            <!-- Native File Uploads -->
             <div class="space-y-1">
               <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Main Image *</label>
               <input type="file" id="imageFile" accept="image/*" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
@@ -112,9 +112,16 @@
         </div>
       </section>
 
-      <!-- LEADS & ORDERS SECTION -->
+      <!-- LEADS & ORDERS SECTION (WITH REFRESH BUTTON) -->
       <section id="leadsSection" class="hidden space-y-6">
-        <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest border-b border-champagne-border pb-2 mb-4">Captured Orders & Leads</h3>
+        <div class="flex justify-between items-center border-b border-champagne-border pb-2 mb-4">
+          <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest">Captured Orders & Leads</h3>
+          <button onclick="loadOrders()" class="bg-champagne-border text-burgundy px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-gold hover:text-white transition shadow-sm active:scale-95 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Refresh Leads
+          </button>
+        </div>
+        
         <div class="bg-white rounded-2xl shadow-md border border-champagne-border overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
@@ -138,7 +145,7 @@
     </main>
   </div>
 
-  <!-- EDIT PRODUCT MODAL (RESTORED WITH FILE UPLOADS) -->
+  <!-- EDIT PRODUCT MODAL -->
   <div id="editModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto relative shadow-2xl">
       <button onclick="closeEditModal()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy font-bold text-xl">✕</button>
@@ -169,7 +176,6 @@
         <textarea id="editDesc" rows="2" placeholder="Description..." class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2"></textarea>
         <input type="text" id="editMaterials" placeholder="Materials Used" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none col-span-1 md:col-span-2">
 
-        <!-- File uploads for Edit -->
         <div class="space-y-1">
           <label class="text-[10px] uppercase tracking-widest text-burgundy font-bold">Replace Main Image</label>
           <input type="file" id="editImageFile" accept="image/*" class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
@@ -196,8 +202,6 @@
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
-    
-    // NOTE: Make sure your bucket in Supabase is named exactly this and is set to "Public"
     const BUCKET_NAME = "kalanvii-assets"; 
     
     let supabaseClient = null;
@@ -240,7 +244,6 @@
       }
     }
 
-    // SUPABASE STORAGE UPLOAD HELPER FUNCTION
     async function uploadFileToSupabase(file) {
       if (!file) return null;
       const client = getSupabase();
@@ -291,7 +294,6 @@
       `).join('');
     }
 
-    // MAIN UPLOAD FUNCTION (HANDLES FILES)
     async function uploadProduct() {
       const client = getSupabase();
       const btn = document.getElementById('uploadBtn');
@@ -348,14 +350,11 @@
       }
     }
 
-    // EDIT MODAL LOGIC
     function openEditModal(id) {
       const product = allAdminProducts.find(p => p.id === id);
       if (!product) return;
 
       document.getElementById('editId').value = product.id;
-      
-      // Store existing media URLs in hidden fields so they aren't lost if no new file is uploaded
       document.getElementById('existingImage').value = product.image_url || '';
       document.getElementById('existingVideo').value = product.video_url || '';
       document.getElementById('existingGallery').value = product.gallery_images ? product.gallery_images.join(',') : '';
@@ -392,7 +391,6 @@
       btn.disabled = true;
 
       try {
-        // If a new file is selected, upload it. Otherwise, keep the old existing hidden URL.
         let finalImageUrl = document.getElementById('existingImage').value;
         if (imageFile) finalImageUrl = await uploadFileToSupabase(imageFile);
 
@@ -401,7 +399,7 @@
 
         let finalGalleryUrls = document.getElementById('existingGallery').value ? document.getElementById('existingGallery').value.split(',') : [];
         if (galleryFiles.length > 0) {
-          finalGalleryUrls = []; // Override old gallery if new files are selected
+          finalGalleryUrls = [];
           for (let i = 0; i < galleryFiles.length; i++) {
             const gUrl = await uploadFileToSupabase(galleryFiles[i]);
             if (gUrl) finalGalleryUrls.push(gUrl);
@@ -451,11 +449,18 @@
     async function loadOrders() {
       const client = getSupabase();
       if (!client) return;
+      const tbody = document.getElementById('leadsTableBody');
+      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Refreshing leads...</td></tr>`;
+
       const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
       
-      const tbody = document.getElementById('leadsTableBody');
-      if (error || !data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No leads captured yet. Keep promoting! (Note: Check Supabase if columns match exactly)</td></tr>`;
+      if (error) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600 font-bold">Supabase Error: ${error.message}</td></tr>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No leads captured yet. Keep promoting!</td></tr>`;
         return;
       }
 
@@ -485,8 +490,4 @@
   </script>
 </body>
 </html>
-
-
-
-
 
