@@ -36,9 +36,7 @@
       --ease-standard: cubic-bezier(.2, .8, .2, 1);
       --ease-emphasized: cubic-bezier(.16, 1, .3, 1);
     }
-
     button, a, .cursor-pointer { touch-action: manipulation; }
-    
     .silk-pattern {
       background-color: #faf6f0;
       background-image: radial-gradient(#ebdcc4 0.65px, transparent 0.65px), radial-gradient(#ebdcc4 0.65px, #faf6f0 0.65px);
@@ -91,7 +89,6 @@
 </head>
 <body class="silk-pattern text-[#2a1d17] antialiased min-h-screen flex flex-col font-sans selection:bg-burgundy selection:text-champagne-silk relative">
 
-  <!-- TRUST & CONVERSION TICKER -->
   <div class="bg-burgundy-deep text-champagne-silk py-2.5 px-4 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase text-center border-b border-gold/30 flex flex-wrap items-center justify-center gap-3">
     <span>✨ Complimentary Express Shipping Across India on Orders Above ₹3,999</span>
     <span class="hidden md:inline">•</span>
@@ -100,7 +97,6 @@
     <span>Authenticity Guaranteed</span>
   </div>
 
-  <!-- ROYAL MAISON HEADER -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="w-full md:w-auto flex items-center justify-between md:justify-start">
@@ -155,7 +151,7 @@
         Sculpted by master Indian karigars using genuine Japanese micro-seed pearls, luminous crystals, and royal velvets designed for unforgettable grand entries worldwide.
       </p>
       
-      <!-- FIXED BUTTONS: Stacked on mobile, side-by-side on desktop -->
+      <!-- FIXED HERO BUTTONS -->
       <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
         <a href="#collection" class="btn-shimmer px-8 py-3.5 bg-burgundy text-champagne-silk text-xs tracking-[0.2em] uppercase hover:bg-gold-antique transition-all duration-300 rounded-xl shadow-md font-semibold active:scale-[0.98] w-full sm:w-auto text-center whitespace-nowrap">
           Explore Collection
@@ -168,7 +164,7 @@
     </div>
   </section>
 
-  <!-- INTERACTIVE PICTURE CAROUSEL -->
+  <!-- INTERACTIVE CAROUSEL -->
   <section id="carouselSection" class="py-14 bg-champagne-soft border-b border-champagne-border overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
       <div class="text-center max-w-xl mx-auto space-y-1 reveal-up">
@@ -181,14 +177,12 @@
         <button onclick="scrollCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition-all active:scale-95">❮</button>
         <button onclick="scrollCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition-all active:scale-95">❯</button>
 
-        <div id="homepageCarousel" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-8 py-2">
-          <div class="w-full text-center text-xs text-gray-500 py-6">Curating spotlight carousel...</div>
-        </div>
+        <div id="homepageCarousel" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-8 py-2"></div>
       </div>
     </div>
   </section>
 
-  <!-- EXPANDED HERITAGE & STORY SECTION -->
+  <!-- ORIGINAL HERITAGE SECTION -->
   <section id="story" class="bg-champagne-silk py-24 px-4 border-b border-champagne-border">
     <div class="max-w-5xl mx-auto space-y-12">
       <div class="text-center space-y-3 reveal-up">
@@ -243,13 +237,12 @@
       <button onclick="filterCategory('Cocktail')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Cocktail Bags</button>
     </div>
     
-    <!-- Grid wrapper with state transition classes -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-[400ms] ease-[cubic-bezier(.16,1,.3,1)] opacity-100 translate-y-0">
       <div class="col-span-full py-16 text-center text-sm text-burgundy/60 animate-pulse">Curating royal collection...</div>
     </div>
   </section>
 
-  <!-- CLIENT TESTIMONIALS SECTION -->
+  <!-- ORIGINAL TESTIMONIALS SECTION -->
   <section id="testimonials" class="bg-champagne-soft py-20 border-y border-champagne-border px-4">
     <div class="max-w-7xl mx-auto space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
@@ -277,7 +270,7 @@
     </div>
   </section>
 
-  <!-- SAVOIR-FAIRE -->
+  <!-- ORIGINAL SAVOIR-FAIRE -->
   <section id="karigari" class="bg-burgundy text-champagne-silk py-20 border-t border-gold/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
       <div class="text-center max-w-xl mx-auto mb-16 space-y-2 reveal-up">
@@ -305,7 +298,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL (ANIMATED STATE TRANSITION) -->
+  <!-- QUICK VIEW MODAL (ANIMATED) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
@@ -314,10 +307,8 @@
         <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
         
         <div class="space-y-6 pt-2">
-          <!-- IMAGE SLIDER & THUMBNAILS -->
           <div class="space-y-3">
             <div id="mediaSwipeContainer" class="relative aspect-[4/5] bg-champagne-soft rounded-2xl overflow-hidden border border-gold/30 shadow-inner flex items-center justify-center group touch-pan-y">
-              <!-- Crossfade transition applied here -->
               <img id="modalImg" src="" class="w-full h-full object-cover transition-opacity duration-300 opacity-100 pointer-events-none">
               <video id="modalVideo" src="" controls class="w-full h-full object-cover hidden"></video>
 
@@ -329,7 +320,6 @@
             <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
           </div>
 
-          <!-- PRODUCT DETAILS & ACTIONS -->
           <div class="space-y-5">
             <div class="space-y-2">
               <span id="modalTag" class="text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full"></span>
@@ -358,7 +348,6 @@
             <div class="pt-1 flex gap-3" id="modalActionContainer"></div>
           </div>
 
-          <!-- CLIENT REVIEWS SECTION -->
           <div class="border-t border-champagne-border pt-5 space-y-4">
             <div class="flex justify-between items-center">
               <h4 class="font-[Cinzel] text-xs font-bold text-burgundy uppercase tracking-widest">Client Reviews</h4>
@@ -374,16 +363,12 @@
             </form>
             <div id="modalReviewsList" class="space-y-3"></div>
           </div>
-          <div class="border-t border-champagne-border pt-5 space-y-3">
-            <h4 class="font-[Cinzel] text-xs font-bold text-burgundy uppercase tracking-widest">You May Also Adore</h4>
-            <div id="modalCrossSell" class="grid grid-cols-3 gap-3"></div>
-          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SHOPPING CART DRAWER (ANIMATED SLIDE-IN) -->
+  <!-- SHOPPING CART DRAWER (WITH NEW CHECKOUT BUTTON) -->
   <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div id="cartBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeCart()"></div>
     
@@ -402,10 +387,45 @@
             <span>Estimated Total:</span>
             <span id="cartTotal" class="font-bold text-base">₹0</span>
           </div>
-          <button onclick="checkoutOnWhatsApp()" class="btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Secure Checkout via WhatsApp
+          <!-- NEW: Secure Checkout Trigger -->
+          <button onclick="openCheckoutModal()" class="btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2">
+            Proceed to Secure Checkout
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECURE CHECKOUT FORM MODAL -->
+  <div id="checkoutModal" class="fixed inset-0 z-[60] overflow-y-auto hidden">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center py-10">
+      <div id="checkoutBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/70 opacity-0 transition-opacity duration-[400ms]" onclick="closeCheckoutModal()"></div>
+      <div id="checkoutPanel" class="inline-block w-full max-w-lg p-6 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left opacity-0 scale-95 translate-y-4 transition-all duration-[400ms] ease-[cubic-bezier(.16,1,.3,1)]">
+        <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-gray-500 hover:text-burgundy text-2xl z-20 bg-champagne-soft w-10 h-10 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
+        
+        <div class="space-y-4">
+          <div>
+            <h3 class="font-[Cinzel] text-xl text-burgundy font-bold uppercase tracking-widest">Secure Checkout</h3>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Please provide details for automated tracking & delivery.</p>
+          </div>
+          
+          <form id="checkoutForm" onsubmit="processCheckout(event)" class="space-y-4 mt-4">
+            <div class="space-y-3">
+              <input type="text" id="coName" placeholder="Full Name *" required class="w-full text-xs p-3.5 bg-white border border-champagne-border rounded-xl outline-none focus:border-gold/60 transition-colors shadow-sm">
+              <input type="tel" id="coPhone" placeholder="WhatsApp Number (with country code) *" required class="w-full text-xs p-3.5 bg-white border border-champagne-border rounded-xl outline-none focus:border-gold/60 transition-colors shadow-sm">
+              <input type="email" id="coEmail" placeholder="Email Address *" required class="w-full text-xs p-3.5 bg-white border border-champagne-border rounded-xl outline-none focus:border-gold/60 transition-colors shadow-sm">
+              <textarea id="coAddress" rows="3" placeholder="Complete Shipping Address (with City & PIN/ZIP code) *" required class="w-full text-xs p-3.5 bg-white border border-champagne-border rounded-xl outline-none focus:border-gold/60 transition-colors shadow-sm"></textarea>
+            </div>
+            
+            <div class="bg-champagne-soft p-4 rounded-xl border border-gold/30 text-[10px] text-gray-600">
+              <p>By proceeding, your order details will be securely sent to our concierge via WhatsApp to coordinate secure payment and express dispatch.</p>
+            </div>
+
+            <button type="submit" id="checkoutSubmitBtn" class="btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Confirm Order on WhatsApp
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -423,7 +443,7 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
+  <!-- ORIGINAL FOOTER -->
   <footer class="bg-burgundy-deep text-champagne-silk py-16 border-t border-gold/40 text-center text-xs tracking-wider">
     <div class="max-w-7xl mx-auto px-4 space-y-6 reveal-up">
       <h5 class="font-[Cinzel] text-2xl tracking-[0.25em] text-gold-foil">KALANVII • कलान्वी</h5>
@@ -467,11 +487,9 @@
     let selectedModalItem = null;
     let currentMediaList = [];
     let currentMediaIndex = 0;
-
     let touchStartX = 0;
     let touchEndX = 0;
 
-    // SCROLL ANIMATION OBSERVER
     function initScrollReveals() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -550,7 +568,6 @@
       carousel.scrollBy({ left: direction * 240, behavior: 'smooth' });
     }
 
-    // ANIMATED CATEGORY SHUFFLE
     function renderCatalog() {
       const grid = document.getElementById('productGrid');
       const filtered = currentCategory === 'All' ? allProducts : allProducts.filter(p => p.category && p.category.toLowerCase().includes(currentCategory.toLowerCase().slice(0, 4)));
@@ -637,18 +654,6 @@
       }, 300);
     }
 
-    function getGeneratedReviews(productId) {
-      const reviewPools = [
-        { name: "Ananya Sharma", location: "New Delhi", text: `Ordered this for my sister's sangeet and received non-stop compliments! The pearl work is exceptionally high-end.` },
-        { name: "Natasha Kapoor", location: "Chandigarh", text: `Absolute perfection. The gold electroplate finish is sturdy and the velvet feels genuinely royal.` },
-        { name: "Riya Merchant", location: "Mumbai", text: `Worth every single rupee. Shipped securely and packaged like true haute couture.` },
-        { name: "Meera Sen", location: "Kolkata", text: `Stunning craftsmanship! The photos don't even do justice to how much it sparkles under evening lights.` }
-      ];
-      let seed = productId ? productId.toString().charCodeAt(0) : 5;
-      return [reviewPools[seed % reviewPools.length], reviewPools[(seed + 1) % reviewPools.length]];
-    }
-
-    // ANIMATED MODAL ORCHESTRATION
     async function openQuickView(id) {
       const item = allProducts.find(p => p.id == id);
       if (!item) return;
@@ -686,20 +691,9 @@
       } else {
         actionContainer.innerHTML = `
           <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">Add to Bag</button>
-          <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center active:scale-95">WhatsApp</button>
         `;
         document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       }
-
-      await loadProductReviews(item.id);
-
-      const otherProducts = allProducts.filter(p => p.id != id).slice(0, 3);
-      document.getElementById('modalCrossSell').innerHTML = otherProducts.map(p => `
-        <div onclick="openQuickView('${p.id}')" class="cursor-pointer group bg-white p-2 rounded-xl border border-champagne-border hover:border-gold transition-colors active:scale-95">
-          <img src="${p.image_url}" loading="lazy" class="w-full aspect-square object-cover rounded-lg mb-1">
-          <p class="text-[9px] font-[Cinzel] font-bold text-burgundy truncate">${p.title}</p>
-        </div>
-      `).join('');
 
       const modal = document.getElementById('quickModal');
       const backdrop = document.getElementById('quickModalBackdrop');
@@ -730,62 +724,6 @@
       }, 400);
     }
 
-    async function loadProductReviews(productId) {
-      const container = document.getElementById('modalReviewsList');
-      const defaultReviews = getGeneratedReviews(productId);
-      
-      let approvedDbReviews = [];
-      const client = getSupabase();
-      if (client) {
-        const { data } = await client.from('product_reviews').select('*').eq('product_id', productId).eq('is_approved', true);
-        if (data) approvedDbReviews = data.map(r => ({ name: r.author, location: r.location || 'Verified Client', text: r.comment }));
-      }
-
-      const combined = [...approvedDbReviews, ...defaultReviews];
-      container.innerHTML = combined.map(r => `
-        <div class="bg-champagne-soft p-3 rounded-xl border border-champagne-border space-y-1">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-xs text-burgundy">${r.name} (${r.location})</span>
-            <span class="text-gold text-xs">★★★★★</span>
-          </div>
-          <p class="text-[11px] text-gray-600 font-light">"${r.text}"</p>
-        </div>
-      `).join('');
-    }
-
-    function toggleReviewForm() {
-      const form = document.getElementById('reviewForm');
-      form.classList.toggle('hidden');
-    }
-
-    async function submitClientReview(e) {
-      e.preventDefault();
-      const client = getSupabase();
-      if (!client || !selectedModalItem) return;
-
-      const author = document.getElementById('reviewAuthor').value;
-      const location = document.getElementById('reviewLocation').value;
-      const comment = document.getElementById('reviewComment').value;
-
-      const { error } = await client.from('product_reviews').insert([{
-        product_id: selectedModalItem.id,
-        author: author,
-        location: location,
-        comment: comment,
-        rating: 5,
-        is_approved: false
-      }]);
-
-      if (error) {
-        alert("Failed to submit review: " + error.message);
-      } else {
-        alert("Thank you! Your review has been submitted and will appear on the store after admin review.");
-        document.getElementById('reviewForm').reset();
-        document.getElementById('reviewForm').classList.add('hidden');
-      }
-    }
-
-    // ANIMATED MEDIA CROSSFADE
     function updateActiveMediaDisplay(skipFade = false) {
       const url = currentMediaList[currentMediaIndex];
       const mainImg = document.getElementById('modalImg');
@@ -830,12 +768,6 @@
       updateActiveMediaDisplay();
     }
 
-    function orderViaWhatsAppModal() {
-      if (!selectedModalItem) return;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI am interested in acquiring the "${selectedModalItem.title}". Could you please confirm express availability?`);
-      window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
-    }
-
     function addToCart(id) {
       const item = allProducts.find(p => p.id == id);
       if (!item || item.is_sold_out) return;
@@ -865,7 +797,6 @@
       updateCartDrawer();
     }
 
-    // ANIMATED CART DRAWER ORCHESTRATION
     function openCart() { 
       const drawer = document.getElementById('cartDrawer');
       const backdrop = document.getElementById('cartBackdrop');
@@ -925,15 +856,78 @@
       totalEl.innerText = currency === 'INR' ? `₹${total.toLocaleString('en-IN')}` : `$${total}`;
     }
 
-    function checkoutOnWhatsApp() {
+    // CHECKOUT MODAL LOGIC
+    function openCheckoutModal() {
       if (cart.length === 0) return;
-      const bagList = cart.map(i => `• ${i.qty}x ${i.title}`).join('\n');
-      const totalStr = document.getElementById('cartTotal').innerText;
-      const msg = encodeURIComponent(`Hello KALANVII Concierge!\n\nI would like to place an order for:\n${bagList}\n\nEstimated Total: ${totalStr}\n\nPlease share secure payment details.`);
-      window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${msg}`;
+      closeCart(); 
+      
+      const modal = document.getElementById('checkoutModal');
+      const backdrop = document.getElementById('checkoutBackdrop');
+      const panel = document.getElementById('checkoutPanel');
+      
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          backdrop.classList.remove('opacity-0');
+          panel.classList.remove('opacity-0', 'scale-95', 'translate-y-4');
+        });
+      });
     }
 
-    // ANIMATED POLICY MODAL ORCHESTRATION
+    function closeCheckoutModal() {
+      const modal = document.getElementById('checkoutModal');
+      const backdrop = document.getElementById('checkoutBackdrop');
+      const panel = document.getElementById('checkoutPanel');
+      
+      backdrop.classList.add('opacity-0');
+      panel.classList.add('opacity-0', 'scale-95', 'translate-y-4');
+      
+      setTimeout(() => modal.classList.add('hidden'), 400);
+    }
+
+    async function processCheckout(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('coName').value;
+      const phone = document.getElementById('coPhone').value;
+      const email = document.getElementById('coEmail').value;
+      const address = document.getElementById('coAddress').value;
+      const totalStr = document.getElementById('cartTotal').innerText;
+      
+      const client = getSupabase();
+      
+      if (client) {
+        const btn = document.getElementById('checkoutSubmitBtn');
+        btn.innerHTML = "Securing Order...";
+        btn.disabled = true;
+
+        await client.from('orders').insert([{
+          customer_name: name,
+          customer_phone: phone,
+          customer_email: email,
+          shipping_address: address,
+          cart_total: totalStr,
+          order_details: cart
+        }]);
+      }
+      
+      const bagList = cart.map(i => `• ${i.qty}x ${i.title}`).join('\n');
+      const formattedMessage = `*New Order Request 🛍️*\n----------------------\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Order Details:*\n${bagList}\n\n*Total:* ${totalStr}\n\nPlease share secure payment details.`;
+      
+      const encodedMsg = encodeURIComponent(formattedMessage);
+      
+      window.location.href = `https://api.whatsapp.com/send?phone=919773999654&text=${encodedMsg}`;
+      
+      setTimeout(() => {
+        cart = [];
+        updateCartDrawer();
+        document.getElementById('cartCount').innerText = 0;
+        document.getElementById('cartCountMobile').innerText = 0;
+        closeCheckoutModal();
+        document.getElementById('checkoutForm').reset();
+      }, 1000);
+    }
+
     function openPolicy(type) {
       const modal = document.getElementById('policyModal');
       const backdrop = document.getElementById('policyBackdrop');
@@ -986,4 +980,5 @@
   </script>
 </body>
 </html>
+
 
