@@ -1006,7 +1006,7 @@
       setTimeout(() => modal.classList.add('hidden'), 400);
     }
 
-    // CHECKOUT LOGIC WITH SAFE FALLBACK
+    // CHECKOUT LOGIC WITH DIRECT REST FETCH
     async function processCheckout(e) {
       e.preventDefault();
       
@@ -1016,26 +1016,31 @@
       const address = document.getElementById('coAddress').value;
       const totalStr = document.getElementById('cartTotal').innerText;
       
-      const client = getSupabase();
-      
-      if (client) {
-        const btn = document.getElementById('checkoutSubmitBtn');
-        btn.innerHTML = "Securing Order...";
-        btn.disabled = true;
+      const btn = document.getElementById('checkoutSubmitBtn');
+      btn.innerHTML = "Securing Order...";
+      btn.disabled = true;
 
-        // Try inserting, but catch any schema error gracefully so user never gets stuck
-        try {
-          await client.from('orders').insert([{
+      // Direct HTTP POST to Supabase REST API (Bypasses library overhead)
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
             customer_name: name,
             customer_phone: phone,
             customer_email: email,
             shipping_address: address,
             cart_total: totalStr,
             order_details: cart
-          }]);
-        } catch (err) {
-          console.log("Background lead sync note:", err);
-        }
+          })
+        });
+      } catch (err) {
+        console.log("Network sync note:", err);
       }
       
       const bagList = cart.map(i => `• ${i.qty}x ${i.title}`).join('\n');
@@ -1052,6 +1057,8 @@
         document.getElementById('cartCountMobile').innerText = 0;
         closeCheckoutModal();
         document.getElementById('checkoutForm').reset();
+        btn.innerHTML = 'Place Order on WhatsApp';
+        btn.disabled = false;
       }, 1000);
     }
 
@@ -1088,7 +1095,7 @@
       modal.classList.remove('hidden');
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          backdrop.classList.remove('opacity-0');
+          backdrop.classList.0 && backdrop.classList.remove('opacity-0');
           panel.classList.remove('opacity-0', 'scale-95', 'translate-y-4');
         });
       });
@@ -1107,4 +1114,5 @@
   </script>
 </body>
 </html>
+
 
