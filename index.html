@@ -51,13 +51,27 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Stable Structural Depth Effect (No Overlapping) */
-    .studio-parallax-card {
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Interactive Parallax Scroll Layer Styles */
+    .parallax-section-wrapper {
+      position: relative;
+      overflow: hidden;
+      perspective: 1000px;
     }
-    .studio-parallax-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 35px -10px rgba(67, 9, 23, 0.12);
+    .parallax-bg-layer {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(197, 160, 89, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    .parallax-card-depth {
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .parallax-card-depth:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 40px -12px rgba(67, 9, 23, 0.18);
     }
 
     .reveal-up {
@@ -172,21 +186,23 @@
     </div>
   </section>
 
-  <!-- INTERACTIVE CAROUSEL -->
-  <section id="carouselSection" class="py-14 bg-champagne-soft border-b border-champagne-border overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
-      <div class="text-center max-w-xl mx-auto space-y-1 reveal-up">
-        <span class="text-[9px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Showcase</span>
-        <h3 class="font-[Cinzel] text-xl sm:text-2xl text-burgundy font-bold">Signature Masterpieces Carousel</h3>
-        <p class="text-[11px] text-gray-600 font-light">Tap any heirloom below to inspect details and acquire your look.</p>
+  <!-- INTERACTIVE PARALLAX SCROLL SHOWCASE (REPLACES OLD CAROUSEL) -->
+  <section id="carouselSection" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border parallax-section-wrapper">
+    <div class="parallax-bg-layer" id="parallaxBg"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10 relative z-10">
+      
+      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Studio Showcase</span>
+        <h3 class="font-[Cinzel] text-2xl sm:text-3xl text-burgundy font-bold">Signature Parallax Spotlight</h3>
+        <p class="text-xs text-gray-600 font-light">Layered depth masterpieces curated for grand celebrations.</p>
+        <div class="w-12 h-0.5 bg-gold mx-auto mt-2"></div>
       </div>
 
-      <div class="relative reveal-up" style="--delay: 150ms;">
-        <button onclick="scrollCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition-all active:scale-95">❮</button>
-        <button onclick="scrollCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-burgundy/90 text-champagne-silk w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-lg hover:bg-burgundy transition-all active:scale-95">❯</button>
-
-        <div id="homepageCarousel" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-8 py-2"></div>
+      <!-- Parallax Depth Showcase Grid / Stack -->
+      <div id="parallaxShowcaseContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div class="col-span-full py-12 text-center text-xs text-burgundy/60 animate-pulse">Loading parallax showcase...</div>
       </div>
+
     </div>
   </section>
 
@@ -514,6 +530,15 @@
     let touchStartX = 0;
     let touchEndX = 0;
 
+    // SCROLL PARALLAX LISTENER FOR AMBIANCE BACKGROUND
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      const bgLayer = document.getElementById('parallaxBg');
+      if (bgLayer) {
+        bgLayer.style.transform = `translateY(${scrollY * 0.15}px)`;
+      }
+    });
+
     function initScrollReveals() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -553,7 +578,7 @@
         if (error) throw error;
         if (data && data.length > 0) {
           allProducts = data;
-          renderHomepageCarousel(data);
+          renderParallaxShowcase(data);
           renderReels(data);
         }
       } catch (err) {
@@ -562,54 +587,32 @@
       renderCatalog();
     }
 
-    function renderHomepageCarousel(products) {
-      const carousel = document.getElementById('homepageCarousel');
-      const activeProducts = products.filter(p => !p.is_sold_out);
+    // RENDER INTERACTIVE PARALLAX SHOWCASE IN PLACE OF CAROUSEL
+    function renderParallaxShowcase(products) {
+      const showcase = document.getElementById('parallaxShowcaseContainer');
+      const activeProducts = products.filter(p => !p.is_sold_out).slice(0, 3); // Top 3 signature items
       if (activeProducts.length === 0) return;
 
-      carousel.innerHTML = activeProducts.map(item => {
+      showcase.innerHTML = activeProducts.map((item, idx) => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
+        const staggerClass = idx === 1 ? 'md:-translate-y-6' : (idx === 2 ? 'lg:-translate-y-4' : '');
         return `
-          <div onclick="openQuickView('${item.id}')" class="w-[170px] sm:w-[220px] bg-champagne-silk border border-gold/40 rounded-xl overflow-hidden shadow cursor-pointer group flex-shrink-0 transform transition-transform duration-300 hover:-translate-y-2 active:scale-95 studio-parallax-card">
-            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft">
-              <span class="absolute top-2 left-2 z-10 text-[8px] uppercase tracking-widest px-2 py-0.5 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">50% OFF</span>
-              <img src="${item.image_url}" loading="lazy" class="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-105">
+          <div onclick="openQuickView('${item.id}')" class="bg-champagne-silk border border-gold/40 rounded-2xl overflow-hidden shadow-lg cursor-pointer group flex flex-col justify-between p-4 parallax-card-depth ${staggerClass}">
+            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft rounded-xl mb-4">
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">Parallax Spotlight</span>
+              <img src="${item.image_url}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
               <div class="absolute inset-0 bg-burgundy/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                <span class="bg-champagne-silk text-burgundy text-[9px] uppercase tracking-widest px-3 py-1.5 font-bold rounded-full shadow">Quick View ↗</span>
+                <span class="bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-lg">Quick View ↗</span>
               </div>
             </div>
-            <div class="p-3 text-center space-y-0.5">
-              <h4 class="font-[Cinzel] text-[11px] font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
-              <p class="font-[Rozha_One] text-[9px] text-gold-antique">${item.hindi_title || ''}</p>
-              <p class="font-[Cinzel] text-xs font-bold text-burgundy pt-0.5">${price}</p>
+            <div class="text-center space-y-1 pb-2">
+              <h4 class="font-[Cinzel] text-sm font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
+              <p class="font-[Rozha_One] text-xs text-gold-antique">${item.hindi_title || ''}</p>
+              <p class="font-[Cinzel] text-sm font-bold text-burgundy pt-1">${price}</p>
             </div>
           </div>
         `;
       }).join('');
-    }
-
-    function scrollCarousel(direction) {
-      const carousel = document.getElementById('homepageCarousel');
-      carousel.scrollBy({ left: direction * 240, behavior: 'smooth' });
-    }
-
-    function renderReels(products) {
-      const reelsContainer = document.getElementById('reelsContainer');
-      const videoItems = products.filter(p => p.video_url && !p.is_sold_out);
-      if (videoItems.length === 0) {
-        document.getElementById('reels').style.display = 'none';
-        return;
-      }
-      reelsContainer.innerHTML = videoItems.map((item, index) => `
-        <div class="group reveal-up relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl studio-parallax-card" style="--delay: ${(index % 3) * 150}ms">
-          <video src="${item.video_url}" autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
-          <div class="absolute inset-0 bg-gradient-to-t from-burgundy-deep via-transparent to-transparent flex flex-col justify-end p-6 space-y-2">
-            <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold">Couture Highlight</span>
-            <h4 class="font-[Cinzel] text-sm font-bold text-champagne-silk">${item.title}</h4>
-            <button onclick="openQuickView('${item.id}')" class="mt-2 py-2.5 px-4 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gold transition shadow active:scale-95">Shop This Look ↗</button>
-          </div>
-        </div>
-      `).join('');
     }
 
     function renderCatalog() {
@@ -629,7 +632,7 @@
         const staggerDelay = (index % 3) * 150; 
 
         return `
-          <div class="group reveal-up bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2 studio-parallax-card" style="--delay: ${staggerDelay}ms">
+          <div class="group reveal-up bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2" style="--delay: ${staggerDelay}ms">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer" onclick="openQuickView('${item.id}')">
               <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 ${isSoldOut ? 'bg-red-800' : 'bg-burgundy'} text-champagne-silk font-semibold rounded-full shadow">${isSoldOut ? 'SOLD OUT' : '50% OFF'}</span>
               ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
@@ -692,7 +695,7 @@
       grid.classList.add('opacity-0');
       setTimeout(() => {
         renderCatalog();
-        if (allProducts.length > 0) renderHomepageCarousel(allProducts);
+        if (allProducts.length > 0) renderParallaxShowcase(allProducts);
         updateCartDrawer();
         requestAnimationFrame(() => grid.classList.remove('opacity-0'));
       }, 300);
