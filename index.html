@@ -51,6 +51,20 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+    /* Parallax & Depth Integration Effects */
+    .parallax-container {
+      perspective: 1200px;
+      overflow: hidden;
+    }
+    .parallax-layer {
+      transform: translateZ(0);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .parallax-layer:hover {
+      transform: translateY(-8px) scale(1.015) translateZ(20px);
+    }
+
     .reveal-up {
       opacity: 0;
       transform: translateY(30px);
@@ -132,9 +146,9 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="relative bg-champagne-soft py-12 sm:py-20 border-b border-gold/40 text-center px-4 overflow-hidden">
-    <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative reveal-up">
+  <!-- HERO SECTION WITH PARALLLAX DEPTH ILLUSION -->
+  <section class="relative bg-champagne-soft py-12 sm:py-20 border-b border-gold/40 text-center px-4 overflow-hidden parallax-container">
+    <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative reveal-up parallax-layer">
       <span class="inline-block px-4 py-1.5 border border-gold/40 text-[9px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-champagne-silk/90 rounded-full shadow-sm">
         BRIDAL • FESTIVE • PARTY WEAR
       </span>
@@ -163,9 +177,9 @@
     </div>
   </section>
 
-  <!-- INTERACTIVE CAROUSEL -->
-  <section id="carouselSection" class="py-14 bg-champagne-soft border-b border-champagne-border overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
+  <!-- INTERACTIVE CAROUSEL WITH PARALLAX DEPTH -->
+  <section id="carouselSection" class="py-14 bg-champagne-soft border-b border-champagne-border overflow-hidden parallax-container">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6 parallax-layer">
       <div class="text-center max-w-xl mx-auto space-y-1 reveal-up">
         <span class="text-[9px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Showcase</span>
         <h3 class="font-[Cinzel] text-xl sm:text-2xl text-burgundy font-bold">Signature Masterpieces Carousel</h3>
@@ -220,15 +234,15 @@
     </div>
   </section>
 
-  <!-- CATALOG SECTION -->
-  <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
-    <div class="text-center max-w-2xl mx-auto mb-10 reveal-up">
+  <!-- CATALOG SECTION WITH PARALLAX DEPTH INTEGRATION -->
+  <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow parallax-container">
+    <div class="text-center max-w-2xl mx-auto mb-10 reveal-up parallax-layer">
       <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
       <p class="font-[Rozha_One] text-gold-antique text-sm mt-1">दस्तकारी पोटली एवं क्लच</p>
       <div class="w-16 h-0.5 bg-gold mx-auto mt-4"></div>
     </div>
     
-    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 text-xs uppercase tracking-widest reveal-up" style="--delay: 150ms;">
+    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 text-xs uppercase tracking-widest reveal-up parallax-layer" style="--delay: 150ms;">
       <button onclick="filterCategory('All')" class="filter-btn active-tab px-5 py-2.5 border border-burgundy bg-burgundy text-champagne-silk transition-colors rounded-full shadow-sm active:scale-95">All</button>
       <button onclick="filterCategory('Potlis')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Potlis & Batua</button>
       <button onclick="filterCategory('Crescents')" class="filter-btn px-5 py-2.5 border border-champagne-border text-burgundy hover:border-gold transition-colors rounded-full active:scale-95">Crescent Clutches</button>
@@ -561,7 +575,7 @@
       carousel.innerHTML = activeProducts.map(item => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div onclick="openQuickView('${item.id}')" class="w-[170px] sm:w-[220px] bg-champagne-silk border border-gold/40 rounded-xl overflow-hidden shadow cursor-pointer group flex-shrink-0 transform transition-transform duration-300 hover:-translate-y-2 active:scale-95">
+          <div onclick="openQuickView('${item.id}')" class="w-[170px] sm:w-[220px] bg-champagne-silk border border-gold/40 rounded-xl overflow-hidden shadow cursor-pointer group flex-shrink-0 transform transition-transform duration-300 hover:-translate-y-2 active:scale-95 parallax-layer">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft">
               <span class="absolute top-2 left-2 z-10 text-[8px] uppercase tracking-widest px-2 py-0.5 bg-burgundy text-champagne-silk font-semibold rounded-full shadow">50% OFF</span>
               <img src="${item.image_url}" loading="lazy" class="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-105">
@@ -592,7 +606,7 @@
         return;
       }
       reelsContainer.innerHTML = videoItems.map((item, index) => `
-        <div class="group reveal-up relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl" style="--delay: ${(index % 3) * 150}ms">
+        <div class="group reveal-up relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl parallax-layer" style="--delay: ${(index % 3) * 150}ms">
           <video src="${item.video_url}" autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
           <div class="absolute inset-0 bg-gradient-to-t from-burgundy-deep via-transparent to-transparent flex flex-col justify-end p-6 space-y-2">
             <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold">Couture Highlight</span>
@@ -620,7 +634,7 @@
         const staggerDelay = (index % 3) * 150; 
 
         return `
-          <div class="group reveal-up bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2" style="--delay: ${staggerDelay}ms">
+          <div class="group reveal-up bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2 parallax-layer" style="--delay: ${staggerDelay}ms">
             <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer" onclick="openQuickView('${item.id}')">
               <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 ${isSoldOut ? 'bg-red-800' : 'bg-burgundy'} text-champagne-silk font-semibold rounded-full shadow">${isSoldOut ? 'SOLD OUT' : '50% OFF'}</span>
               ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
@@ -1006,7 +1020,6 @@
       setTimeout(() => modal.classList.add('hidden'), 400);
     }
 
-    // CHECKOUT LOGIC WITH DIRECT REST FETCH
     async function processCheckout(e) {
       e.preventDefault();
       
