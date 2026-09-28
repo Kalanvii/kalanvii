@@ -10,6 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Rozha+One&display=swap" rel="stylesheet">
   <script>
+    // Force page to always load at the top (Fix #4)
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.addEventListener('beforeunload', function() {
+      window.scrollTo(0, 0);
+    });
+
     tailwind.config = {
       theme: {
         extend: {
@@ -49,11 +57,9 @@
       background-position: center;
     }
     
-    /* Native Horizontal Scrolling without scrollbars */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Modern Scroll Animations */
     .reveal-up {
       opacity: 0;
       transform: translateY(30px);
@@ -105,7 +111,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="w-full md:w-auto flex items-center justify-between md:justify-start">
         <div class="md:hidden"></div>
-        <a href="#" class="inline-block group text-center md:text-left">
+        <!-- KALANVII Logo Reload (Fix #3) -->
+        <a href="index.html" onclick="window.scrollTo(0,0); window.location.reload(); return false;" class="inline-block group text-center md:text-left cursor-pointer">
           <h1 class="font-[Cinzel] text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
           <p class="font-[Rozha_One] text-burgundy-light text-[10px] tracking-widest -mt-1">कलान्वी</p>
         </a>
@@ -167,7 +174,7 @@
     </div>
   </section>
 
-  <!-- MODERN HORIZONTAL SCROLL-DRIVEN PARALLAX SHOWCASE -->
+  <!-- FIXED MODERN SCROLL-DRIVEN PARALLAX SHOWCASE (Smooth & Properly Sized) -->
   <section id="premiumShowcase" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border overflow-hidden">
     <div class="max-w-[1400px] mx-auto space-y-10">
       
@@ -181,7 +188,7 @@
 
       <!-- Scroll Snapping Parallax Container -->
       <div id="showcaseScrollContainer" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar px-[7.5vw] sm:px-[10vw] pb-8 gap-6 sm:gap-10 items-center">
-        <!-- Javascript renders cards here to ensure it's fluid -->
+        <!-- JS renders perfectly sized cards here without enlargement -->
         <div class="text-xs text-burgundy/60 animate-pulse w-full text-center">Loading showcase...</div>
       </div>
 
@@ -316,12 +323,13 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL -->
+  <!-- QUICK VIEW MODAL (Fixed Scroll Locking Issue) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
       
-      <div id="quickModalPanel" class="inline-block w-full max-w-2xl p-5 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left opacity-0 scale-95 translate-y-4 transition-all duration-[400ms] ease-[cubic-bezier(.16,1,.3,1)] max-h-[90vh] overflow-y-auto">
+      <!-- Fix #2: Added overscroll-contain and touch scrolling to prevent screen lock on iOS/Android -->
+      <div id="quickModalPanel" style="-webkit-overflow-scrolling: touch;" class="inline-block w-full max-w-2xl p-5 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left opacity-0 scale-95 translate-y-4 transition-all duration-[400ms] ease-[cubic-bezier(.16,1,.3,1)] max-h-[90vh] overflow-y-auto overscroll-contain">
         <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
         
         <div class="space-y-6 pt-2">
@@ -490,6 +498,9 @@
   </footer>
 
   <script>
+    // FIX #4: Immediately scroll to top when page is manually reloaded
+    window.scrollTo(0, 0);
+
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
@@ -508,7 +519,6 @@
     let selectedModalItem = null;
     let currentMediaList = [];
     let currentMediaIndex = 0;
-
     let cinematicProducts = [];
     let touchStartX = 0;
     let touchEndX = 0;
@@ -563,7 +573,7 @@
       renderCatalog();
     }
 
-    // TRUE SCROLL-DRIVEN PARALLAX SHOWCASE (MODERN UI/UX)
+    // NATIVE HARDWARE ACCELERATED PARALLAX SHOWCASE (Fix #1)
     function renderPremiumShowcase() {
       const container = document.getElementById('showcaseScrollContainer');
       if (cinematicProducts.length === 0) return;
@@ -571,25 +581,22 @@
       container.innerHTML = cinematicProducts.map((item, idx) => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div class="showcase-card relative flex-none w-[85vw] sm:w-[50vw] md:w-[40vw] lg:w-[32vw] aspect-[4/5] sm:aspect-[3/4] snap-center rounded-3xl overflow-hidden shadow-2xl cursor-pointer group bg-burgundy-deep transform transition-transform duration-500 will-change-transform" onclick="openQuickView('${item.id}')">
+          <div class="showcase-card relative flex-none w-[85vw] sm:w-[50vw] md:w-[40vw] lg:w-[32vw] aspect-[4/5] sm:aspect-[3/4] snap-center rounded-3xl overflow-hidden shadow-2xl cursor-pointer group bg-champagne-silk border border-gold/30 transform transition-transform duration-500 will-change-transform" onclick="openQuickView('${item.id}')">
             
-            <!-- Window Parallax Image Background (Fully covers container, scales to avoid cropping) -->
-            <div class="absolute inset-0 w-[120%] h-full -left-[10%]">
-              <img src="${item.image_url}" class="showcase-img w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03] will-change-transform" loading="lazy" alt="${item.title}">
+            <div class="absolute inset-0 w-full h-full overflow-hidden">
+              <img src="${item.image_url}" class="showcase-img w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 will-change-transform" loading="lazy" alt="${item.title}">
             </div>
             
-            <!-- Cinematic Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
             <span class="absolute top-4 left-4 z-10 text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">0${idx + 1}</span>
 
-            <!-- Typography & Action (Translates dynamically based on scroll) -->
-            <div class="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end h-full showcase-content transition-opacity duration-500 will-change-transform">
+            <div class="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end h-full showcase-content transition-opacity duration-300 will-change-transform">
               <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold mb-1.5 drop-shadow-md">${item.tag || 'Signature Look'}</span>
-              <h4 class="font-[Cinzel] text-2xl font-bold text-champagne-silk tracking-wide uppercase leading-tight drop-shadow-md">${item.title}</h4>
+              <h4 class="font-[Cinzel] text-xl sm:text-2xl font-bold text-champagne-silk tracking-wide uppercase leading-tight drop-shadow-md">${item.title}</h4>
               <p class="font-[Rozha_One] text-xs text-gold-antique mb-2 drop-shadow-md">${item.hindi_title || ''}</p>
               
-              <div class="flex items-center justify-between mt-3 pt-4 border-t border-gold/40">
-                <p class="font-[Cinzel] text-xl font-bold text-champagne-silk drop-shadow-md">${price}</p>
+              <div class="flex items-center justify-between mt-3 pt-3 border-t border-gold/40">
+                <p class="font-[Cinzel] text-lg font-bold text-champagne-silk drop-shadow-md">${price}</p>
                 <button onclick="event.stopPropagation(); openQuickView('${item.id}')" class="px-5 py-2 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-full hover:bg-gold-antique hover:text-champagne-silk transition shadow active:scale-95">Inspect</button>
               </div>
             </div>
@@ -600,7 +607,6 @@
       initShowcaseParallax();
     }
 
-    // Scroll-jacking free, native Javascript Intersection & Position Parallax
     function initShowcaseParallax() {
       const scrollContainer = document.getElementById('showcaseScrollContainer');
       const cards = scrollContainer.querySelectorAll('.showcase-card');
@@ -608,45 +614,40 @@
       const contents = scrollContainer.querySelectorAll('.showcase-content');
 
       if (!scrollContainer) return;
+      let ticking = false;
 
       const updateParallax = () => {
-        // Find exact center of the scroll container viewport
         const containerCenter = scrollContainer.getBoundingClientRect().left + scrollContainer.clientWidth / 2;
         
         cards.forEach((card, idx) => {
           const rect = card.getBoundingClientRect();
           const cardCenter = rect.left + rect.width / 2;
-          
-          // Distance from the center of the screen
           const dist = cardCenter - containerCenter;
-          
-          // Normalize distance (-1 to 1 based on container width)
-          const progress = dist / scrollContainer.clientWidth;
+          const progress = Math.min(Math.max(dist / scrollContainer.clientWidth, -1), 1); 
 
-          // 1. Image Parallax Pan (Image moves opposite to card scroll to create depth)
           if(images[idx]) {
-            images[idx].style.transform = `translateX(${progress * 25}%) scale(1.05)`;
+            images[idx].style.transform = `translateX(${progress * 15}%) scale(1.02)`;
           }
 
-          // 2. Card Scale Effect (Card pops/scales up perfectly when centered)
-          const scale = Math.max(0.88, 1 - Math.abs(progress) * 0.12);
+          const scale = Math.max(0.9, 1 - Math.abs(progress) * 0.1);
           card.style.transform = `scale(${scale})`;
           
-          // 3. Content Fade & Shift (Text shifts down and fades out slightly when exiting center)
           const opacity = Math.max(0.2, 1 - Math.abs(progress) * 1.5);
           if(contents[idx]) {
             contents[idx].style.opacity = opacity;
-            contents[idx].style.transform = `translateY(${Math.abs(progress) * 15}px)`;
           }
         });
+        ticking = false;
       };
 
       scrollContainer.addEventListener('scroll', () => {
-        requestAnimationFrame(updateParallax);
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
       }, { passive: true });
       
-      // Initialize immediately after DOM paint to set initial scales
-      setTimeout(() => requestAnimationFrame(updateParallax), 100);
+      setTimeout(() => window.requestAnimationFrame(updateParallax), 100);
     }
 
     function renderCatalog() {
