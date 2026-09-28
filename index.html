@@ -48,41 +48,12 @@
       background-size: cover;
       background-position: center;
     }
+    
+    /* Native Horizontal Scrolling without scrollbars */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Cinematic Full-Width Immersive Stage */
-    .cinematic-stage-wrap {
-      position: relative;
-      width: 100%;
-      min-height: 520px;
-      overflow: hidden;
-      background: linear-gradient(135deg, #28050e 0%, #430917 100%);
-    }
-    .cinematic-scene {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transform: scale(1.05) translateZ(0);
-      filter: blur(12px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      pointer-events: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem 1.5rem;
-    }
-    .cinematic-scene.active {
-      opacity: 1;
-      transform: scale(1) translateZ(0);
-      filter: blur(0);
-      pointer-events: auto;
-      z-index: 10;
-    }
-
+    /* Modern Scroll Animations */
     .reveal-up {
       opacity: 0;
       transform: translateY(30px);
@@ -116,7 +87,7 @@
         scroll-behavior: auto !important;
       }
       .reveal-up { opacity: 1 !important; transform: none !important; }
-      .cinematic-scene { transition: none !important; filter: none !important; }
+      .showcase-img, .showcase-card, .showcase-content { transform: none !important; transition: none !important; opacity: 1 !important; }
     }
   </style>
 </head>
@@ -149,7 +120,7 @@
 
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1">
         <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
-        <a href="#carouselSection" class="hover:text-gold transition duration-300">Cinematic Spotlight</a>
+        <a href="#premiumShowcase" class="hover:text-gold transition duration-300">Cinematic Spotlight</a>
         <a href="#story" class="hover:text-gold transition duration-300">Our Heritage</a>
         <a href="#testimonials" class="hover:text-gold transition duration-300">Client Testimonials</a>
         <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
@@ -196,30 +167,22 @@
     </div>
   </section>
 
-  <!-- CINEMATIC HORIZONTAL SCROLL SHOWCASE (ROYAL ENFIELD INTERACTION INSPIRATION) -->
-  <section id="carouselSection" class="py-16 sm:py-20 bg-burgundy-deep text-champagne-silk border-b border-gold/40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
+  <!-- MODERN HORIZONTAL SCROLL-DRIVEN PARALLAX SHOWCASE -->
+  <section id="premiumShowcase" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border overflow-hidden">
+    <div class="max-w-[1400px] mx-auto space-y-10">
       
-      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
-        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil font-semibold">Cinematic Interaction Showcase</span>
-        <h3 class="font-[Cinzel] text-2xl sm:text-3xl text-gold-light font-bold">Signature Masterpiece Spotlight</h3>
-        <p class="text-xs text-champagne/70 font-light">Swipe or scroll to immerse in our premier handcrafted collection.</p>
-        <div class="w-12 h-0.5 bg-gold/50 mx-auto mt-2"></div>
+      <!-- Section Header -->
+      <div class="text-center max-w-xl mx-auto space-y-2 px-4 reveal-up">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Cinematic Interaction</span>
+        <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold">Signature Spotlight</h3>
+        <p class="text-xs text-gray-600 font-light">Swipe to explore our master artisan collection. Watch the details come into focus.</p>
+        <div class="w-12 h-0.5 bg-gold mx-auto mt-2"></div>
       </div>
 
-      <!-- FULL-WIDTH IMMERSIVE STAGE -->
-      <div id="cinematicStage" class="cinematic-stage-wrap rounded-3xl border border-gold/40 shadow-2xl">
-        <div class="absolute inset-0 flex items-center justify-center text-xs text-champagne/60 animate-pulse">Loading cinematic scenes...</div>
-      </div>
-
-      <!-- CINEMATIC CONTROLS & PAGINATION -->
-      <div class="flex items-center justify-between pt-2 px-2">
-        <span id="sceneCounter" class="text-[11px] font-[Cinzel] text-gold-foil uppercase tracking-widest">Scene 01 / 05</span>
-        <div class="flex items-center gap-3">
-          <button onclick="prevCinematicScene()" class="w-10 h-10 rounded-full border border-gold/40 bg-burgundy text-champagne-silk flex items-center justify-center shadow hover:bg-gold-antique transition active:scale-95 font-bold text-sm">‹</button>
-          <div id="cinematicDots" class="flex gap-2 items-center"></div>
-          <button onclick="nextCinematicScene()" class="w-10 h-10 rounded-full border border-gold/40 bg-burgundy text-champagne-silk flex items-center justify-center shadow hover:bg-gold-antique transition active:scale-95 font-bold text-sm">›</button>
-        </div>
+      <!-- Scroll Snapping Parallax Container -->
+      <div id="showcaseScrollContainer" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar px-[7.5vw] sm:px-[10vw] pb-8 gap-6 sm:gap-10 items-center">
+        <!-- Javascript renders cards here to ensure it's fluid -->
+        <div class="text-xs text-burgundy/60 animate-pulse w-full text-center">Loading showcase...</div>
       </div>
 
     </div>
@@ -547,8 +510,6 @@
     let currentMediaIndex = 0;
 
     let cinematicProducts = [];
-    let currentCinematicIndex = 0;
-
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -571,37 +532,12 @@
       loadCatalog();
       initScrollReveals(); 
 
-      // Setup Swipe Gestures on Cinematic Stage
-      const stage = document.getElementById('cinematicStage');
-      if (stage) {
-        stage.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-        stage.addEventListener('touchend', e => { 
-          touchEndX = e.changedTouches[0].screenX; 
-          handleCinematicSwipe(); 
-        }, {passive: true});
-
-        stage.addEventListener('wheel', e => {
-          e.preventDefault();
-          if (e.deltaY > 30) {
-            nextCinematicScene();
-          } else if (e.deltaY < -30) {
-            prevCinematicScene();
-          }
-        }, {passive: false});
-      }
-
       const modalSwipe = document.getElementById('mediaSwipeContainer');
       if (modalSwipe) {
         modalSwipe.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
         modalSwipe.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleModalSwipe(); }, {passive: true});
       }
     });
-
-    function handleCinematicSwipe() {
-      const threshold = 40;
-      if (touchEndX < touchStartX - threshold) nextCinematicScene();
-      if (touchEndX > touchStartX + threshold) prevCinematicScene();
-    }
 
     function handleModalSwipe() {
       const threshold = 40;
@@ -617,8 +553,8 @@
         if (error) throw error;
         if (data && data.length > 0) {
           allProducts = data;
-          cinematicProducts = data.filter(p => !p.is_sold_out).slice(0, 5); // Top 5 featured heirloom pieces
-          renderCinematicStage();
+          cinematicProducts = data.filter(p => !p.is_sold_out).slice(0, 5);
+          renderPremiumShowcase();
           renderReels(data);
         }
       } catch (err) {
@@ -627,88 +563,90 @@
       renderCatalog();
     }
 
-    // RENDER FULL-WIDTH CINEMATIC STAGE (ROYAL ENFIELD INTERACTION STYLE)
-    function renderCinematicStage() {
-      const stage = document.getElementById('cinematicStage');
-      const dotsContainer = document.getElementById('cinematicDots');
-      const counterEl = document.getElementById('sceneCounter');
+    // TRUE SCROLL-DRIVEN PARALLAX SHOWCASE (MODERN UI/UX)
+    function renderPremiumShowcase() {
+      const container = document.getElementById('showcaseScrollContainer');
       if (cinematicProducts.length === 0) return;
 
-      stage.innerHTML = cinematicProducts.map((item, idx) => {
+      container.innerHTML = cinematicProducts.map((item, idx) => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
-        const isActive = idx === currentCinematicIndex ? 'active' : '';
         return `
-          <div class="cinematic-scene ${isActive}" data-scene="${idx}">
-            <div class="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-4">
-              <div class="relative aspect-[4/5] max-h-[400px] md:max-h-[460px] mx-auto w-full overflow-hidden rounded-2xl border border-gold/30 shadow-2xl bg-burgundy-deep cursor-pointer group" onclick="openQuickView('${item.id}')">
-                <span class="absolute top-4 left-4 z-10 text-[10px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">Featured Scene 0${idx + 1}</span>
-                <img src="${item.image_url}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                <div class="absolute inset-0 bg-burgundy/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                  <span class="bg-champagne-silk text-burgundy text-xs uppercase tracking-widest px-6 py-2.5 font-bold rounded-full shadow-2xl">Quick View ↗</span>
-                </div>
-              </div>
-              <div class="space-y-4 text-center md:text-left">
-                <span class="text-[10px] uppercase tracking-[0.25em] text-gold-foil font-semibold px-3 py-1 bg-burgundy-deep border border-gold/30 rounded-full inline-block">${item.tag || 'Masterpiece Spotlight'}</span>
-                <h4 class="font-[Cinzel] text-2xl sm:text-3xl font-bold text-gold-light tracking-wide uppercase">${item.title}</h4>
-                <p class="font-[Rozha_One] text-sm text-gold-antique -mt-2">${item.hindi_title || ''}</p>
-                <p class="font-[Cinzel] text-2xl font-bold text-champagne-silk pt-1">${price}</p>
-                <p class="text-xs sm:text-sm text-champagne/80 font-light leading-relaxed">${item.description || 'Exquisite handcrafted embroidery designed for grand celebrations and heirloom prestige.'}</p>
-                <div class="pt-4 flex flex-wrap justify-center md:justify-start gap-3">
-                  <button onclick="openQuickView('${item.id}')" class="btn-shimmer px-8 py-3.5 bg-champagne-silk text-burgundy text-xs uppercase tracking-widest font-bold rounded-xl transition shadow-lg active:scale-95">Inspect & Acquire</button>
-                </div>
+          <div class="showcase-card relative flex-none w-[85vw] sm:w-[50vw] md:w-[40vw] lg:w-[32vw] aspect-[4/5] sm:aspect-[3/4] snap-center rounded-3xl overflow-hidden shadow-2xl cursor-pointer group bg-burgundy-deep transform transition-transform duration-500 will-change-transform" onclick="openQuickView('${item.id}')">
+            
+            <!-- Window Parallax Image Background (Fully covers container, scales to avoid cropping) -->
+            <div class="absolute inset-0 w-[120%] h-full -left-[10%]">
+              <img src="${item.image_url}" class="showcase-img w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03] will-change-transform" loading="lazy" alt="${item.title}">
+            </div>
+            
+            <!-- Cinematic Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <span class="absolute top-4 left-4 z-10 text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">0${idx + 1}</span>
+
+            <!-- Typography & Action (Translates dynamically based on scroll) -->
+            <div class="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end h-full showcase-content transition-opacity duration-500 will-change-transform">
+              <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold mb-1.5 drop-shadow-md">${item.tag || 'Signature Look'}</span>
+              <h4 class="font-[Cinzel] text-2xl font-bold text-champagne-silk tracking-wide uppercase leading-tight drop-shadow-md">${item.title}</h4>
+              <p class="font-[Rozha_One] text-xs text-gold-antique mb-2 drop-shadow-md">${item.hindi_title || ''}</p>
+              
+              <div class="flex items-center justify-between mt-3 pt-4 border-t border-gold/40">
+                <p class="font-[Cinzel] text-xl font-bold text-champagne-silk drop-shadow-md">${price}</p>
+                <button onclick="event.stopPropagation(); openQuickView('${item.id}')" class="px-5 py-2 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-full hover:bg-gold-antique hover:text-champagne-silk transition shadow active:scale-95">Inspect</button>
               </div>
             </div>
           </div>
         `;
       }).join('');
 
-      if (counterEl) {
-        counterEl.innerText = `Scene 0${currentCinematicIndex + 1} / 0${cinematicProducts.length}`;
-      }
-
-      dotsContainer.innerHTML = cinematicProducts.map((_, idx) => `
-        <button onclick="setCinematicScene(${idx})" class="w-3 h-3 rounded-full transition-all duration-300 ${idx === currentCinematicIndex ? 'bg-gold-foil w-8' : 'bg-gold/30'}"></button>
-      `).join('');
+      initShowcaseParallax();
     }
 
-    function nextCinematicScene() {
-      currentCinematicIndex = (currentCinematicIndex + 1) % cinematicProducts.length;
-      updateCinematicActiveScene();
-    }
+    // Scroll-jacking free, native Javascript Intersection & Position Parallax
+    function initShowcaseParallax() {
+      const scrollContainer = document.getElementById('showcaseScrollContainer');
+      const cards = scrollContainer.querySelectorAll('.showcase-card');
+      const images = scrollContainer.querySelectorAll('.showcase-img');
+      const contents = scrollContainer.querySelectorAll('.showcase-content');
 
-    function prevCinematicScene() {
-      currentCinematicIndex = (currentCinematicIndex - 1 + cinematicProducts.length) % cinematicProducts.length;
-      updateCinematicActiveScene();
-    }
+      if (!scrollContainer) return;
 
-    function setCinematicScene(idx) {
-      currentCinematicIndex = idx;
-      updateCinematicActiveScene();
-    }
+      const updateParallax = () => {
+        // Find exact center of the scroll container viewport
+        const containerCenter = scrollContainer.getBoundingClientRect().left + scrollContainer.clientWidth / 2;
+        
+        cards.forEach((card, idx) => {
+          const rect = card.getBoundingClientRect();
+          const cardCenter = rect.left + rect.width / 2;
+          
+          // Distance from the center of the screen
+          const dist = cardCenter - containerCenter;
+          
+          // Normalize distance (-1 to 1 based on container width)
+          const progress = dist / scrollContainer.clientWidth;
 
-    function updateCinematicActiveScene() {
-      const scenes = document.querySelectorAll('.cinematic-scene');
-      scenes.forEach((scene, idx) => {
-        if (idx === currentCinematicIndex) {
-          scene.classList.add('active');
-        } else {
-          scene.classList.remove('active');
-        }
-      });
+          // 1. Image Parallax Pan (Image moves opposite to card scroll to create depth)
+          if(images[idx]) {
+            images[idx].style.transform = `translateX(${progress * 25}%) scale(1.05)`;
+          }
 
-      const counterEl = document.getElementById('sceneCounter');
-      if (counterEl) {
-        counterEl.innerText = `Scene 0${currentCinematicIndex + 1} / 0${cinematicProducts.length}`;
-      }
+          // 2. Card Scale Effect (Card pops/scales up perfectly when centered)
+          const scale = Math.max(0.88, 1 - Math.abs(progress) * 0.12);
+          card.style.transform = `scale(${scale})`;
+          
+          // 3. Content Fade & Shift (Text shifts down and fades out slightly when exiting center)
+          const opacity = Math.max(0.2, 1 - Math.abs(progress) * 1.5);
+          if(contents[idx]) {
+            contents[idx].style.opacity = opacity;
+            contents[idx].style.transform = `translateY(${Math.abs(progress) * 15}px)`;
+          }
+        });
+      };
 
-      const dots = document.getElementById('cinematicDots').children;
-      for (let i = 0; i < dots.length; i++) {
-        if (i === currentCinematicIndex) {
-          dots[i].className = "w-8 h-3 rounded-full bg-gold-foil transition-all duration-300";
-        } else {
-          dots[i].className = "w-3 h-3 rounded-full bg-gold/30 transition-all duration-300";
-        }
-      }
+      scrollContainer.addEventListener('scroll', () => {
+        requestAnimationFrame(updateParallax);
+      }, { passive: true });
+      
+      // Initialize immediately after DOM paint to set initial scales
+      setTimeout(() => requestAnimationFrame(updateParallax), 100);
     }
 
     function renderCatalog() {
@@ -791,7 +729,7 @@
       grid.classList.add('opacity-0');
       setTimeout(() => {
         renderCatalog();
-        if (allProducts.length > 0) renderCinematicStage();
+        if (allProducts.length > 0) renderPremiumShowcase();
         updateCartDrawer();
         requestAnimationFrame(() => grid.classList.remove('opacity-0'));
       }, 300);
