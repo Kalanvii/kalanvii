@@ -67,8 +67,8 @@
             
             <!-- Pricing & Category -->
             <div class="flex gap-2">
-              <input type="number" id="priceInr" placeholder="Price (INR)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
-              <input type="number" id="priceUsd" placeholder="Price (USD)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+              <input type="number" id="priceInr" placeholder="Price (INR) *" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+              <input type="number" id="priceUsd" placeholder="Price (USD) *" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
             </div>
             <select id="category" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
               <option value="Potlis">Potlis & Batua</option>
@@ -112,7 +112,7 @@
         </div>
       </section>
 
-      <!-- LEADS & ORDERS SECTION (WITH REFRESH BUTTON) -->
+      <!-- LEADS & ORDERS SECTION -->
       <section id="leadsSection" class="hidden space-y-6">
         <div class="flex justify-between items-center border-b border-champagne-border pb-2 mb-4">
           <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest">Captured Orders & Leads</h3>
@@ -162,8 +162,8 @@
         <input type="text" id="editTag" placeholder="Label Tag" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
         
         <div class="flex gap-2">
-          <input type="number" id="editPriceInr" placeholder="Price (INR)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
-          <input type="number" id="editPriceUsd" placeholder="Price (USD)" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+          <input type="number" id="editPriceInr" placeholder="Price (INR) *" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
+          <input type="number" id="editPriceUsd" placeholder="Price (USD) *" required class="w-1/2 p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none">
         </div>
         
         <select id="editCategory" class="p-3 border rounded-lg text-sm bg-gray-50 focus:border-gold outline-none md:col-span-2">
@@ -312,6 +312,12 @@
         return;
       }
 
+      // STRICT PARSING: Forces numbers, defaults to 0 if empty
+      const rawInr = document.getElementById('priceInr').value;
+      const rawUsd = document.getElementById('priceUsd').value;
+      const parsedInr = parseFloat(rawInr) || 0;
+      const parsedUsd = parseFloat(rawUsd) || 0;
+
       btn.innerText = "Uploading Media... Please wait.";
       btn.disabled = true;
 
@@ -331,8 +337,8 @@
           title: document.getElementById('title').value,
           hindi_title: document.getElementById('hindi').value,
           tag: document.getElementById('tag').value,
-          price_inr: document.getElementById('priceInr').value,
-          price_usd: document.getElementById('priceUsd').value,
+          price_inr: parsedInr,
+          price_usd: parsedUsd,
           category: document.getElementById('category').value,
           description: document.getElementById('desc').value,
           materials: document.getElementById('materials').value,
@@ -342,7 +348,6 @@
           is_sold_out: false
         };
         
-        // ADDED STRICT ERROR CHECKING FOR DATABASE INSERT
         const { error: dbError } = await client.from('products').insert([productData]);
         if (dbError) throw new Error(`Database Error: ${dbError.message} (Check RLS Policies)`);
         
@@ -396,6 +401,12 @@
       const videoFile = document.getElementById('editVideoFile').files[0];
       const galleryFiles = document.getElementById('editGalleryFiles').files;
 
+      // STRICT PARSING: Forces numbers, defaults to 0 if empty
+      const rawInr = document.getElementById('editPriceInr').value;
+      const rawUsd = document.getElementById('editPriceUsd').value;
+      const parsedInr = parseFloat(rawInr) || 0;
+      const parsedUsd = parseFloat(rawUsd) || 0;
+
       btn.innerText = "Saving Changes... Please wait.";
       btn.disabled = true;
 
@@ -419,8 +430,8 @@
           title: document.getElementById('editTitle').value,
           hindi_title: document.getElementById('editHindi').value,
           tag: document.getElementById('editTag').value,
-          price_inr: document.getElementById('editPriceInr').value,
-          price_usd: document.getElementById('editPriceUsd').value,
+          price_inr: parsedInr,
+          price_usd: parsedUsd,
           category: document.getElementById('editCategory').value,
           description: document.getElementById('editDesc').value,
           materials: document.getElementById('editMaterials').value,
@@ -429,7 +440,6 @@
           gallery_images: finalGalleryUrls.length > 0 ? finalGalleryUrls : null
         };
 
-        // ADDED STRICT ERROR CHECKING FOR DATABASE UPDATE
         const { error: updateError } = await client.from('products').update(updates).eq('id', id);
         if (updateError) throw new Error(`Database Update Error: ${updateError.message}`);
         
@@ -505,6 +515,7 @@
   </script>
 </body>
 </html>
+
 
 
 
