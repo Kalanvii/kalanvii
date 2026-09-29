@@ -82,17 +82,10 @@
       animation: shimmer-sweep 3.5s infinite ease-in-out;
     }
 
-    /* 3D Cover Flow CSS */
-    .coverflow-card {
-      will-change: transform, opacity, filter, z-index;
-      /* Buttery smooth shuffle animation */
-      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-    }
-    .coverflow-card.active-card .quick-view-overlay {
-      opacity: 0;
-    }
-    .coverflow-card.active-card:hover .quick-view-overlay {
-      opacity: 1;
+    /* Liquid Drag CSS Base */
+    .liquid-card {
+      will-change: transform;
+      transform-style: preserve-3d;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -103,7 +96,7 @@
         scroll-behavior: auto !important;
       }
       .reveal-up { opacity: 1 !important; transform: none !important; }
-      .coverflow-card { transition: none !important; filter: none !important; }
+      .liquid-card { transform: none !important; transition: none !important; }
     }
   </style>
 </head>
@@ -136,7 +129,7 @@
 
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1">
         <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
-        <a href="#coverflowShowcase" class="hover:text-gold transition duration-300">Cinematic Spotlight</a>
+        <a href="#liquidShowcase" class="hover:text-gold transition duration-300">Cinematic Spotlight</a>
         <a href="#story" class="hover:text-gold transition duration-300">Our Heritage</a>
         <a href="#testimonials" class="hover:text-gold transition duration-300">Client Testimonials</a>
         <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
@@ -183,28 +176,21 @@
     </div>
   </section>
 
-  <!-- CONCEPT 1: 3D COVER FLOW GALLERY -->
-  <section id="coverflowShowcase" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border overflow-hidden">
-    <div class="max-w-6xl mx-auto space-y-10 px-4 relative">
+  <!-- CONCEPT 4: MAGNETIC LIQUID DRAG SHOWCASE -->
+  <section id="liquidShowcase" class="py-16 sm:py-24 bg-[#FAF6F0] border-b border-champagne-border overflow-hidden">
+    <div class="max-w-[1600px] mx-auto space-y-10 px-0 sm:px-4 relative">
       
-      <!-- Section Header -->
-      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
-        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Presentation</span>
+      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up px-4">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Magnetic Interaction</span>
         <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold">Signature Spotlight</h3>
-        <p class="text-xs text-gray-600 font-light">Swipe to shuffle through our master artisan collection.</p>
+        <p class="text-xs text-gray-600 font-light">Swipe to feel the weight of our master artisan collection.</p>
         <div class="w-12 h-0.5 bg-gold mx-auto mt-2"></div>
       </div>
 
-      <!-- 3D Stacking Stage -->
-      <div class="relative w-full h-[450px] sm:h-[520px] flex items-center justify-center overflow-visible" id="coverflowStage">
-        <div class="text-xs text-burgundy/60 animate-pulse">Curating spotlight...</div>
-      </div>
-      
-      <!-- Navigation Controls -->
-      <div class="flex items-center justify-center gap-6 pt-4">
-        <button onclick="moveCoverFlow(-1)" class="w-10 h-10 rounded-full border border-gold/40 bg-champagne-silk text-burgundy flex items-center justify-center shadow hover:bg-burgundy hover:text-champagne-silk transition active:scale-95 font-bold text-lg z-20">‹</button>
-        <div id="coverflowDots" class="flex gap-2 items-center z-20"></div>
-        <button onclick="moveCoverFlow(1)" class="w-10 h-10 rounded-full border border-gold/40 bg-champagne-silk text-burgundy flex items-center justify-center shadow hover:bg-burgundy hover:text-champagne-silk transition active:scale-95 font-bold text-lg z-20">›</button>
+      <!-- The Magnetic Scroll Container -->
+      <div id="liquidScrollContainer" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar px-[12.5vw] sm:px-[30vw] pb-12 pt-8 gap-8 items-center cursor-grab active:cursor-grabbing">
+        <!-- Populated by JS -->
+        <div class="text-xs text-burgundy/60 animate-pulse w-full text-center">Curating spotlight...</div>
       </div>
 
     </div>
@@ -338,7 +324,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL (Fixed Scroll Locking Issue) -->
+  <!-- QUICK VIEW MODAL -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
@@ -532,8 +518,6 @@
     let currentMediaIndex = 0;
 
     let cinematicProducts = [];
-    let currentCinematicIndex = 0;
-
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -578,7 +562,7 @@
         if (data && data.length > 0) {
           allProducts = data;
           cinematicProducts = data.filter(p => !p.is_sold_out).slice(0, 5);
-          renderCoverFlowCards();
+          renderLiquidCards();
           renderReels(data);
         }
       } catch (err) {
@@ -587,97 +571,104 @@
       renderCatalog();
     }
 
-    /* CONCEPT 1: 3D COVER FLOW IMPLEMENTATION */
-    function renderCoverFlowCards() {
-      const stage = document.getElementById('coverflowStage');
-      if (cinematicProducts.length === 0) return;
+    /* CONCEPT 4: MAGNETIC LIQUID DRAG IMPLEMENTATION */
+    function renderLiquidCards() {
+      const container = document.getElementById('liquidScrollContainer');
+      if (!container || cinematicProducts.length === 0) return;
 
-      stage.innerHTML = cinematicProducts.map((item, idx) => {
+      container.innerHTML = cinematicProducts.map((item, idx) => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div class="coverflow-card absolute w-[75vw] sm:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-champagne-silk border border-gold/40 flex flex-col" data-id="${item.id}">
+          <div class="liquid-card flex-none w-[75vw] sm:w-[360px] aspect-[3/4] snap-center rounded-xl overflow-hidden shadow-2xl cursor-pointer bg-white border-[8px] border-white flex flex-col group" onclick="openQuickView('${item.id}')">
             <div class="relative flex-grow overflow-hidden bg-champagne-soft">
-              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">0${idx + 1}</span>
-              <img src="${item.image_url}" class="w-full h-full object-cover pointer-events-none">
-              <div class="quick-view-overlay absolute inset-0 bg-burgundy/20 opacity-0 transition flex items-center justify-center">
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-bold rounded shadow">0${idx + 1}</span>
+              <img src="${item.image_url}" class="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-burgundy/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                 <span class="bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-lg">Quick View ↗</span>
               </div>
             </div>
-            <div class="p-5 text-center bg-champagne-silk shrink-0">
-              <span class="text-[8px] uppercase tracking-widest text-gold-antique font-semibold block mb-1">${item.tag || 'Signature Look'}</span>
-              <h4 class="font-[Cinzel] text-base sm:text-lg font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
-              <p class="font-[Cinzel] text-sm font-bold text-burgundy pt-1">${price}</p>
+            <div class="pt-4 pb-2 text-center bg-white shrink-0 space-y-1">
+              <h4 class="font-[Cinzel] text-sm font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
+              <p class="font-[Cinzel] text-sm font-bold text-burgundy">${price}</p>
             </div>
           </div>
         `;
       }).join('');
 
-      stage.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-      stage.addEventListener('touchend', e => { 
-        touchEndX = e.changedTouches[0].screenX; 
-        if (touchEndX < touchStartX - 40) moveCoverFlow(1);
-        if (touchEndX > touchStartX + 40) moveCoverFlow(-1);
-      }, {passive: true});
-
-      updateCoverFlow();
+      initLiquidScroll();
     }
 
-    function updateCoverFlow() {
-      const cards = document.querySelectorAll('.coverflow-card');
-      const dotsContainer = document.getElementById('coverflowDots');
-      
-      cards.forEach((card, idx) => {
-        const offset = idx - currentCinematicIndex;
-        const absOffset = Math.abs(offset);
-        const sign = Math.sign(offset); 
-        
-        let translateX = 0;
-        let scale = 1;
-        let zIndex = 50 - absOffset;
-        let blur = 0;
-        let opacity = 1;
+    let liquidTicking = false;
+    let lastScrollLeft = 0;
+    
+    function initLiquidScroll() {
+      const slider = document.getElementById('liquidScrollContainer');
+      const cards = document.querySelectorAll('.liquid-card');
+      if(!slider) return;
 
-        if (offset === 0) {
-          translateX = 0;
-          scale = 1;
-          blur = 0;
-          opacity = 1;
-          card.classList.add('active-card');
-          card.onclick = () => openQuickView(card.getAttribute('data-id'));
-        } else {
-          // Math to calculate slide-out distance (pushes cards ~55% sideways)
-          translateX = sign * (55 + (absOffset - 1) * 15);
-          scale = 1 - (absOffset * 0.15);
-          blur = absOffset * 2;
-          opacity = 1 - (absOffset * 0.2);
-          
-          card.classList.remove('active-card');
-          card.onclick = () => setCoverFlowIndex(idx);
+      lastScrollLeft = slider.scrollLeft;
+
+      slider.addEventListener('scroll', () => {
+        if (!liquidTicking) {
+          window.requestAnimationFrame(() => updateLiquidPhysics(slider, cards));
+          liquidTicking = true;
         }
+      }, { passive: true });
 
-        card.style.transform = `translateX(${translateX}%) scale(${scale})`;
-        card.style.zIndex = zIndex;
-        card.style.filter = `blur(${blur}px)`;
-        card.style.opacity = opacity;
+      // Touch / Mouse Drag support to make it feel like "grabbing" physics
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+        slider.style.scrollSnapType = 'none'; // disable snap while dragging
+      });
+      slider.addEventListener('mouseleave', () => { 
+        isDown = false; 
+        slider.style.scrollSnapType = 'x mandatory';
+      });
+      slider.addEventListener('mouseup', () => { 
+        isDown = false; 
+        slider.style.scrollSnapType = 'x mandatory';
+      });
+      slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5; 
+        slider.scrollLeft = scrollLeft - walk;
+      });
+    }
+
+    function updateLiquidPhysics(slider, cards) {
+      const currentScroll = slider.scrollLeft;
+      const velocity = currentScroll - lastScrollLeft;
+      lastScrollLeft = currentScroll;
+
+      // Magnetic Tilt Logic: Max tilt 15 degrees, scaled by velocity
+      const tilt = Math.max(-15, Math.min(15, velocity * -0.5));
+      const scale = Math.max(0.92, 1 - Math.abs(velocity * 0.003)); // Slight squash on fast drag
+
+      cards.forEach(card => {
+        // Remove transition so it tracks velocity instantly
+        card.style.transition = 'none';
+        card.style.transform = `perspective(1000px) rotateY(${tilt}deg) rotateX(${Math.abs(tilt)*0.2}deg) scale(${scale})`;
       });
 
-      if(dotsContainer) {
-        dotsContainer.innerHTML = cinematicProducts.map((_, idx) => `
-          <button onclick="setCoverFlowIndex(${idx})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${idx === currentCinematicIndex ? 'bg-burgundy w-8' : 'bg-gold/40'}"></button>
-        `).join('');
+      if (Math.abs(velocity) > 0.5) {
+        window.requestAnimationFrame(() => updateLiquidPhysics(slider, cards));
+      } else {
+        // Velocity died down, snap back to origin with a bounce
+        cards.forEach(card => {
+          card.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Bouncy spring back
+          card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
+        });
+        liquidTicking = false;
       }
-    }
-
-    function moveCoverFlow(dir) {
-      currentCinematicIndex += dir;
-      if (currentCinematicIndex < 0) currentCinematicIndex = cinematicProducts.length - 1;
-      if (currentCinematicIndex >= cinematicProducts.length) currentCinematicIndex = 0;
-      updateCoverFlow();
-    }
-
-    function setCoverFlowIndex(idx) {
-      currentCinematicIndex = idx;
-      updateCoverFlow();
     }
 
     function renderCatalog() {
@@ -760,7 +751,7 @@
       grid.classList.add('opacity-0');
       setTimeout(() => {
         renderCatalog();
-        if (allProducts.length > 0) renderCoverFlowCards();
+        if (allProducts.length > 0) renderLiquidCards();
         updateCartDrawer();
         requestAnimationFrame(() => grid.classList.remove('opacity-0'));
       }, 300);
