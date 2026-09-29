@@ -202,8 +202,6 @@
   <script>
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
-    
-    // THIS IS THE FIX. IT NOW EXACTLY MATCHES YOUR BUCKET
     const BUCKET_NAME = "product-images"; 
     
     let supabaseClient = null;
@@ -256,8 +254,7 @@
 
       const { error } = await client.storage.from(BUCKET_NAME).upload(filePath, file);
       if (error) {
-        alert("File upload failed: " + error.message);
-        return null;
+        throw new Error(`Storage Upload Failed: ${error.message}`);
       }
 
       const { data } = client.storage.from(BUCKET_NAME).getPublicUrl(filePath);
@@ -267,11 +264,17 @@
     async function loadAdminCatalog() {
       const client = getSupabase();
       if (!client) return setTimeout(loadAdminCatalog, 500);
-      const { data } = await client.from('products').select('*').order('created_at', { ascending: false });
       
       const container = document.getElementById('adminProductList');
+      const { data, error } = await client.from('products').select('*').order('created_at', { ascending: false });
+      
+      if (error) {
+        container.innerHTML = `<div class="col-span-full p-4 bg-red-50 text-red-700 border border-red-200 rounded text-sm text-center font-bold">Database Error: ${error.message} <br><span class="text-xs font-normal">Check your Supabase RLS policies.</span></div>`;
+        return;
+      }
+
       if (!data || data.length === 0) {
-        container.innerHTML = '<div class="col-span-full py-4 text-gray-500 text-sm">No items found.</div>';
+        container.innerHTML = '<div class="col-span-full py-4 text-gray-500 text-sm text-center">No items found in the database.</div>';
         return;
       }
 
@@ -324,7 +327,7 @@
           }
         }
 
-        const product = {
+        const productData = {
           title: document.getElementById('title').value,
           hindi_title: document.getElementById('hindi').value,
           tag: document.getElementById('tag').value,
@@ -339,12 +342,16 @@
           is_sold_out: false
         };
         
-        await client.from('products').insert([product]);
+        // ADDED STRICT ERROR CHECKING FOR DATABASE INSERT
+        const { error: dbError } = await client.from('products').insert([productData]);
+        if (dbError) throw new Error(`Database Error: ${dbError.message} (Check RLS Policies)`);
+        
         document.getElementById('uploadForm').reset();
+        alert('Handbag successfully published!');
         loadAdminCatalog();
         
       } catch (e) {
-        alert("An error occurred during upload.");
+        alert("Upload failed: " + e.message);
         console.error(e);
       } finally {
         btn.innerText = "Add to Collection";
@@ -422,12 +429,16 @@
           gallery_images: finalGalleryUrls.length > 0 ? finalGalleryUrls : null
         };
 
-        await client.from('products').update(updates).eq('id', id);
+        // ADDED STRICT ERROR CHECKING FOR DATABASE UPDATE
+        const { error: updateError } = await client.from('products').update(updates).eq('id', id);
+        if (updateError) throw new Error(`Database Update Error: ${updateError.message}`);
+        
+        alert('Handbag updated successfully!');
         closeEditModal();
         loadAdminCatalog();
 
       } catch (e) {
-        alert("An error occurred while saving.");
+        alert("Failed to save changes: " + e.message);
       } finally {
         btn.innerText = "Save Changes";
         btn.disabled = false;
@@ -436,15 +447,17 @@
 
     async function toggleSoldOut(id, currentState) {
       const client = getSupabase();
-      await client.from('products').update({ is_sold_out: !currentState }).eq('id', id);
-      loadAdminCatalog();
+      const { error } = await client.from('products').update({ is_sold_out: !currentState }).eq('id', id);
+      if (error) alert("Error updating stock: " + error.message);
+      else loadAdminCatalog();
     }
 
     async function deleteProduct(id) {
       if(confirm("Permanently delete this piece?")) {
         const client = getSupabase();
-        await client.from('products').delete().eq('id', id);
-        loadAdminCatalog();
+        const { error } = await client.from('products').delete().eq('id', id);
+        if (error) alert("Error deleting product: " + error.message);
+        else loadAdminCatalog();
       }
     }
 
@@ -457,7 +470,7 @@
       const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
       
       if (error) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600 font-bold">Supabase Error: ${error.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600 font-bold">Database Error: ${error.message}</td></tr>`;
         return;
       }
 
