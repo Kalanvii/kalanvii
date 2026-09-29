@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Rozha+One&display=swap" rel="stylesheet">
   <script>
-    // Force page to always load at the top (Fix #4)
+    // Force page to always load at the top
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
@@ -38,10 +38,7 @@
   </script>
   <style>
     :root {
-      --motion-fast: 200ms;
-      --motion-medium: 400ms;
       --motion-slow: 600ms;
-      --ease-standard: cubic-bezier(.2, .8, .2, 1);
       --ease-emphasized: cubic-bezier(.16, 1, .3, 1);
     }
     button, a, .cursor-pointer { touch-action: manipulation; }
@@ -85,6 +82,19 @@
       animation: shimmer-sweep 3.5s infinite ease-in-out;
     }
 
+    /* 3D Cover Flow CSS */
+    .coverflow-card {
+      will-change: transform, opacity, filter, z-index;
+      /* Buttery smooth shuffle animation */
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    }
+    .coverflow-card.active-card .quick-view-overlay {
+      opacity: 0;
+    }
+    .coverflow-card.active-card:hover .quick-view-overlay {
+      opacity: 1;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -93,7 +103,7 @@
         scroll-behavior: auto !important;
       }
       .reveal-up { opacity: 1 !important; transform: none !important; }
-      .showcase-img, .showcase-card, .showcase-content { transform: none !important; transition: none !important; opacity: 1 !important; }
+      .coverflow-card { transition: none !important; filter: none !important; }
     }
   </style>
 </head>
@@ -111,7 +121,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="w-full md:w-auto flex items-center justify-between md:justify-start">
         <div class="md:hidden"></div>
-        <!-- KALANVII Logo Reload (Fix #3) -->
         <a href="index.html" onclick="window.scrollTo(0,0); window.location.reload(); return false;" class="inline-block group text-center md:text-left cursor-pointer">
           <h1 class="font-[Cinzel] text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
           <p class="font-[Rozha_One] text-burgundy-light text-[10px] tracking-widest -mt-1">कलान्वी</p>
@@ -127,7 +136,7 @@
 
       <nav class="hidden md:flex items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1">
         <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
-        <a href="#premiumShowcase" class="hover:text-gold transition duration-300">Cinematic Spotlight</a>
+        <a href="#coverflowShowcase" class="hover:text-gold transition duration-300">Cinematic Spotlight</a>
         <a href="#story" class="hover:text-gold transition duration-300">Our Heritage</a>
         <a href="#testimonials" class="hover:text-gold transition duration-300">Client Testimonials</a>
         <a href="#karigari" class="hover:text-gold transition duration-300">Savoir-Faire</a>
@@ -174,22 +183,28 @@
     </div>
   </section>
 
-  <!-- FIXED MODERN SCROLL-DRIVEN PARALLAX SHOWCASE (Smooth & Properly Sized) -->
-  <section id="premiumShowcase" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border overflow-hidden">
-    <div class="max-w-[1400px] mx-auto space-y-10">
+  <!-- CONCEPT 1: 3D COVER FLOW GALLERY -->
+  <section id="coverflowShowcase" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border overflow-hidden">
+    <div class="max-w-6xl mx-auto space-y-10 px-4 relative">
       
       <!-- Section Header -->
-      <div class="text-center max-w-xl mx-auto space-y-2 px-4 reveal-up">
-        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Cinematic Interaction</span>
+      <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Interactive Presentation</span>
         <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold">Signature Spotlight</h3>
-        <p class="text-xs text-gray-600 font-light">Swipe to explore our master artisan collection. Watch the details come into focus.</p>
+        <p class="text-xs text-gray-600 font-light">Swipe to shuffle through our master artisan collection.</p>
         <div class="w-12 h-0.5 bg-gold mx-auto mt-2"></div>
       </div>
 
-      <!-- Scroll Snapping Parallax Container -->
-      <div id="showcaseScrollContainer" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar px-[7.5vw] sm:px-[10vw] pb-8 gap-6 sm:gap-10 items-center">
-        <!-- JS renders perfectly sized cards here without enlargement -->
-        <div class="text-xs text-burgundy/60 animate-pulse w-full text-center">Loading showcase...</div>
+      <!-- 3D Stacking Stage -->
+      <div class="relative w-full h-[450px] sm:h-[520px] flex items-center justify-center overflow-visible" id="coverflowStage">
+        <div class="text-xs text-burgundy/60 animate-pulse">Curating spotlight...</div>
+      </div>
+      
+      <!-- Navigation Controls -->
+      <div class="flex items-center justify-center gap-6 pt-4">
+        <button onclick="moveCoverFlow(-1)" class="w-10 h-10 rounded-full border border-gold/40 bg-champagne-silk text-burgundy flex items-center justify-center shadow hover:bg-burgundy hover:text-champagne-silk transition active:scale-95 font-bold text-lg z-20">‹</button>
+        <div id="coverflowDots" class="flex gap-2 items-center z-20"></div>
+        <button onclick="moveCoverFlow(1)" class="w-10 h-10 rounded-full border border-gold/40 bg-champagne-silk text-burgundy flex items-center justify-center shadow hover:bg-burgundy hover:text-champagne-silk transition active:scale-95 font-bold text-lg z-20">›</button>
       </div>
 
     </div>
@@ -328,7 +343,6 @@
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
       
-      <!-- Fix #2: Added overscroll-contain and touch scrolling to prevent screen lock on iOS/Android -->
       <div id="quickModalPanel" style="-webkit-overflow-scrolling: touch;" class="inline-block w-full max-w-2xl p-5 sm:p-8 bg-champagne-silk border border-gold/50 shadow-2xl rounded-3xl relative z-10 text-left opacity-0 scale-95 translate-y-4 transition-all duration-[400ms] ease-[cubic-bezier(.16,1,.3,1)] max-h-[90vh] overflow-y-auto overscroll-contain">
         <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-burgundy text-xl z-20 bg-champagne-soft w-9 h-9 rounded-full flex items-center justify-center border border-gold/30 active:scale-95 transition-transform">✕</button>
         
@@ -498,9 +512,6 @@
   </footer>
 
   <script>
-    // FIX #4: Immediately scroll to top when page is manually reloaded
-    window.scrollTo(0, 0);
-
     const SUPABASE_URL = "https://zojkqormcpdnsonzfcbt.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qkjIGoIVgNW7t7xy0agihg_hWOUYW3b";
     
@@ -519,7 +530,10 @@
     let selectedModalItem = null;
     let currentMediaList = [];
     let currentMediaIndex = 0;
+
     let cinematicProducts = [];
+    let currentCinematicIndex = 0;
+
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -564,7 +578,7 @@
         if (data && data.length > 0) {
           allProducts = data;
           cinematicProducts = data.filter(p => !p.is_sold_out).slice(0, 5);
-          renderPremiumShowcase();
+          renderCoverFlowCards();
           renderReels(data);
         }
       } catch (err) {
@@ -573,81 +587,97 @@
       renderCatalog();
     }
 
-    // NATIVE HARDWARE ACCELERATED PARALLAX SHOWCASE (Fix #1)
-    function renderPremiumShowcase() {
-      const container = document.getElementById('showcaseScrollContainer');
+    /* CONCEPT 1: 3D COVER FLOW IMPLEMENTATION */
+    function renderCoverFlowCards() {
+      const stage = document.getElementById('coverflowStage');
       if (cinematicProducts.length === 0) return;
 
-      container.innerHTML = cinematicProducts.map((item, idx) => {
+      stage.innerHTML = cinematicProducts.map((item, idx) => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div class="showcase-card relative flex-none w-[85vw] sm:w-[50vw] md:w-[40vw] lg:w-[32vw] aspect-[4/5] sm:aspect-[3/4] snap-center rounded-3xl overflow-hidden shadow-2xl cursor-pointer group bg-champagne-silk border border-gold/30 transform transition-transform duration-500 will-change-transform" onclick="openQuickView('${item.id}')">
-            
-            <div class="absolute inset-0 w-full h-full overflow-hidden">
-              <img src="${item.image_url}" class="showcase-img w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 will-change-transform" loading="lazy" alt="${item.title}">
-            </div>
-            
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
-            <span class="absolute top-4 left-4 z-10 text-[9px] uppercase tracking-widest px-3 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">0${idx + 1}</span>
-
-            <div class="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end h-full showcase-content transition-opacity duration-300 will-change-transform">
-              <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold mb-1.5 drop-shadow-md">${item.tag || 'Signature Look'}</span>
-              <h4 class="font-[Cinzel] text-xl sm:text-2xl font-bold text-champagne-silk tracking-wide uppercase leading-tight drop-shadow-md">${item.title}</h4>
-              <p class="font-[Rozha_One] text-xs text-gold-antique mb-2 drop-shadow-md">${item.hindi_title || ''}</p>
-              
-              <div class="flex items-center justify-between mt-3 pt-3 border-t border-gold/40">
-                <p class="font-[Cinzel] text-lg font-bold text-champagne-silk drop-shadow-md">${price}</p>
-                <button onclick="event.stopPropagation(); openQuickView('${item.id}')" class="px-5 py-2 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-full hover:bg-gold-antique hover:text-champagne-silk transition shadow active:scale-95">Inspect</button>
+          <div class="coverflow-card absolute w-[75vw] sm:w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-champagne-silk border border-gold/40 flex flex-col" data-id="${item.id}">
+            <div class="relative flex-grow overflow-hidden bg-champagne-soft">
+              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">0${idx + 1}</span>
+              <img src="${item.image_url}" class="w-full h-full object-cover pointer-events-none">
+              <div class="quick-view-overlay absolute inset-0 bg-burgundy/20 opacity-0 transition flex items-center justify-center">
+                <span class="bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-lg">Quick View ↗</span>
               </div>
+            </div>
+            <div class="p-5 text-center bg-champagne-silk shrink-0">
+              <span class="text-[8px] uppercase tracking-widest text-gold-antique font-semibold block mb-1">${item.tag || 'Signature Look'}</span>
+              <h4 class="font-[Cinzel] text-base sm:text-lg font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
+              <p class="font-[Cinzel] text-sm font-bold text-burgundy pt-1">${price}</p>
             </div>
           </div>
         `;
       }).join('');
 
-      initShowcaseParallax();
+      stage.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+      stage.addEventListener('touchend', e => { 
+        touchEndX = e.changedTouches[0].screenX; 
+        if (touchEndX < touchStartX - 40) moveCoverFlow(1);
+        if (touchEndX > touchStartX + 40) moveCoverFlow(-1);
+      }, {passive: true});
+
+      updateCoverFlow();
     }
 
-    function initShowcaseParallax() {
-      const scrollContainer = document.getElementById('showcaseScrollContainer');
-      const cards = scrollContainer.querySelectorAll('.showcase-card');
-      const images = scrollContainer.querySelectorAll('.showcase-img');
-      const contents = scrollContainer.querySelectorAll('.showcase-content');
-
-      if (!scrollContainer) return;
-      let ticking = false;
-
-      const updateParallax = () => {
-        const containerCenter = scrollContainer.getBoundingClientRect().left + scrollContainer.clientWidth / 2;
-        
-        cards.forEach((card, idx) => {
-          const rect = card.getBoundingClientRect();
-          const cardCenter = rect.left + rect.width / 2;
-          const dist = cardCenter - containerCenter;
-          const progress = Math.min(Math.max(dist / scrollContainer.clientWidth, -1), 1); 
-
-          if(images[idx]) {
-            images[idx].style.transform = `translateX(${progress * 15}%) scale(1.02)`;
-          }
-
-          const scale = Math.max(0.9, 1 - Math.abs(progress) * 0.1);
-          card.style.transform = `scale(${scale})`;
-          
-          const opacity = Math.max(0.2, 1 - Math.abs(progress) * 1.5);
-          if(contents[idx]) {
-            contents[idx].style.opacity = opacity;
-          }
-        });
-        ticking = false;
-      };
-
-      scrollContainer.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(updateParallax);
-          ticking = true;
-        }
-      }, { passive: true });
+    function updateCoverFlow() {
+      const cards = document.querySelectorAll('.coverflow-card');
+      const dotsContainer = document.getElementById('coverflowDots');
       
-      setTimeout(() => window.requestAnimationFrame(updateParallax), 100);
+      cards.forEach((card, idx) => {
+        const offset = idx - currentCinematicIndex;
+        const absOffset = Math.abs(offset);
+        const sign = Math.sign(offset); 
+        
+        let translateX = 0;
+        let scale = 1;
+        let zIndex = 50 - absOffset;
+        let blur = 0;
+        let opacity = 1;
+
+        if (offset === 0) {
+          translateX = 0;
+          scale = 1;
+          blur = 0;
+          opacity = 1;
+          card.classList.add('active-card');
+          card.onclick = () => openQuickView(card.getAttribute('data-id'));
+        } else {
+          // Math to calculate slide-out distance (pushes cards ~55% sideways)
+          translateX = sign * (55 + (absOffset - 1) * 15);
+          scale = 1 - (absOffset * 0.15);
+          blur = absOffset * 2;
+          opacity = 1 - (absOffset * 0.2);
+          
+          card.classList.remove('active-card');
+          card.onclick = () => setCoverFlowIndex(idx);
+        }
+
+        card.style.transform = `translateX(${translateX}%) scale(${scale})`;
+        card.style.zIndex = zIndex;
+        card.style.filter = `blur(${blur}px)`;
+        card.style.opacity = opacity;
+      });
+
+      if(dotsContainer) {
+        dotsContainer.innerHTML = cinematicProducts.map((_, idx) => `
+          <button onclick="setCoverFlowIndex(${idx})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${idx === currentCinematicIndex ? 'bg-burgundy w-8' : 'bg-gold/40'}"></button>
+        `).join('');
+      }
+    }
+
+    function moveCoverFlow(dir) {
+      currentCinematicIndex += dir;
+      if (currentCinematicIndex < 0) currentCinematicIndex = cinematicProducts.length - 1;
+      if (currentCinematicIndex >= cinematicProducts.length) currentCinematicIndex = 0;
+      updateCoverFlow();
+    }
+
+    function setCoverFlowIndex(idx) {
+      currentCinematicIndex = idx;
+      updateCoverFlow();
     }
 
     function renderCatalog() {
@@ -730,7 +760,7 @@
       grid.classList.add('opacity-0');
       setTimeout(() => {
         renderCatalog();
-        if (allProducts.length > 0) renderPremiumShowcase();
+        if (allProducts.length > 0) renderCoverFlowCards();
         updateCartDrawer();
         requestAnimationFrame(() => grid.classList.remove('opacity-0'));
       }, 300);
