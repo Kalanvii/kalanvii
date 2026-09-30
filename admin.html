@@ -114,12 +114,20 @@
 
       <!-- LEADS & ORDERS SECTION -->
       <section id="leadsSection" class="hidden space-y-6">
-        <div class="flex justify-between items-center border-b border-champagne-border pb-2 mb-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-champagne-border pb-3 mb-4 gap-3">
           <h3 class="font-[Cinzel] text-lg text-burgundy font-bold uppercase tracking-widest">Captured Orders & Leads</h3>
-          <button onclick="loadOrders()" class="bg-champagne-border text-burgundy px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-gold hover:text-white transition shadow-sm active:scale-95 flex items-center gap-1">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            Refresh Leads
-          </button>
+          <div class="flex gap-2">
+            <!-- EXPORT BUTTON -->
+            <button onclick="exportLeads()" class="bg-emerald-700 text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-emerald-800 transition shadow-sm active:scale-95 flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export CSV
+            </button>
+            <!-- REFRESH BUTTON -->
+            <button onclick="loadOrders()" class="bg-champagne-border text-burgundy px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-gold hover:text-white transition shadow-sm active:scale-95 flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Refresh
+            </button>
+          </div>
         </div>
         
         <div class="bg-white rounded-2xl shadow-md border border-champagne-border overflow-hidden">
@@ -132,10 +140,11 @@
                   <th class="p-4">Shipping Address</th>
                   <th class="p-4">Order Value</th>
                   <th class="p-4">Requested Items</th>
+                  <th class="p-4 text-right">Action</th>
                 </tr>
               </thead>
               <tbody id="leadsTableBody" class="divide-y divide-champagne-border text-xs">
-                <tr><td colspan="5" class="p-8 text-center text-gray-500">Loading leads...</td></tr>
+                <tr><td colspan="6" class="p-8 text-center text-gray-500">Loading leads...</td></tr>
               </tbody>
             </table>
           </div>
@@ -206,6 +215,7 @@
     
     let supabaseClient = null;
     let allAdminProducts = [];
+    let allOrdersCache = []; // Added to store leads for Export
 
     function getSupabase() {
       if (!supabaseClient && window.supabase) {
@@ -312,7 +322,6 @@
         return;
       }
 
-      // STRICT PARSING: Forces numbers, defaults to 0 if empty
       const rawInr = document.getElementById('priceInr').value;
       const rawUsd = document.getElementById('priceUsd').value;
       const parsedInr = parseFloat(rawInr) || 0;
@@ -401,7 +410,6 @@
       const videoFile = document.getElementById('editVideoFile').files[0];
       const galleryFiles = document.getElementById('editGalleryFiles').files;
 
-      // STRICT PARSING: Forces numbers, defaults to 0 if empty
       const rawInr = document.getElementById('editPriceInr').value;
       const rawUsd = document.getElementById('editPriceUsd').value;
       const parsedInr = parseFloat(rawInr) || 0;
@@ -471,21 +479,25 @@
       }
     }
 
+    // --- LEADS & ORDERS FUNCTIONALITY ---
+
     async function loadOrders() {
       const client = getSupabase();
       if (!client) return;
       const tbody = document.getElementById('leadsTableBody');
-      tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Refreshing leads...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Refreshing leads...</td></tr>`;
 
       const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
       
       if (error) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600 font-bold">Database Error: ${error.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-600 font-bold">Database Error: ${error.message}</td></tr>`;
         return;
       }
 
+      allOrdersCache = data; // Cache for export
+
       if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No leads captured yet. Keep promoting!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No leads captured yet. Keep promoting!</td></tr>`;
         return;
       }
 
@@ -501,16 +513,75 @@
           <tr class="hover:bg-champagne-soft/50 transition border-b border-champagne-border">
             <td class="p-4 whitespace-nowrap align-top">${date}</td>
             <td class="p-4 align-top">
-              <div class="font-bold text-burgundy">${order.customer_name}</div>
-              <div>${order.customer_phone}</div>
-              <div class="text-gray-500 text-[10px]">${order.customer_email}</div>
+              <div class="font-bold text-burgundy">${order.customer_name || 'N/A'}</div>
+              <div>${order.customer_phone || 'N/A'}</div>
+              <div class="text-gray-500 text-[10px]">${order.customer_email || 'N/A'}</div>
             </td>
-            <td class="p-4 max-w-xs truncate align-top">${order.shipping_address}</td>
-            <td class="p-4 font-bold text-burgundy align-top">${order.cart_total}</td>
+            <td class="p-4 max-w-xs truncate align-top">${order.shipping_address || 'N/A'}</td>
+            <td class="p-4 font-bold text-burgundy align-top">${order.cart_total || 'N/A'}</td>
             <td class="p-4 text-gray-600 align-top">${itemsHtml}</td>
+            <td class="p-4 align-top text-right">
+              <button onclick="deleteLead('${order.id}')" class="text-[10px] px-3 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 rounded font-bold uppercase transition">Delete</button>
+            </td>
           </tr>
         `;
       }).join('');
+    }
+
+    // New Function: Delete Lead
+    async function deleteLead(id) {
+      if(confirm("Are you sure you want to permanently delete this lead?")) {
+        const client = getSupabase();
+        const { error } = await client.from('orders').delete().eq('id', id);
+        if (error) alert("Error deleting lead: " + error.message);
+        else loadOrders();
+      }
+    }
+
+    // New Function: Export Leads to CSV
+    function exportLeads() {
+      if (!allOrdersCache || allOrdersCache.length === 0) {
+        alert("There are no leads to export.");
+        return;
+      }
+
+      // Create CSV Headers
+      let csvContent = "Date,Customer Name,Phone,Email,Shipping Address,Order Value,Requested Items\n";
+
+      // Loop through data and format as CSV rows
+      allOrdersCache.forEach(order => {
+        // Format Date safely
+        let dateStr = "";
+        try {
+           dateStr = new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/g, '');
+        } catch(e) {}
+
+        // Escape quotes and fields to prevent CSV breaking
+        const name = `"${(order.customer_name || '').replace(/"/g, '""')}"`;
+        const phone = `"${(order.customer_phone || '').replace(/"/g, '""')}"`;
+        const email = `"${(order.customer_email || '').replace(/"/g, '""')}"`;
+        const address = `"${(order.shipping_address || '').replace(/"/g, '""')}"`;
+        const total = `"${(order.cart_total || '').replace(/"/g, '""')}"`;
+        
+        // Parse the items cart
+        let items = "No items";
+        if (order.order_details && Array.isArray(order.order_details)) {
+           items = `"${order.order_details.map(i => `${i.qty}x${i.title}`).join('; ')}"`;
+        }
+
+        // Add row
+        csvContent += `${dateStr},${name},${phone},${email},${address},${total},${items}\n`;
+      });
+
+      // Create a Blob and trigger Download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", "kalanvii_leads_export.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   </script>
 </body>
