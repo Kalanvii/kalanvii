@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Rozha+One&display=swap" rel="stylesheet">
   <script>
-    // Force page to always load at the top
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
@@ -53,59 +52,67 @@
       background-size: cover;
       background-position: center;
     }
-    
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .reveal-up {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--motion-slow) var(--ease-emphasized), 
-                  transform var(--motion-slow) var(--ease-emphasized);
-      transition-delay: var(--delay, 0ms);
-    }
-    .reveal-up.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* =========================================
+       PREMIUM ANIMATION SYSTEM (ANIMMASTER STYLE)
+       ========================================= */
 
-    @keyframes shimmer-sweep {
-      0% { transform: translateX(-150%) skewX(-15deg); }
-      100% { transform: translateX(250%) skewX(-15deg); }
+    /* 1. Staggered Editorial Text Split */
+    .split-word-wrapper { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .split-word { display: inline-block; transform: translateY(110%); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .is-visible .split-word { transform: translateY(0); }
+
+    /* 2. Editorial Image Reveal Mask */
+    .image-reveal-wrapper { position: relative; overflow: hidden; }
+    .image-reveal-overlay {
+      position: absolute; inset: -2%; background-color: #28050e; z-index: 20;
+      transform-origin: top; transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+      pointer-events: none;
     }
-    .btn-shimmer { position: relative; overflow: hidden; }
-    .btn-shimmer::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; bottom: 0; width: 35%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-      animation: shimmer-sweep 3.5s infinite ease-in-out;
+    .is-visible .image-reveal-overlay { transform: translateY(105%); }
+    .image-reveal-scale-down {
+      transform: scale(1.2); transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%; height: 100%;
     }
+    .is-visible .image-reveal-scale-down { transform: scale(1); }
+
+    /* 3. Magnetic Fluid Buttons */
+    .magnetic-btn {
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.3s;
+      will-change: transform;
+      display: inline-flex; justify-content: center; items-center;
+    }
+    .magnetic-btn:hover { transition: transform 0.1s, background-color 0.3s; }
+    .magnetic-text {
+      display: inline-block; pointer-events: none; will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .magnetic-btn:hover .magnetic-text { transition: transform 0.1s; }
+
+    /* Standard Reveal */
+    .reveal-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity var(--motion-slow) var(--ease-emphasized), transform var(--motion-slow) var(--ease-emphasized);
+    }
+    .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
 
     /* 3D Cover Flow CSS */
     .coverflow-card {
       will-change: transform, opacity, filter, z-index;
-      /* Buttery smooth shuffle animation */
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.6s ease-in-out,
-                  filter 0.6s ease-in-out; 
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
     }
-    .coverflow-card.active-card .quick-view-overlay {
-      opacity: 0;
-    }
-    .coverflow-card.active-card:hover .quick-view-overlay {
-      opacity: 1;
-    }
+    .coverflow-card.active-card .quick-view-overlay { opacity: 0; }
+    .coverflow-card.active-card:hover .quick-view-overlay { opacity: 1; }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
       .reveal-up { opacity: 1 !important; transform: none !important; }
       .coverflow-card { transition: none !important; filter: none !important; }
+      .image-reveal-overlay { display: none !important; }
+      .image-reveal-scale-down { transform: none !important; }
+      .split-word { transform: none !important; }
     }
   </style>
 </head>
@@ -174,41 +181,37 @@
       </p>
       
       <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
-        <a href="#collection" class="btn-shimmer px-8 py-3.5 bg-burgundy text-champagne-silk text-xs tracking-[0.2em] uppercase hover:bg-gold-antique transition-all duration-300 rounded-xl shadow-md font-semibold active:scale-[0.98] w-full sm:w-auto text-center whitespace-nowrap">
-          Explore Collection
+        <a href="#collection" class="magnetic-btn btn-shimmer px-8 py-3.5 bg-burgundy text-champagne-silk text-xs tracking-[0.2em] uppercase rounded-xl shadow-md font-semibold active:scale-[0.98] w-full sm:w-auto text-center">
+          <span class="magnetic-text">Explore Collection</span>
         </a>
-        <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="px-8 py-3.5 border border-emerald-700 bg-champagne-silk/90 text-emerald-800 text-xs tracking-[0.1em] uppercase hover:bg-emerald-50 transition-all duration-300 rounded-xl font-semibold shadow-sm active:scale-[0.98] w-full sm:w-auto flex items-center justify-center gap-2 whitespace-nowrap">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Order on WhatsApp
+        <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="magnetic-btn px-8 py-3.5 border border-emerald-700 bg-champagne-silk/90 text-emerald-800 text-xs tracking-[0.1em] uppercase rounded-xl font-semibold shadow-sm active:scale-[0.98] w-full sm:w-auto text-center">
+          <span class="magnetic-text flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Order on WhatsApp
+          </span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- CONCEPT 1 (REFINED): 3D COVER FLOW GALLERY -->
+  <!-- 3D COVER FLOW GALLERY -->
   <section id="coverflowShowcase" class="py-16 sm:py-24 bg-champagne-soft border-b border-champagne-border overflow-hidden">
     <div class="max-w-6xl mx-auto space-y-10 px-4 relative">
-      
-      <!-- Section Header -->
       <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
-        <!-- Clean, focused header without extra text -->
-        <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold">Signature Spotlight</h3>
-        <p class="text-xs text-gray-600 font-light mt-1">Swipe to shuffle through our master artisan collection.</p>
+        <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold split-text-reveal">Signature Spotlight</h3>
+        <p class="text-xs text-gray-600 font-light pt-1">Swipe to shuffle through our master artisan collection.</p>
         <div class="w-12 h-0.5 bg-gold mx-auto mt-3"></div>
       </div>
 
-      <!-- 3D Stacking Stage (Height increased to avoid clipping, width adjusted) -->
-      <div class="relative w-full h-[480px] sm:h-[560px] flex items-center justify-center overflow-visible" id="coverflowStage">
+      <div class="relative w-full h-[400px] sm:h-[480px] flex items-center justify-center overflow-visible" id="coverflowStage">
         <div class="text-xs text-burgundy/60 animate-pulse">Curating spotlight...</div>
       </div>
       
-      <!-- Navigation Controls -->
       <div class="flex items-center justify-center gap-6 pt-2">
         <button onclick="moveCoverFlow(-1)" class="w-10 h-10 rounded-full border border-gold/40 bg-champagne-silk text-burgundy flex items-center justify-center shadow hover:bg-burgundy hover:text-champagne-silk transition active:scale-95 font-bold text-lg z-20">‹</button>
         <div id="coverflowDots" class="flex gap-2 items-center z-20"></div>
         <button onclick="moveCoverFlow(1)" class="w-10 h-10 rounded-full border border-gold/40 bg-champagne-silk text-burgundy flex items-center justify-center shadow hover:bg-burgundy hover:text-champagne-silk transition active:scale-95 font-bold text-lg z-20">›</button>
       </div>
-
     </div>
   </section>
 
@@ -217,7 +220,7 @@
     <div class="max-w-5xl mx-auto space-y-12">
       <div class="text-center space-y-3 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Maison Heritage & Philosophy</span>
-        <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold">The KALANVII Legacy of Splendor</h3>
+        <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy font-bold split-text-reveal">The KALANVII Legacy</h3>
         <div class="w-16 h-0.5 bg-gold mx-auto mt-2"></div>
       </div>
 
@@ -254,7 +257,7 @@
   <!-- CATALOG SECTION -->
   <section id="collection" class="py-20 max-w-7xl mx-auto px-4 sm:px-8 flex-grow">
     <div class="text-center max-w-2xl mx-auto mb-10 reveal-up">
-      <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold">The Royal Collection</h3>
+      <h3 class="font-[Cinzel] text-3xl sm:text-4xl text-burgundy tracking-wider uppercase font-bold split-text-reveal">The Royal Collection</h3>
       <p class="font-[Rozha_One] text-gold-antique text-sm mt-1">दस्तकारी पोटली एवं क्लच</p>
       <div class="w-16 h-0.5 bg-gold mx-auto mt-4"></div>
     </div>
@@ -277,7 +280,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Cinematic Showcase</span>
-        <h3 class="font-[Cinzel] text-3xl text-gold-light">The Couture Reel</h3>
+        <h3 class="font-[Cinzel] text-3xl text-gold-light split-text-reveal">The Couture Reel</h3>
         <p class="text-xs text-champagne/70 font-light">Witness the tactile shimmer and exquisite movement of our handcrafted beadwork in motion.</p>
       </div>
       <div id="reelsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
@@ -289,7 +292,7 @@
     <div class="max-w-7xl mx-auto space-y-12">
       <div class="text-center max-w-xl mx-auto space-y-2 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-antique font-semibold">Verified Patronage</span>
-        <h3 class="font-[Cinzel] text-3xl text-burgundy font-bold">Maison Testimonials</h3>
+        <h3 class="font-[Cinzel] text-3xl text-burgundy font-bold split-text-reveal">Maison Testimonials</h3>
         <p class="text-xs text-gray-600 font-light">Unfiltered appreciation from discerning brides and connoisseurs worldwide.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -317,7 +320,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
       <div class="text-center max-w-xl mx-auto mb-16 space-y-2 reveal-up">
         <span class="text-[10px] uppercase tracking-[0.3em] text-gold-foil">Artisanal Pedigree</span>
-        <h3 class="font-[Cinzel] text-3xl text-gold-light">The Art of Indian Karigari</h3>
+        <h3 class="font-[Cinzel] text-3xl text-gold-light split-text-reveal">Art of Indian Karigari</h3>
         <p class="text-xs text-champagne/70 font-light leading-relaxed">Centuries of traditional zardozi, moti-stringing, and metalcraft poured into every single heirloom piece.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -340,7 +343,7 @@
     </div>
   </section>
 
-  <!-- QUICK VIEW MODAL -->
+  <!-- QUICK VIEW MODAL (Fixed Scroll Locking Issue) -->
   <div id="quickModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
     <div class="min-h-screen px-3 text-center flex items-center justify-center py-6 sm:py-10">
       <div id="quickModalBackdrop" class="fixed inset-0 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-[400ms] ease-out" onclick="closeQuickView()"></div>
@@ -433,8 +436,8 @@
             <span>Estimated Total:</span>
             <span id="cartTotal" class="font-bold text-base">₹0</span>
           </div>
-          <button onclick="openCheckoutModal()" class="btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2">
-            Proceed to Secure Checkout
+          <button onclick="openCheckoutModal()" class="magnetic-btn btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">
+            <span class="magnetic-text flex items-center justify-center gap-2">Proceed to Secure Checkout</span>
           </button>
         </div>
       </div>
@@ -466,9 +469,11 @@
               <p>By proceeding, your order details will be securely sent to our concierge via WhatsApp to coordinate secure payment and express dispatch.</p>
             </div>
 
-            <button type="submit" id="checkoutSubmitBtn" class="btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              Place Order on WhatsApp
+            <button type="submit" id="checkoutSubmitBtn" class="magnetic-btn btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">
+              <span class="magnetic-text flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Place Order on WhatsApp
+              </span>
             </button>
           </form>
         </div>
@@ -532,12 +537,45 @@
     let selectedModalItem = null;
     let currentMediaList = [];
     let currentMediaIndex = 0;
-
     let cinematicProducts = [];
     let currentCinematicIndex = 0;
-
     let touchStartX = 0;
     let touchEndX = 0;
+
+    /* ANIMATION SYSTEM INITIALIZATION */
+    function setupSplitText() {
+      document.querySelectorAll('.split-text-reveal').forEach(el => {
+        if (el.dataset.splitInit) return;
+        el.dataset.splitInit = true;
+        const words = el.innerText.trim().split(/\s+/);
+        el.innerHTML = words.map((word, i) => 
+          `<span class="split-word-wrapper"><span class="split-word" style="transition-delay: ${i * 50}ms">${word}&nbsp;</span></span>`
+        ).join('');
+      });
+    }
+
+    function initMagneticButtons() {
+      const magneticBtns = document.querySelectorAll('.magnetic-btn');
+      magneticBtns.forEach(btn => {
+        if (btn.dataset.magneticInit) return;
+        btn.dataset.magneticInit = true;
+        
+        btn.addEventListener('mousemove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+          const text = this.querySelector('.magnetic-text');
+          if (text) text.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+        });
+
+        btn.addEventListener('mouseleave', function() {
+          this.style.transform = `translate(0px, 0px)`;
+          const text = this.querySelector('.magnetic-text');
+          if (text) text.style.transform = `translate(0px, 0px)`;
+        });
+      });
+    }
 
     function initScrollReveals() {
       const observer = new IntersectionObserver((entries) => {
@@ -549,14 +587,15 @@
         });
       }, { threshold: 0.15 });
 
-      document.querySelectorAll('.reveal-up:not(.is-visible)').forEach((el) => {
+      document.querySelectorAll('.reveal-up:not(.is-visible), .split-text-reveal:not(.is-visible), .image-reveal-wrapper:not(.is-visible)').forEach((el) => {
         observer.observe(el);
       });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      setupSplitText();
+      initMagneticButtons();
       loadCatalog();
-      initScrollReveals(); 
 
       const modalSwipe = document.getElementById('mediaSwipeContainer');
       if (modalSwipe) {
@@ -589,7 +628,7 @@
       renderCatalog();
     }
 
-    /* CONCEPT 1 REFINED: 3D COVER FLOW IMPLEMENTATION */
+    /* 3D COVER FLOW IMPLEMENTATION (WITH IMAGE REVEAL) */
     function renderCoverFlowCards() {
       const stage = document.getElementById('coverflowStage');
       if (cinematicProducts.length === 0) return;
@@ -597,17 +636,18 @@
       stage.innerHTML = cinematicProducts.map((item, idx) => {
         const price = currency === 'INR' ? `₹${Number(item.price_inr).toLocaleString('en-IN')}` : `$${item.price_usd}`;
         return `
-          <div class="coverflow-card absolute w-[65vw] sm:w-[320px] max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-champagne-silk border border-gold/40 flex flex-col" data-id="${item.id}">
-            <div class="relative flex-grow overflow-hidden bg-champagne-soft">
+          <div class="coverflow-card absolute w-[60vw] max-w-[280px] sm:max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-champagne-silk border border-gold/40 flex flex-col image-reveal-wrapper" data-id="${item.id}">
+            <div class="image-reveal-overlay"></div>
+            <div class="relative flex-grow overflow-hidden bg-champagne-soft image-reveal-scale-down">
               <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 bg-burgundy text-champagne-silk font-bold rounded-full shadow">0${idx + 1}</span>
               <img src="${item.image_url}" class="w-full h-full object-cover pointer-events-none">
-              <div class="quick-view-overlay absolute inset-0 bg-burgundy/20 opacity-0 transition flex items-center justify-center">
+              <div class="quick-view-overlay absolute inset-0 bg-burgundy/20 opacity-0 transition flex items-center justify-center z-10">
                 <span class="bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-lg">Quick View ↗</span>
               </div>
             </div>
-            <div class="p-5 text-center bg-champagne-silk shrink-0">
+            <div class="p-4 sm:p-5 text-center bg-champagne-silk shrink-0 z-10">
               <span class="text-[8px] uppercase tracking-widest text-gold-antique font-semibold block mb-1">${item.tag || 'Signature Look'}</span>
-              <h4 class="font-[Cinzel] text-base sm:text-lg font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
+              <h4 class="font-[Cinzel] text-sm sm:text-base font-bold text-burgundy tracking-wider uppercase truncate">${item.title}</h4>
               <p class="font-[Cinzel] text-sm font-bold text-burgundy pt-1">${price}</p>
             </div>
           </div>
@@ -622,6 +662,7 @@
       }, {passive: true});
 
       updateCoverFlow();
+      initScrollReveals(); // Trigger the image reveal mask
     }
 
     function updateCoverFlow() {
@@ -640,16 +681,12 @@
         let opacity = 1;
 
         if (offset === 0) {
-          translateX = 0;
-          scale = 1;
-          blur = 0;
-          opacity = 1;
+          translateX = 0; scale = 1; blur = 0; opacity = 1;
           card.classList.add('active-card');
           card.onclick = () => openQuickView(card.getAttribute('data-id'));
         } else {
-          // Adjusted math so cards are spread wider and scaled down slightly more to prevent messy overlap
-          translateX = sign * (55 + (absOffset - 1) * 25);
-          scale = 1 - (absOffset * 0.2);
+          translateX = sign * (65 + (absOffset - 1) * 15); 
+          scale = 1 - (absOffset * 0.15);
           blur = absOffset * 2;
           opacity = 1 - (absOffset * 0.2);
           
@@ -699,13 +736,16 @@
         const staggerDelay = (index % 3) * 150; 
 
         return `
-          <div class="group reveal-up bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2" style="--delay: ${staggerDelay}ms">
-            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer" onclick="openQuickView('${item.id}')">
-              <span class="absolute top-3 left-3 z-10 text-[9px] uppercase tracking-widest px-2.5 py-1 ${isSoldOut ? 'bg-red-800' : 'bg-burgundy'} text-champagne-silk font-semibold rounded-full shadow">${isSoldOut ? 'SOLD OUT' : '50% OFF'}</span>
-              ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-10 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
-              <img src="${item.image_url}" loading="lazy" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-105 ${isSoldOut ? 'grayscale contrast-75' : ''}">
-              <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                <span class="bg-champagne-silk/95 text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-semibold rounded-full shadow-lg">Quick View</span>
+          <div class="group bg-champagne-silk border ${isSoldOut ? 'border-red-300 opacity-80' : 'border-champagne-border/80 hover:border-gold/60'} p-4 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between rounded-2xl transform hover:-translate-y-2 reveal-up" style="--delay: ${staggerDelay}ms">
+            <div class="relative aspect-[4/5] overflow-hidden bg-champagne-soft mb-4 rounded-xl cursor-pointer image-reveal-wrapper" onclick="openQuickView('${item.id}')">
+              <div class="image-reveal-overlay"></div>
+              <div class="image-reveal-scale-down w-full h-full">
+                <span class="absolute top-3 left-3 z-20 text-[9px] uppercase tracking-widest px-2.5 py-1 ${isSoldOut ? 'bg-red-800' : 'bg-burgundy'} text-champagne-silk font-semibold rounded-full shadow">${isSoldOut ? 'SOLD OUT' : '50% OFF'}</span>
+                ${mediaCount > 0 ? `<span class="absolute top-3 right-3 z-20 text-[9px] px-2 py-0.5 bg-black/60 text-white rounded font-bold shadow">📷 +${mediaCount}</span>` : ''}
+                <img src="${item.image_url}" loading="lazy" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-105 ${isSoldOut ? 'grayscale contrast-75' : ''}">
+                <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center z-20">
+                  <span class="bg-champagne-silk/95 text-burgundy text-[10px] uppercase tracking-widest px-4 py-2 font-semibold rounded-full shadow-lg">Quick View</span>
+                </div>
               </div>
             </div>
             <div class="space-y-1 text-center">
@@ -720,7 +760,7 @@
             <div class="mt-4 pt-4 border-t border-champagne-border flex gap-2">
               ${isSoldOut 
                 ? `<button disabled class="w-full py-3 bg-gray-300 text-gray-600 text-[11px] uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Sold Out</button>`
-                : `<button onclick="addToCart('${item.id}')" class="w-full py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest font-semibold rounded-xl transition-all active:scale-[0.98]">Add to Bag</button>`
+                : `<button onclick="addToCart('${item.id}')" class="magnetic-btn w-full py-3 bg-burgundy hover:bg-gold-antique text-champagne-silk text-[11px] uppercase tracking-widest font-semibold rounded-xl transition-all active:scale-[0.98]"><span class="magnetic-text">Add to Bag</span></button>`
               }
             </div>
           </div>
@@ -728,6 +768,31 @@
       }).join('');
       
       initScrollReveals();
+      initMagneticButtons();
+    }
+
+    function renderReels(products) {
+      const reelsContainer = document.getElementById('reelsContainer');
+      const videoItems = products.filter(p => p.video_url && !p.is_sold_out);
+      if (videoItems.length === 0) {
+        document.getElementById('reels').style.display = 'none';
+        return;
+      }
+      reelsContainer.innerHTML = videoItems.map((item, index) => `
+        <div class="group relative aspect-[9/16] max-h-[450px] mx-auto w-full bg-burgundy-deep rounded-2xl overflow-hidden border border-gold/40 shadow-2xl image-reveal-wrapper reveal-up" style="--delay: ${(index % 3) * 150}ms">
+          <div class="image-reveal-overlay"></div>
+          <div class="image-reveal-scale-down w-full h-full">
+            <video src="${item.video_url}" autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
+            <div class="absolute inset-0 bg-gradient-to-t from-burgundy-deep via-transparent to-transparent flex flex-col justify-end p-6 space-y-2 z-10">
+              <span class="text-[9px] uppercase tracking-widest text-gold-foil font-semibold">Couture Highlight</span>
+              <h4 class="font-[Cinzel] text-sm font-bold text-champagne-silk">${item.title}</h4>
+              <button onclick="openQuickView('${item.id}')" class="magnetic-btn mt-2 py-2.5 px-4 bg-champagne-silk text-burgundy text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gold transition shadow active:scale-95"><span class="magnetic-text">Shop This Look ↗</span></button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      initScrollReveals();
+      initMagneticButtons();
     }
 
     function filterCategory(cat) {
@@ -815,8 +880,8 @@
         actionContainer.innerHTML = `<button disabled class="w-full py-3.5 bg-gray-300 text-gray-600 text-xs uppercase tracking-widest font-bold rounded-xl cursor-not-allowed">Currently Sold Out</button>`;
       } else {
         actionContainer.innerHTML = `
-          <button id="modalAddBtn" class="flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">Add to Bag</button>
-          <button onclick="orderViaWhatsAppModal()" class="px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center active:scale-95">WhatsApp</button>
+          <button id="modalAddBtn" class="magnetic-btn flex-grow py-3.5 bg-burgundy hover:bg-gold-antique text-champagne-silk text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]"><span class="magnetic-text">Add to Bag</span></button>
+          <button onclick="orderViaWhatsAppModal()" class="magnetic-btn px-4 py-3.5 border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center active:scale-95"><span class="magnetic-text">WhatsApp</span></button>
         `;
         document.getElementById('modalAddBtn').onclick = () => { addToCart(item.id); closeQuickView(); };
       }
@@ -830,6 +895,8 @@
           <p class="text-[9px] font-[Cinzel] font-bold text-burgundy truncate">${p.title}</p>
         </div>
       `).join('');
+
+      initMagneticButtons();
 
       const modal = document.getElementById('quickModal');
       const backdrop = document.getElementById('quickModalBackdrop');
@@ -1191,4 +1258,5 @@
   </script>
 </body>
 </html>
+
 
