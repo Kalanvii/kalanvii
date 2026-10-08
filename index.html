@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
@@ -55,12 +55,16 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Staggered Editorial Text Split */
+    /* =========================================
+       PREMIUM ANIMATION SYSTEM (ANIMMASTER STYLE)
+       ========================================= */
+
+    /* 1. Staggered Editorial Text Split */
     .split-word-wrapper { display: inline-block; overflow: hidden; vertical-align: bottom; }
     .split-word { display: inline-block; transform: translateY(110%); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .is-visible .split-word { transform: translateY(0); }
 
-    /* Editorial Image Reveal Mask */
+    /* 2. Editorial Image Reveal Mask */
     .image-reveal-wrapper { position: relative; overflow: hidden; transform: translateZ(0); }
     .image-reveal-overlay {
       position: absolute; inset: -2%; background-color: #28050e; z-index: 20;
@@ -74,18 +78,20 @@
     }
     .is-visible .image-reveal-scale-down { transform: scale(1); }
 
-    /* Magnetic Fluid Buttons */
+    /* 3. Magnetic Fluid Buttons */
     .magnetic-btn {
       transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.3s;
       will-change: transform;
       display: inline-flex; justify-content: center; align-items: center;
     }
-    .magnetic-btn:hover { transition: transform 0.1s, background-color 0.3s; }
+    @media (hover: hover) and (pointer: fine) {
+      .magnetic-btn:hover { transition: transform 0.1s, background-color 0.3s; }
+      .magnetic-btn:hover .magnetic-text { transition: transform 0.1s; }
+    }
     .magnetic-text {
       display: inline-block; pointer-events: none; will-change: transform;
       transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .magnetic-btn:hover .magnetic-text { transition: transform 0.1s; }
 
     /* Standard Reveal */
     .reveal-up {
@@ -122,33 +128,32 @@
     <span>Authenticity Guaranteed</span>
   </div>
 
-  <!-- NAVIGATION HEADER -->
+  <!-- NAVIGATION HEADER (CSS GRID FIX) -->
   <header class="sticky top-0 z-40 bg-champagne-silk/95 backdrop-blur-md border-b border-champagne-border transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between relative">
+    <!-- Using a 3-column grid guarantees the center nav will NEVER overlap the logo or cart -->
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-8 py-3 grid grid-cols-2 xl:grid-cols-3 items-center gap-4">
       
       <!-- Left Side: Hamburger Menu & Logo -->
-      <div class="flex items-center gap-3 sm:gap-4 flex-grow lg:flex-grow-0 z-10">
-        <!-- Hamburger Menu Button (Always visible on all devices) -->
-        <button onclick="openMobileMenu()" class="p-1.5 text-burgundy active:scale-95 transition-transform hover:text-gold">
+      <div class="flex items-center gap-3 sm:gap-4 justify-self-start">
+        <button onclick="openMobileMenu()" class="p-1.5 text-burgundy active:scale-95 transition-transform hover:text-gold xl:hidden">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
 
-        <a href="index.html" onclick="window.scrollTo(0,0); window.location.reload(); return false;" class="inline-block group text-center lg:text-left cursor-pointer flex-grow lg:flex-grow-0">
+        <a href="index.html" onclick="window.scrollTo(0,0); window.location.reload(); return false;" class="inline-block group text-left cursor-pointer">
           <h1 class="font-[Cinzel] text-2xl md:text-3xl font-bold tracking-[0.3em] text-burgundy group-hover:text-gold transition duration-300">KALANVII</h1>
-          <p class="font-[Rozha_One] text-burgundy-light text-[10px] tracking-widest -mt-1 hidden lg:block">कलान्वी</p>
+          <p class="font-[Rozha_One] text-burgundy-light text-[10px] tracking-widest -mt-1 hidden sm:block">कलान्वी</p>
         </a>
       </div>
 
-      <!-- Center: Desktop Navigation (Absolute Centered, visible only on large screens) -->
-      <nav class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1 w-max z-0">
+      <!-- Center: Desktop Navigation (Hidden on iPads, visible on extra large screens) -->
+      <nav class="hidden xl:flex items-center justify-center space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium text-burgundy py-1 w-full whitespace-nowrap">
         <a href="#collection" class="hover:text-gold transition duration-300">The Collection</a>
         <a href="#coverflowShowcase" class="hover:text-gold transition duration-300">Signature Spotlight</a>
         <a href="#story" class="hover:text-gold transition duration-300">Our Heritage</a>
-        <a href="#testimonials" class="hover:text-gold transition duration-300">Client Reviews</a>
       </nav>
 
       <!-- Right Side: Currency & Cart -->
-      <div class="flex items-center space-x-2 sm:space-x-4 z-10">
+      <div class="flex items-center justify-self-end space-x-2 sm:space-x-4">
         <button onclick="toggleCurrency()" id="currencyBtn" class="text-[10px] sm:text-xs tracking-wider font-semibold border border-burgundy/30 px-2.5 sm:px-3 py-1 rounded-full hover:border-gold text-burgundy transition shadow-sm active:scale-[0.96]">INR (₹)</button>
         <button onclick="openCart()" class="relative p-1.5 sm:p-2 text-burgundy hover:text-gold transition active:scale-[0.96]">
           <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
@@ -193,9 +198,9 @@
     </div>
   </div>
 
-  <!-- HERO SECTION -->
+  <!-- HERO SECTION (is-visible added natively so it never waits for scroll) -->
   <section class="relative bg-champagne-soft py-12 sm:py-20 border-b border-gold/40 text-center px-4 overflow-hidden">
-    <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative reveal-up">
+    <div class="max-w-2xl mx-auto space-y-4 user-exact-satin-bg p-8 sm:p-12 rounded-3xl border-2 border-gold/60 shadow-2xl relative reveal-up is-visible">
       <span class="inline-block px-4 py-1.5 border border-gold/40 text-[9px] uppercase tracking-[0.3em] text-burgundy font-semibold bg-champagne-silk/90 rounded-full shadow-sm">
         BRIDAL • FESTIVE • PARTY WEAR
       </span>
@@ -504,6 +509,7 @@
             <button type="submit" id="checkoutSubmitBtn" class="magnetic-btn btn-shimmer w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs uppercase tracking-widest font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]">
               <span class="magnetic-text flex items-center justify-center gap-2">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Place Order on WhatsApp
               </span>
             </button>
           </form>
@@ -575,14 +581,16 @@
 
     /* ANIMATION SYSTEM INITIALIZATION */
     function setupSplitText() {
-      document.querySelectorAll('.split-text-reveal').forEach(el => {
-        if (el.dataset.splitInit) return;
-        el.dataset.splitInit = true;
-        const words = el.innerText.trim().split(/\s+/);
-        el.innerHTML = words.map((word, i) => 
-          `<span class="split-word-wrapper"><span class="split-word" style="transition-delay: ${i * 50}ms">${word}&nbsp;</span></span>`
-        ).join('');
-      });
+      try {
+        document.querySelectorAll('.split-text-reveal').forEach(el => {
+          if (el.dataset.splitInit) return;
+          el.dataset.splitInit = true;
+          const words = el.innerText.trim().split(/\s+/);
+          el.innerHTML = words.map((word, i) => 
+            `<span class="split-word-wrapper"><span class="split-word" style="transition-delay: ${i * 40}ms">${word}&nbsp;</span></span>`
+          ).join('');
+        });
+      } catch(e) {}
     }
 
     function initMagneticButtons() {
@@ -609,18 +617,27 @@
     }
 
     function initScrollReveals() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target); 
-          }
-        });
-      }, { threshold: 0.15 });
+      // Failsafe: if browser doesn't support IntersectionObserver, show everything immediately
+      if (!window.IntersectionObserver) {
+         document.querySelectorAll('.reveal-up, .split-text-reveal, .image-reveal-wrapper').forEach(el => el.classList.add('is-visible'));
+         return;
+      }
+      try {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target); 
+            }
+          });
+        }, { threshold: 0.05 });
 
-      document.querySelectorAll('.reveal-up:not(.is-visible), .split-text-reveal:not(.is-visible), .image-reveal-wrapper:not(.is-visible)').forEach((el) => {
-        observer.observe(el);
-      });
+        document.querySelectorAll('.reveal-up:not(.is-visible), .split-text-reveal:not(.is-visible), .image-reveal-wrapper:not(.is-visible)').forEach((el) => {
+          observer.observe(el);
+        });
+      } catch (err) {
+        document.querySelectorAll('.reveal-up, .split-text-reveal, .image-reveal-wrapper').forEach(el => el.classList.add('is-visible'));
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1253,4 +1270,58 @@
         btn.innerHTML = '<span class="magnetic-text flex items-center justify-center gap-2">Proceed to Secure Checkout</span>';
         btn.disabled = false;
       }, 1000);
-    
+    }
+
+    function openPolicy(type) {
+      const modal = document.getElementById('policyModal');
+      const backdrop = document.getElementById('policyBackdrop');
+      const panel = document.getElementById('policyPanel');
+      const title = document.getElementById('policyModalTitle');
+      const body = document.getElementById('policyModalBody');
+
+      if (type === 'contact') {
+        title.innerText = "Contact Our Concierge";
+        body.innerHTML = `
+          <p>We are delighted to assist you with bespoke styling inquiries, order tracking, or international shipping details.</p>
+          <p><strong>WhatsApp Concierge:</strong> <a href="https://api.whatsapp.com/send?phone=919773999654&text=Hello%20KALANVII%20Concierge!" target="_blank" class="text-burgundy underline font-bold">+91 97739 99654</a></p>
+          <p><strong>Instagram:</strong> <a href="https://instagram.com/kalanvii_in" target="_blank" class="text-burgundy underline font-bold">@kalanvii_in</a></p>
+          <p><strong>Atelier Hours:</strong> Monday – Saturday (10:00 AM – 7:00 PM IST)</p>
+        `;
+      } else if (type === 'tc') {
+        title.innerText = "Terms & Conditions";
+        body.innerHTML = `
+          <p><strong>1. Artisanal Craftsmanship:</strong> Each KALANVII piece is meticulously hand-embroidered by master Indian artisans. Minor variances in bead placement highlight the authenticity of handmade luxury.</p>
+          <p><strong>2. Strict No-Return Policy:</strong> All sales are final. We do not offer returns or exchanges for change of mind.</p>
+          <p><strong>3. Transit Damage & Replacements:</strong> Replacements are exclusively issued in the event of severe transit damage. To qualify, customers must provide a continuous, unedited unboxing video starting from the sealed outer courier package within 24 hours of delivery.</p>
+        `;
+      } else if (type === 'shipping') {
+        title.innerText = "Shipping Policy";
+        body.innerHTML = `
+          <p><strong>Complimentary Express Shipping:</strong> Enjoy free express delivery across India on all orders over ₹3,999.</p>
+          <p><strong>Global Express Shipping:</strong> We ship worldwide via verified secure courier partners. Rates and estimated delivery windows are calculated upon inquiry.</p>
+        `;
+      }
+      
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          backdrop.classList.remove('opacity-0');
+          panel.classList.remove('opacity-0', 'scale-95', 'translate-y-4');
+        });
+      });
+    }
+
+    function closePolicyModal() { 
+      const modal = document.getElementById('policyModal');
+      const backdrop = document.getElementById('policyBackdrop');
+      const panel = document.getElementById('policyPanel');
+      
+      backdrop.classList.add('opacity-0');
+      panel.classList.add('opacity-0', 'scale-95', 'translate-y-4');
+      
+      setTimeout(() => modal.classList.add('hidden'), 400); 
+    }
+  </script>
+</body>
+</html>
+ 
